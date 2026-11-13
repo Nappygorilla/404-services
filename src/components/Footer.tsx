@@ -33,7 +33,7 @@ export function NewsletterForm({ tone = 'night' }: { tone?: 'night' | 'white' })
   if (state === 'done')
     return (
       <p role="status" className={cx('flex h-14 items-center text-[15px]', dark ? 'text-violet-light' : 'text-violet')}>
-        Thanks. The next studio notes land in your inbox next month.
+        Thanks. The next release notes land in your inbox next month.
       </p>
     )
   return (
@@ -52,7 +52,7 @@ export function NewsletterForm({ tone = 'night' }: { tone?: 'night' | 'white' })
           id={uid}
           type="email"
           autoComplete="email"
-          placeholder="you@company.com"
+          placeholder="you@studio.dev"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           aria-invalid={error ? true : undefined}
@@ -83,9 +83,9 @@ export function Footer() {
             <NewsletterForm />
           </div>
           <nav aria-label="Footer">
-            <p className="caps mb-3 text-night-muted">Explore</p>
+            <p className="caps mb-3 text-night-muted">Product</p>
             <ul className="grid grid-cols-2 gap-x-6">
-              {[...MENU, { label: 'Style guide', to: '/styleguide' }].map((m) => (
+              {MENU.slice(1).map((m) => (
                 <li key={m.to}>
                   <Link to={m.to} className="inline-flex min-h-10 items-center text-white transition-colors hov:text-violet-light">
                     {m.label}
@@ -95,15 +95,18 @@ export function Footer() {
             </ul>
           </nav>
           <div className="grid grid-cols-2 gap-6 lg:grid-cols-1">
-            <address className="text-night-muted not-italic">
-              <p className="caps mb-3">Studio</p>
-              {SITE.address.map((l) => (
-                <span key={l} className="block text-white">
-                  {l}
-                </span>
-              ))}
-              <span className="mt-2 block text-sm">{SITE.hours}</span>
-            </address>
+            <div>
+              <p className="caps mb-3 text-night-muted">Legal</p>
+              <ul className="grid grid-cols-2 gap-x-4">
+                {FOOTER.legalLinks.map((l) => (
+                  <li key={l.to}>
+                    <Link to={l.to} className="inline-flex min-h-10 items-center text-white hov:text-violet-light">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div>
               <p className="caps mb-3 text-night-muted">Contact</p>
               <a href={`mailto:${SITE.email}`} className="inline-flex min-h-10 items-center break-all text-white hov:text-violet-light">
@@ -112,7 +115,7 @@ export function Footer() {
               <ul className="flex flex-wrap gap-x-4">
                 {SITE.socials.map((s) => (
                   <li key={s.label}>
-                    <a href={s.href} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center text-white hov:text-violet-light">
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center text-white hov:text-violet-light">
                       {s.label}
                     </a>
                   </li>
@@ -121,17 +124,22 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <p aria-hidden className="display mt-16 -mb-[0.12em] text-center text-[clamp(4.5rem,-0.5rem+19.4vw,21rem)] leading-[0.8] tracking-[-0.07em] text-white select-none">
-          Lastwerk
+
+        <p aria-hidden className="display mt-16 -mb-[0.12em] px-1 text-center text-[clamp(3.5rem,-0.5rem+16.4vw,17rem)] leading-[0.8] tracking-[-0.07em] whitespace-nowrap text-white select-none">
+          {SITE.name}
         </p>
-        <div className="mt-6 flex flex-col items-start justify-between gap-3 border-t border-white/12 pt-5 text-sm text-night-muted sm:flex-row sm:items-center">
-          <span className="flex items-center gap-2">
-            <Logo light className="[&_svg]:size-6" />
-            {FOOTER.legal}
-          </span>
-          <a href="#top" className="inline-flex min-h-10 items-center text-white hov:text-violet-light">
-            Back to top
-          </a>
+
+        <div className="mt-6 grid gap-4 border-t border-white/12 pt-5 text-sm text-night-muted">
+          <p className="max-w-3xl text-[12.5px] leading-relaxed">{SITE.disclaimer}</p>
+          <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+            <span className="flex items-center gap-2">
+              <Logo light className="[&_svg]:size-6" />
+              {FOOTER.legal}
+            </span>
+            <a href="#top" className="inline-flex min-h-10 items-center text-white hov:text-violet-light">
+              Back to top
+            </a>
+          </div>
         </div>
       </Card>
     </footer>

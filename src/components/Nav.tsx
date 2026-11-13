@@ -17,7 +17,7 @@ export function Nav({ tone = 'white' }: { tone?: 'white' | 'night' }) {
   return (
     <header className="relative z-10 flex h-14 items-center justify-between gap-4">
       <Link to="/" aria-label={`${SITE.name} home`} className="round -m-1 rounded-full p-1">
-        <Logo light={light} />
+        <Logo wordmark light={light} />
       </Link>
       <nav aria-label="Main" className="hidden md:block">
         <ul className="flex items-center gap-[clamp(2rem,1rem+3.4vw,5.5rem)]">
@@ -71,9 +71,7 @@ export function Nav({ tone = 'white' }: { tone?: 'white' | 'night' }) {
             <a className="block min-h-10 py-2 text-white underline-offset-4 hov:underline" href={`mailto:${SITE.email}`}>
               {SITE.email}
             </a>
-            <a className="block min-h-10 py-2 text-white underline-offset-4 hov:underline" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
-              {SITE.phone}
-            </a>
+            <p className="py-2 text-night-muted">{SITE.hours}</p>
           </div>
           <div>
             <p className="caps mb-2 text-white">Follow</p>
@@ -100,6 +98,7 @@ export function PageHero({
   intro,
   aside,
   art,
+  titleSize = 'default',
   children,
 }: {
   title: string[]
@@ -107,6 +106,8 @@ export function PageHero({
   intro?: string
   aside?: React.ReactNode
   art?: React.ReactNode
+  /** `compact` for long multi-word titles that would otherwise run to the card edge. */
+  titleSize?: 'default' | 'compact'
   children?: React.ReactNode
 }) {
   return (
@@ -125,7 +126,12 @@ export function PageHero({
         ) : (
           <div className="hidden lg:order-2 lg:block" />
         )}
-        <h1 className="display order-1 text-right text-[clamp(3.4rem,0.8rem+9.2vw,10rem)] tracking-[-0.06em] lg:order-3">
+        <h1
+          className={cx(
+            'display order-1 text-right tracking-[-0.06em] lg:order-3',
+            titleSize === 'compact' ? 'text-[clamp(2.8rem,0.6rem+7.4vw,8.2rem)]' : 'text-[clamp(3.4rem,0.8rem+9.2vw,10rem)]',
+          )}
+        >
           {title.map((l) => (
             <span key={l} className="block">
               {l}

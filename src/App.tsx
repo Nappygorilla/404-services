@@ -4,16 +4,17 @@ import { BrowserRouter, Route, Routes, useLocation } from 'react-router'
 
 import { Footer } from './components/Footer'
 import { ToastProvider } from './components/Overlay'
-import { Careers } from './pages/Careers'
-import { CaseStudy } from './pages/CaseStudy'
-import { Contact } from './pages/Contact'
+import { CurrencyProvider } from './components/Price'
+import { Changelog } from './pages/Changelog'
+import { Docs } from './pages/Docs'
+import { Games } from './pages/Games'
 import { Home } from './pages/Home'
+import { Privacy, Refunds, Terms } from './pages/Legal'
+import { Licence } from './pages/Licence'
 import { NotFound } from './pages/NotFound'
-import { RolePage } from './pages/Role'
-import { Services } from './pages/Services'
-import { Studio } from './pages/Studio'
-import { Styleguide } from './pages/Styleguide'
-import { Work } from './pages/Work'
+import { Platform } from './pages/Platform'
+import { Pricing } from './pages/Pricing'
+import { Support } from './pages/Support'
 
 /** Scroll to the top on a new page, or to the #hash target when there is one. */
 function ScrollManager() {
@@ -47,14 +48,16 @@ function Pages() {
       >
         <Routes location={location}>
           <Route index element={<Home />} />
-          <Route path="work" element={<Work />} />
-          <Route path="work/:slug" element={<CaseStudy />} />
-          <Route path="services" element={<Services />} />
-          <Route path="studio" element={<Studio />} />
-          <Route path="careers" element={<Careers />} />
-          <Route path="careers/:slug" element={<RolePage />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="styleguide" element={<Styleguide />} />
+          <Route path="games" element={<Games />} />
+          <Route path="platforms/:slug" element={<Platform />} />
+          <Route path="pricing" element={<Pricing />} />
+          <Route path="changelog" element={<Changelog />} />
+          <Route path="docs" element={<Docs />} />
+          <Route path="licence" element={<Licence />} />
+          <Route path="support" element={<Support />} />
+          <Route path="terms" element={<Terms />} />
+          <Route path="refunds" element={<Refunds />} />
+          <Route path="privacy" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.main>
@@ -66,16 +69,18 @@ export function App() {
   return (
     <MotionConfig reducedMotion="user">
       <BrowserRouter>
-        <ToastProvider>
-          <ScrollManager />
-          <a href="#main" className="sr-only z-[100] rounded-full bg-violet px-5 py-3 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
-            Skip to content
-          </a>
-          <div id="top" className="flex min-h-svh flex-col">
-            <Pages />
-            <Footer />
-          </div>
-        </ToastProvider>
+        <CurrencyProvider>
+          <ToastProvider>
+            <ScrollManager />
+            <a href="#main" className="sr-only z-[100] rounded-full bg-violet px-5 py-3 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
+              Skip to content
+            </a>
+            <div id="top" className="flex min-h-svh flex-col">
+              <Pages />
+              <Footer />
+            </div>
+          </ToastProvider>
+        </CurrencyProvider>
       </BrowserRouter>
     </MotionConfig>
   )
