@@ -23,6 +23,10 @@ The repository also contains the LUNA website: a product storefront, platform gu
 - `/downloads` — account-protected download library placeholder
 - `/orders` — account-protected order history placeholder
 - `/account` — customer dashboard
+- `/account/profile` — display-name settings
+- `/account/security` — password and current-device sign-out
+- `/account/tickets` — private support-ticket submission and history
+- `/account/licenses` — entitlement listing
 - `/changelog` — release history
 - `/status` — verified API check and integration configuration
 - `/docs`, `/licence`, `/support`
@@ -59,7 +63,7 @@ When Supabase is not configured, account- and community-backed surfaces display 
 
 The original community schema is in `supabase/schema.sql`. The additive marketplace schema is in `supabase/marketplace.sql`; apply it after the original schema.
 
-The marketplace schema provides catalog metadata, release records, orders, order items, user entitlements, support tickets, and a private release-asset pointer table. Row-level security permits customers to read only their own account records. Browser clients cannot create orders or entitlements.
+The marketplace schema provides catalog metadata, release records, orders, order items, user entitlements, support tickets, and a private release-asset pointer table. Customer pages read their own order and entitlement rows and can submit support tickets under row-level security. Row-level security permits customers to read only their own account records. Browser clients cannot create orders or entitlements.
 
 ### Not connected yet
 
@@ -67,9 +71,11 @@ This branch intentionally does not claim that commerce or protected downloads ar
 
 - No payment provider credentials or verified webhook handler are configured.
 - No production product binaries or private storage bucket are configured.
-- No entitlement-backed signed download endpoint is configured.
+- No entitlement-backed signed download endpoint is configured, and no installer binaries are published.
 - No external uptime monitor or incident feed is configured.
-- The customer Orders and Downloads screens remain explicit placeholders until the server integrations are deployed and tested.
+- Support tickets can be submitted and read by their owner, but staff replies and status management still need an operator workflow.
+- Email-change verification and multi-factor authentication are not configured.
+- The Orders page reads order rows populated by trusted server-side payment handling. The Downloads / Licenses page reads customer entitlements, but does not serve binaries until the private storage and signed-download endpoint are implemented.
 
 Before accepting payments, implement a server-only checkout session endpoint and verify provider webhook signatures before creating `orders`, `order_items`, and `user_entitlements` rows. Never trust a browser redirect as proof of payment. Before exposing a file, verify the current user's entitlement server-side and issue a short-lived signed URL from a private Storage bucket.
 
