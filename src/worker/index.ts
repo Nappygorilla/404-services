@@ -1,9 +1,8 @@
 import { Hono } from 'hono'
 
-// The Worker in front of the static site. The form routes validate input and
-// return a reference; connect them to email, a CRM or a D1 table to keep the
-// messages. Everything else falls through to the built assets, where this
-// Worker is also the one place that sets Cache-Control.
+// The Worker serves the static site and its small API surface. Only the
+// health endpoint is live; newsletter persistence, checkout and protected
+// downloads remain disabled until their storage and server integrations exist.
 type Env = {
   ASSETS: Fetcher
 }
