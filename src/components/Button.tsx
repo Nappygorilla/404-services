@@ -11,11 +11,11 @@ const base =
   'round relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium tracking-[-0.01em] transition-[background-color,color,border-color,transform,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-out-soft)] prs:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45'
 
 const variants: Record<ButtonVariant, string> = {
-  solid: 'bg-ink text-white hov:bg-ink-2 prs:bg-black',
-  violet: 'bg-violet text-white hov:bg-violet-deep hov:shadow-[var(--shadow-violet)] prs:bg-violet-deep',
-  outline: 'border border-ink/85 text-ink hov:bg-ink hov:text-white prs:bg-black prs:text-white',
+  solid: 'bg-white text-[#08080c] hov:bg-violet-light prs:bg-white',
+  violet: 'bg-violet text-white shadow-[var(--shadow-violet)] hov:bg-violet-deep hov:shadow-[var(--shadow-violet)] prs:bg-violet-deep',
+  outline: 'border border-line-strong text-ink hov:border-violet hov:bg-violet/15 hov:text-white prs:bg-violet/25',
   ghost: 'text-ink hov:bg-soft prs:bg-line',
-  light: 'on-dark bg-white text-ink hov:bg-violet hov:text-white prs:bg-violet-deep prs:text-white',
+  light: 'on-dark bg-white text-[#08080c] hov:bg-violet hov:text-white prs:bg-violet-deep prs:text-white',
 }
 
 const sizes: Record<ButtonSize, string> = {
@@ -76,10 +76,10 @@ export function IconButton({
       className={cx(
         'round inline-flex shrink-0 items-center justify-center rounded-full transition-[background-color,color,transform,border-color] duration-[var(--duration-fast)] prs:scale-95 disabled:pointer-events-none disabled:opacity-40',
         size === 'md' ? 'size-11' : 'size-10',
-        tone === 'ink' && 'bg-ink text-white hov:bg-violet',
-        tone === 'outline' && 'border border-line-strong bg-card text-ink hov:border-ink hov:bg-ink hov:text-white',
-        tone === 'violet' && 'bg-violet text-white hov:bg-violet-deep',
-        tone === 'light' && 'on-dark bg-white text-ink hov:bg-violet hov:text-white',
+        tone === 'ink' && 'bg-white text-[#08080c] hov:bg-violet hov:text-white',
+        tone === 'outline' && 'border border-line-strong bg-card text-ink hov:border-violet hov:bg-violet hov:text-white',
+        tone === 'violet' && 'bg-violet text-white shadow-[var(--shadow-violet)] hov:bg-violet-deep',
+        tone === 'light' && 'on-dark bg-white text-[#08080c] hov:bg-violet hov:text-white',
         className,
       )}
       {...rest}

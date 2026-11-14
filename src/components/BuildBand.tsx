@@ -221,7 +221,7 @@ function Recording({ reduce }: { reduce: boolean }) {
               type="button"
               onClick={() => setPaused((p) => !p)}
               aria-label={paused ? 'Play the recording' : 'Pause the recording'}
-              className="round grid size-7 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hov:border-white hov:bg-white hov:text-ink"
+              className="round grid size-7 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hov:border-white hov:bg-white hov:text-[#08080c]"
             >
               {paused ? <Play className="size-3" aria-hidden /> : <Pause className="size-3" aria-hidden />}
             </button>
@@ -275,7 +275,7 @@ export function BuildBand() {
             <button
               type="button"
               onClick={() => setReplay((n) => n + 1)}
-              className="round mt-6 inline-flex h-10 items-center gap-2 rounded-full border border-white/25 px-4 text-[13px] font-medium text-white/85 transition-colors hov:border-white hov:bg-white hov:text-ink"
+              className="round mt-6 inline-flex h-10 items-center gap-2 rounded-full border border-white/25 px-4 text-[13px] font-medium text-white/85 transition-colors hov:border-white hov:bg-white hov:text-[#08080c]"
             >
               <RotateCcw className="size-3.5" aria-hidden />
               Replay the build

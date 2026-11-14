@@ -22,7 +22,7 @@ export function ArrowLink({
         size === 'sm' && 'text-sm',
         size === 'md' && 'text-[clamp(1.1rem,0.9rem+0.6vw,1.6rem)]',
         size === 'lg' && 'text-[clamp(1.4rem,1rem+1.2vw,2.25rem)]',
-        tone === 'violet' && 'text-violet hov:text-violet-deep',
+        tone === 'violet' && 'text-violet hov:text-violet-light',
         tone === 'ink' && 'text-ink hov:text-violet',
         tone === 'light' && 'on-dark text-white hov:text-violet-light',
         className,
@@ -187,7 +187,7 @@ export function Badge({ tone = 'neutral', children, className }: { tone?: BadgeT
       className={cx(
         'round inline-flex h-7 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap',
         tone === 'neutral' && 'bg-soft text-ink',
-        tone === 'violet' && 'bg-violet-soft text-violet-deep',
+        tone === 'violet' && 'border border-violet/40 bg-violet/15 text-violet-light',
         tone === 'outline' && 'border border-line-strong text-ink',
         tone === 'success' && 'bg-success/10 text-success',
         tone === 'light' && 'bg-white/14 text-white',

@@ -22,7 +22,8 @@ export function Card({
   return (
     <Tag
       className={cx(
-        'relative overflow-hidden',
+        'relative overflow-hidden border border-line',
+        'before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/12 before:to-transparent',
         size === 'lg' ? 'rounded-[var(--radius-card)]' : 'rounded-[var(--radius-card-sm)]',
         tones[tone],
         className,

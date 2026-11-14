@@ -11,6 +11,7 @@ import { Holo } from '../components/Holo'
 import { Nav } from '../components/Nav'
 import { launchActive, launchPrice, useCurrency } from '../components/Price'
 import { APP, CHANGELOG, FEATURES, HOME, PIPELINE, PLATFORMS, PRICING_FAQ, TIERS } from '../data'
+import { cx } from '../lib/cx'
 import { useDocumentTitle } from '../lib/storage'
 
 const ICONS: Record<string, ReactNode> = {
@@ -22,9 +23,54 @@ const ICONS: Record<string, ReactNode> = {
   terminal: <TerminalSquare className="size-5" strokeWidth={1.6} aria-hidden />,
 }
 
+const TICKER = [
+  'Offline builds',
+  'No telemetry',
+  'Signed updates',
+  'Windows + macOS',
+  'CLI + GUI',
+  'FiveM + Roblox',
+  'Lockfile resolution',
+  'One-command deploy',
+]
+
+/** The mono status rail across the top of the hero. */
+function HeroStatus() {
+  return (
+    <div className="-mx-5 -mt-3 mb-1 flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line/80 bg-black/30 px-5 py-2 font-mono text-[10.5px] tracking-[0.14em] text-muted uppercase sm:-mx-8 sm:px-8">
+      <span className="flex items-center gap-1.5 text-acid">
+        <span className="size-1.5 animate-pulse rounded-full bg-acid" aria-hidden />
+        Build passing
+      </span>
+      <span className="hidden sm:inline">v{APP.version}</span>
+      <span className="hidden sm:inline">Windows · macOS</span>
+      <span className="ml-auto hidden text-faint md:inline">no telemetry · offline builds</span>
+    </div>
+  )
+}
+
+/** Scrolling strip of product facts, in mono. */
+function Ticker() {
+  return (
+    <div className="relative overflow-hidden rounded-[var(--radius-card-sm)] border border-line bg-card py-3" aria-hidden>
+      <div className="marquee-mask flex w-max animate-marquee items-center gap-8 whitespace-nowrap font-mono text-[11px] tracking-[0.16em] text-muted uppercase">
+        {[...TICKER, ...TICKER].map((t, i) => (
+          <span key={`${t}-${i}`} className="flex items-center gap-3">
+            <span className="text-violet">◆</span>
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden rounded-[var(--radius-card)] bg-card px-5 pt-3 pb-8 sm:px-8 sm:pb-10">
+      <div className="pointer-events-none absolute inset-0 grid-lines opacity-70" aria-hidden />
+      <div className="pointer-events-none absolute -top-40 -right-32 size-[36rem] rounded-full bg-violet/20 blur-[130px]" aria-hidden />
+      <HeroStatus />
       <Nav />
       <div className="relative mt-8 grid gap-10 lg:mt-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-8">
         <div>
@@ -33,7 +79,10 @@ function Hero() {
             {HOME.headline.map((line, i) => (
               <span key={line} className="block overflow-hidden pb-[0.04em]">
                 <motion.span
-                  className="block"
+                  className={cx(
+                    'block',
+                    i === HOME.headline.length - 1 && 'bg-gradient-to-br from-white via-violet-light to-violet bg-clip-text text-transparent',
+                  )}
                   initial={{ y: '105%' }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1.1, delay: 0.15 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
@@ -152,7 +201,7 @@ function Features() {
           <li key={f.title} className="h-full">
             <Reveal delay={(i % 3) * 0.05} className="h-full">
               <Card className="flex h-full flex-col p-6">
-                <span className="round grid size-11 place-items-center rounded-full bg-violet-soft text-violet-deep">{ICONS[f.icon]}</span>
+                <span className="round grid size-11 place-items-center rounded-full border border-violet/35 bg-violet/15 text-violet-light">{ICONS[f.icon]}</span>
                 <h3 className="mt-5 text-lg font-medium tracking-[-0.03em]">{f.title}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">{f.body}</p>
               </Card>
@@ -286,6 +335,7 @@ export function Home() {
   return (
     <div className="grid gap-2 p-2">
       <Hero />
+      <Ticker />
       <Platforms />
       <Pipeline />
       <BuildBand />

@@ -116,7 +116,7 @@ export function Platform() {
           </div>
           <Link
             to={`/platforms/${other.slug}`}
-            className="round inline-flex h-12 items-center gap-2 rounded-full border border-line-strong px-6 text-[15px] font-medium transition-colors hov:border-ink hov:bg-ink hov:text-white"
+            className="round inline-flex h-12 items-center gap-2 rounded-full border border-line-strong px-6 text-[15px] font-medium transition-colors hov:border-violet hov:bg-violet hov:text-white"
           >
             Open the {other.name} guide
             <ArrowRight className="size-4" aria-hidden />

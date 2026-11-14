@@ -65,7 +65,7 @@ export function CurrencySwitch({ className }: { className?: string }) {
             onClick={() => setCurrency(code)}
             className={cx(
               'round flex h-9 min-w-12 items-center justify-center gap-1 rounded-full px-3 text-sm font-medium transition-colors',
-              active ? 'bg-ink text-white' : 'text-muted hov:text-ink',
+              active ? 'bg-violet text-white' : 'text-muted hov:text-ink',
             )}
           >
             <span aria-hidden>{CURRENCIES[code].symbol}</span>

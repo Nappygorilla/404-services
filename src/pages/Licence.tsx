@@ -79,7 +79,7 @@ export function Licence() {
       <section aria-labelledby="facts" className="grid gap-2 md:grid-cols-3">
         {FACTS.map((f) => (
           <Card key={f.title} className="flex h-full flex-col p-6">
-            <span className="round grid size-11 place-items-center rounded-full bg-violet-soft text-violet-deep">{f.icon}</span>
+            <span className="round grid size-11 place-items-center rounded-full border border-violet/35 bg-violet/15 text-violet-light">{f.icon}</span>
             <h2 className="mt-5 text-lg font-medium tracking-[-0.03em]">{f.title}</h2>
             <p className="mt-2 text-[15px] leading-relaxed text-muted">{f.body}</p>
           </Card>
