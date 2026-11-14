@@ -26,7 +26,7 @@ function HeroPreview() {
             <span className="size-2 rounded-full bg-[#52d99a]" />
             <span className="ml-2 font-mono text-[10px] tracking-[.16em] text-white/55">LUNA DESKTOP</span>
           </div>
-          <Badge tone="success">READY</Badge>
+          <Badge tone="outline">PREVIEW</Badge>
         </div>
         <div className="grid min-h-[330px] grid-cols-[116px_1fr] sm:grid-cols-[145px_1fr]">
           <aside className="border-r border-white/10 bg-white/[.02] p-3">
@@ -43,27 +43,27 @@ function HeroPreview() {
           </aside>
           <div className="p-4 sm:p-5">
             <div className="flex flex-wrap items-start justify-between gap-2">
-              <div><p className="caps text-violet-light">Project overview</p><p className="mt-2 text-lg font-medium text-white">Northstar RP</p></div>
+              <div><p className="caps text-violet-light">Project overview</p><p className="mt-2 text-lg font-medium text-white">Sample workspace</p></div>
               <span className="rounded-full border border-white/10 px-2.5 py-1 font-mono text-[9px] text-white/45">DEVELOPMENT</span>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-2">
-              <div className="rounded-xl border border-white/10 bg-white/[.03] p-3"><p className="text-[10px] text-white/45">Resources</p><p className="mt-1 text-xl font-semibold text-white">24</p></div>
-              <div className="rounded-xl border border-white/10 bg-white/[.03] p-3"><p className="text-[10px] text-white/45">Build state</p><p className="mt-1 text-xl font-semibold text-emerald-300">Ready</p></div>
+              <div className="rounded-xl border border-white/10 bg-white/[.03] p-3"><p className="text-[10px] text-white/45">Resources</p><p className="mt-1 text-xl font-semibold text-white">—</p></div>
+              <div className="rounded-xl border border-white/10 bg-white/[.03] p-3"><p className="text-[10px] text-white/45">Build state</p><p className="mt-1 text-xl font-semibold text-white">Preview</p></div>
             </div>
             <div className="mt-3 rounded-xl border border-white/10 p-3">
-              <div className="flex items-center justify-between"><p className="text-xs font-medium text-white/85">Dependency validation</p><Badge tone="success">Passed</Badge></div>
+              <div className="flex items-center justify-between"><p className="text-xs font-medium text-white/85">Example validation</p><Badge tone="outline">SAMPLE</Badge></div>
               <div className="mt-3 grid gap-2">
                 {['Manifest references', 'Shared dependencies', 'Build output'].map((item) => <div key={item} className="flex items-center gap-2 text-[11px] text-white/55"><Check className="size-3.5 text-emerald-300" />{item}</div>)}
               </div>
             </div>
             <div className="mt-3 flex items-center justify-between rounded-xl bg-violet/15 px-3 py-3">
-              <div><p className="text-[10px] text-violet-light">Latest local build</p><p className="mt-1 font-mono text-xs text-white">build-0001</p></div>
+              <div><p className="text-[10px] text-violet-light">Example build</p><p className="mt-1 font-mono text-xs text-white">build-0001</p></div>
               <Package className="size-5 text-violet-light" />
             </div>
           </div>
         </div>
         <div className="flex items-center justify-between border-t border-white/10 px-4 py-3 font-mono text-[9px] tracking-[.1em] text-white/35">
-          <span>LOCAL PROJECT PREVIEW</span><span>v{APP.version}</span>
+          <span>INTERFACE PREVIEW · SAMPLE DATA</span><span>v{APP.version}</span>
         </div>
       </div>
     </div>
