@@ -1,67 +1,70 @@
-import { ArrowRight, Boxes, Check, FileCode2, GitBranch, Package, Rocket, TerminalSquare } from 'lucide-react'
+import { ArrowRight, Check, Code2, Download, GitBranch, Package, ShieldCheck, Workflow } from 'lucide-react'
 import { motion } from 'motion/react'
-import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 
 import { ArrowLink, Badge, Reveal, Title } from '../components/Bits'
-import { BuildBand } from '../components/BuildBand'
 import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Accordion } from '../components/Content'
 import { Holo } from '../components/Holo'
 import { Nav } from '../components/Nav'
-import { launchActive, launchPrice, useCurrency } from '../components/Price'
 import { TrustBar } from '../components/Storefront'
-import { APP, CHANGELOG, FEATURES, HOME, PIPELINE, PLATFORMS, PRICING_FAQ, TIERS } from '../data'
-import { cx } from '../lib/cx'
+import { APP, CHANGELOG, FEATURES, PIPELINE, PLATFORMS, PRICING_FAQ, SITE } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
-const ICONS: Record<string, ReactNode> = {
-  graph: <GitBranch className="size-5" strokeWidth={1.6} aria-hidden />,
-  package: <Package className="size-5" strokeWidth={1.6} aria-hidden />,
-  check: <Check className="size-5" strokeWidth={2} aria-hidden />,
-  rocket: <Rocket className="size-5" strokeWidth={1.6} aria-hidden />,
-  git: <FileCode2 className="size-5" strokeWidth={1.6} aria-hidden />,
-  terminal: <TerminalSquare className="size-5" strokeWidth={1.6} aria-hidden />,
-}
+const ICONS = [GitBranch, Package, Check, ShieldCheck, Code2, Workflow]
 
-const TICKER = [
-  'Offline builds',
-  'No telemetry',
-  'Signed updates',
-  'Windows + macOS',
-  'CLI + GUI',
-  'FiveM + Roblox',
-  'Lockfile resolution',
-  'One-command deploy',
-]
-
-/** The mono status rail across the top of the hero. */
-function HeroStatus() {
+function HeroPreview() {
   return (
-    <div className="-mx-5 -mt-3 mb-1 flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line/80 bg-black/30 px-5 py-2 font-mono text-[10.5px] tracking-[0.14em] text-muted uppercase sm:-mx-8 sm:px-8">
-      <Link to="/status" className="flex items-center gap-1.5 text-acid transition-opacity hov:opacity-80">
-        <span className="size-1.5 animate-pulse rounded-full bg-acid" aria-hidden />
-        Build passing
-      </Link>
-      <span className="hidden sm:inline">v{APP.version}</span>
-      <span className="hidden sm:inline">Windows · macOS</span>
-      <span className="ml-auto hidden text-faint md:inline">no telemetry · offline builds</span>
-    </div>
-  )
-}
-
-/** Scrolling strip of product facts, in mono. */
-function Ticker() {
-  return (
-    <div className="relative overflow-hidden rounded-[var(--radius-card-sm)] border border-line bg-card py-3" aria-hidden>
-      <div className="marquee-mask flex w-max animate-marquee items-center gap-8 whitespace-nowrap font-mono text-[11px] tracking-[0.16em] text-muted uppercase">
-        {[...TICKER, ...TICKER].map((t, i) => (
-          <span key={`${t}-${i}`} className="flex items-center gap-3">
-            <span className="text-violet">◆</span>
-            {t}
-          </span>
-        ))}
+    <div className="relative mx-auto w-full max-w-[560px]">
+      <div className="absolute -inset-8 rounded-full bg-violet/20 blur-[90px]" aria-hidden />
+      <div className="relative overflow-hidden rounded-2xl border border-white/12 bg-[#0a0a12] shadow-[0_35px_100px_-40px_rgba(0,0,0,.9)]">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <div className="flex items-center gap-2">
+            <span className="size-2 rounded-full bg-[#ff6b75]" />
+            <span className="size-2 rounded-full bg-[#f5c15b]" />
+            <span className="size-2 rounded-full bg-[#52d99a]" />
+            <span className="ml-2 font-mono text-[10px] tracking-[.16em] text-white/55">LUNA DESKTOP</span>
+          </div>
+          <Badge tone="success">READY</Badge>
+        </div>
+        <div className="grid min-h-[330px] grid-cols-[116px_1fr] sm:grid-cols-[145px_1fr]">
+          <aside className="border-r border-white/10 bg-white/[.02] p-3">
+            <p className="caps text-white/35">Workspace</p>
+            <div className="mt-4 grid gap-2">
+              {['Overview', 'Projects', 'Dependencies', 'Builds', 'Deploy'].map((item, index) => (
+                <div key={item} className={`rounded-lg px-2.5 py-2 text-[11px] ${index === 1 ? 'bg-violet/20 text-violet-light' : 'text-white/50'}`}>{item}</div>
+              ))}
+            </div>
+            <div className="mt-8 rounded-lg border border-white/10 p-2">
+              <p className="caps text-white/35">Target</p>
+              <p className="mt-2 text-xs text-white/80">FiveM server</p>
+            </div>
+          </aside>
+          <div className="p-4 sm:p-5">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div><p className="caps text-violet-light">Project overview</p><p className="mt-2 text-lg font-medium text-white">Northstar RP</p></div>
+              <span className="rounded-full border border-white/10 px-2.5 py-1 font-mono text-[9px] text-white/45">DEVELOPMENT</span>
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-2">
+              <div className="rounded-xl border border-white/10 bg-white/[.03] p-3"><p className="text-[10px] text-white/45">Resources</p><p className="mt-1 text-xl font-semibold text-white">24</p></div>
+              <div className="rounded-xl border border-white/10 bg-white/[.03] p-3"><p className="text-[10px] text-white/45">Build state</p><p className="mt-1 text-xl font-semibold text-emerald-300">Ready</p></div>
+            </div>
+            <div className="mt-3 rounded-xl border border-white/10 p-3">
+              <div className="flex items-center justify-between"><p className="text-xs font-medium text-white/85">Dependency validation</p><Badge tone="success">Passed</Badge></div>
+              <div className="mt-3 grid gap-2">
+                {['Manifest references', 'Shared dependencies', 'Build output'].map((item) => <div key={item} className="flex items-center gap-2 text-[11px] text-white/55"><Check className="size-3.5 text-emerald-300" />{item}</div>)}
+              </div>
+            </div>
+            <div className="mt-3 flex items-center justify-between rounded-xl bg-violet/15 px-3 py-3">
+              <div><p className="text-[10px] text-violet-light">Latest local build</p><p className="mt-1 font-mono text-xs text-white">build-0001</p></div>
+              <Package className="size-5 text-violet-light" />
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-between border-t border-white/10 px-4 py-3 font-mono text-[9px] tracking-[.1em] text-white/35">
+          <span>LOCAL PROJECT PREVIEW</span><span>v{APP.version}</span>
+        </div>
       </div>
     </div>
   )
@@ -69,277 +72,153 @@ function Ticker() {
 
 function Hero() {
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden rounded-[var(--radius-card)] bg-card px-5 pt-3 pb-8 sm:px-8 sm:pb-10">
-      <div className="pointer-events-none absolute inset-0 grid-lines opacity-70" aria-hidden />
-      <div className="pointer-events-none absolute -top-40 -right-32 size-[36rem] rounded-full bg-violet/20 blur-[130px]" aria-hidden />
-      <HeroStatus />
-      <Nav />
-      <div className="relative mt-8 grid gap-10 lg:mt-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-8">
-        <div>
-          <p className="caps text-violet">{HOME.eyebrow}</p>
-          <h1 id="hero-title" className="display mt-4 text-[clamp(3.1rem,9.6vw,7.4rem)]">
-            {HOME.headline.map((line, i) => (
-              <span key={line} className="block overflow-hidden pb-[0.04em]">
-                <motion.span
-                  className={cx(
-                    'block',
-                    i === HOME.headline.length - 1 && 'bg-gradient-to-br from-white via-violet-light to-violet bg-clip-text text-transparent',
-                  )}
-                  initial={{ y: '105%' }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1.1, delay: 0.15 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {line}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
-          <p className="mt-6 max-w-md text-[17px] leading-relaxed text-pretty text-ink-2">{HOME.intro}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink to="/pricing" variant="violet" size="lg" iconRight={<ArrowRight className="size-5" />}>
-              Get {APP.name}
-            </ButtonLink>
-            <ButtonLink to="/docs" variant="outline" size="lg">
-              Read the docs
-            </ButtonLink>
-          </div>
-          <TrustBar className="mt-8" />
+    <section className="relative overflow-hidden rounded-[var(--radius-card)] border border-line bg-card px-5 pt-3 pb-8 sm:px-8 sm:pb-10">
+      <div className="pointer-events-none absolute inset-0 grid-lines opacity-60" aria-hidden />
+      <div className="pointer-events-none absolute -right-40 -top-48 size-[38rem] rounded-full bg-violet/20 blur-[130px]" aria-hidden />
+      <div className="relative">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line/80 bg-black/20 px-1 py-2 font-mono text-[10px] tracking-[.13em] text-muted uppercase">
+          <Link to="/status" className="inline-flex items-center gap-2 transition-colors hov:text-violet-light"><span className="size-1.5 rounded-full bg-violet" />LUNA SOFTWARE PLATFORM</Link>
+          <span>FIVEM · ROBLOX · v{APP.version}</span>
         </div>
-        <div className="relative mx-auto w-[min(88vw,520px)]" aria-hidden>
-          <Holo kind="knot" motion priority />
+        <Nav />
+        <div className="relative mt-10 grid items-center gap-10 lg:mt-14 lg:grid-cols-[.95fr_1.05fr] lg:gap-8">
+          <div>
+            <p className="caps text-violet">Tools for the people who build</p>
+            <h1 className="display mt-5 text-[clamp(3.2rem,7.6vw,6.8rem)] leading-[.9]">
+              <span className="block">Build with</span>
+              <span className="block bg-gradient-to-r from-white via-violet-light to-violet bg-clip-text text-transparent">confidence.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-pretty text-ink-2">
+              A focused desktop toolkit for FiveM and Roblox creators. Inspect projects, validate dependencies, create repeatable builds, and manage authorized deployments from one place.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink to="/store" variant="violet" size="lg" iconRight={<ArrowRight className="size-5" />}>Explore the store</ButtonLink>
+              <ButtonLink to="/docs" variant="outline" size="lg">Read documentation</ButtonLink>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted">
+              <span className="inline-flex items-center gap-2"><Check className="size-3.5 text-violet" />Windows + macOS</span>
+              <span className="inline-flex items-center gap-2"><Check className="size-3.5 text-violet" />Offline-first builds</span>
+              <span className="inline-flex items-center gap-2"><Check className="size-3.5 text-violet" />CLI + desktop workflow</span>
+            </div>
+            <TrustBar className="mt-8 max-w-xl" />
+          </div>
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8, delay: .15 }}>
+            <HeroPreview />
+          </motion.div>
         </div>
       </div>
     </section>
   )
 }
 
-function Platforms() {
+function Workflows() {
   return (
-    <section aria-labelledby="platforms-title" className="grid gap-2">
-      <Card className="grid gap-6 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-        <div className="order-2 md:order-1">
-          <p className="max-w-md text-muted">{HOME.platformNote}</p>
-          <ArrowLink to="/games" size="sm" tone="ink" className="mt-4">
-            Browse game categories
-          </ArrowLink>
-        </div>
-        <Title id="platforms-title" lines={HOME.platformTitle} className="order-1 md:order-2" />
+    <section className="grid gap-2">
+      <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
+        <div><p className="caps text-violet">One desktop application</p><Title lines={['Choose your', 'workflow']} align="left" /></div>
+        <div className="max-w-md"><p className="text-sm leading-relaxed text-muted">LUNA shares the same build foundation across both platforms. Each workflow adds the checks, requirements, and publishing steps relevant to your project.</p><ArrowLink to="/store" size="sm" className="mt-4">Browse all workflows</ArrowLink></div>
       </Card>
-      <ul className="grid gap-2 md:grid-cols-2">
-        {PLATFORMS.map((p, i) => (
-          <li key={p.slug} className="h-full">
-            <Reveal delay={i * 0.08} className="h-full">
-              <Card as="article" tone={i === 1 ? 'violet' : 'white'} className="flex h-full flex-col p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-6">
-                  <div>
-                    <p className={i === 1 ? 'caps text-white/75' : 'caps text-muted'}>Platform</p>
-                    <h3 className="display mt-3 text-[clamp(2rem,1.4rem+2vw,3.2rem)]">{p.name}</h3>
-                  </div>
-                  <div className="w-24 shrink-0" aria-hidden>
-                    <Holo kind={p.art} />
-                  </div>
-                </div>
-                <p className={i === 1 ? 'mt-4 max-w-sm text-white/90' : 'mt-4 max-w-sm text-ink-2'}>{p.tagline}</p>
-                <ul className="mt-6 mb-8 grid gap-2.5 text-[15px]">
-                  {p.features.slice(0, 3).map((f) => (
-                    <li key={f.title} className="flex items-start gap-2.5">
-                      <Check className={i === 1 ? 'mt-0.5 size-4 shrink-0 text-white' : 'mt-0.5 size-4 shrink-0 text-violet'} aria-hidden />
-                      <span>{f.title}</span>
-                    </li>
-                  ))}
-                </ul>
-                <ArrowLink to={`/platforms/${p.slug}`} tone={i === 1 ? 'light' : 'violet'} size="sm" className="mt-auto">
-                  {p.cta}
-                </ArrowLink>
-              </Card>
-            </Reveal>
-          </li>
+      <div className="grid gap-2 md:grid-cols-2">
+        {PLATFORMS.map((platform, index) => (
+          <Reveal key={platform.slug} delay={index * .07}>
+            <Card className="flex h-full flex-col p-6 sm:p-8">
+              <div className="flex items-start justify-between gap-4">
+                <div><Badge tone="outline">{platform.name}</Badge><h3 className="display mt-4 text-[clamp(2rem,1.5rem+2.1vw,3.2rem)]">{platform.name}</h3></div>
+                <div className="w-24 shrink-0"><Holo kind={platform.art} /></div>
+              </div>
+              <p className="mt-3 text-[15px] text-violet">{platform.tagline}</p>
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{platform.intro}</p>
+              <ul className="mt-6 grid gap-2.5">
+                {platform.features.slice(0, 3).map((feature) => <li key={feature.title} className="flex items-start gap-2.5 text-sm text-ink-2"><Check className="mt-0.5 size-4 shrink-0 text-violet" />{feature.title}</li>)}
+              </ul>
+              <ArrowLink to={`/products/${platform.slug}`} size="sm" className="mt-7">Explore {platform.name}</ArrowLink>
+            </Card>
+          </Reveal>
         ))}
-      </ul>
+      </div>
+    </section>
+  )
+}
+
+function Capabilities() {
+  return (
+    <section className="grid gap-2">
+      <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-8">
+        <div><p className="caps text-violet">Made for repeatable work</p><Title lines={['The details', 'matter']} align="left" /></div>
+        <p className="max-w-md text-sm leading-relaxed text-muted">No mystery steps. LUNA makes project structure, dependencies, build results, and deployment actions easier to inspect.</p>
+      </Card>
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {FEATURES.map((feature, index) => {
+          const Icon = ICONS[index % ICONS.length]
+          return <Reveal key={feature.title} delay={(index % 3) * .04}><Card className="h-full p-6"><span className="grid size-11 place-items-center rounded-xl border border-violet/30 bg-violet/10 text-violet-light"><Icon className="size-5" /></span><h3 className="mt-5 text-lg font-semibold tracking-[-.025em]">{feature.title}</h3><p className="mt-2 text-sm leading-relaxed text-muted">{feature.body}</p></Card></Reveal>
+        })}
+      </div>
     </section>
   )
 }
 
 function Pipeline() {
   return (
-    <section aria-labelledby="pipeline-title" className="grid gap-2">
-      <Card tone="night" className="grid gap-8 p-6 sm:p-8 md:grid-cols-[1fr_1.2fr] md:items-end">
-        <Title id="pipeline-title" lines={HOME.pipelineTitle} align="left" size="lg" />
-        <p className="max-w-md text-night-muted md:justify-self-end md:text-right">{HOME.pipelineNote}</p>
+    <section className="grid gap-2">
+      <Card tone="night" className="flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-8">
+        <div><p className="caps text-violet-light">From source to release</p><Title lines={['One clear', 'pipeline']} align="left" /></div>
+        <p className="max-w-md text-sm leading-relaxed text-night-muted">Build, bundle, and deploy with a workflow you can inspect and repeat.</p>
       </Card>
-      <ol className="grid gap-2 md:grid-cols-3">
-        {PIPELINE.map((s, i) => (
-          <li key={s.step} className="h-full">
-            <Reveal delay={i * 0.06} className="h-full">
-              <Card className="flex h-full flex-col p-6 sm:p-7">
-                <p className="text-[3.4rem] leading-none font-normal tracking-[-0.06em] text-violet tabular-nums">{s.step}</p>
-                <h3 className="mt-10 text-2xl font-medium tracking-[-0.03em] uppercase">{s.title}</h3>
-                <p className="mt-3 text-[15px] text-muted">{s.body}</p>
-                <code className="mt-auto block pt-6 text-[13px] text-ink-2">$ {s.command}</code>
-              </Card>
-            </Reveal>
-          </li>
-        ))}
-      </ol>
+      <div className="grid gap-2 md:grid-cols-3">
+        {PIPELINE.map((step) => <Card key={step.step} className="flex flex-col p-6"><span className="font-mono text-4xl text-violet">{step.step}</span><h3 className="mt-6 text-xl font-semibold">{step.title}</h3><p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p><code className="mt-auto pt-6 text-xs text-ink-2">$ {step.command}</code></Card>)}
+      </div>
     </section>
   )
 }
 
-function Features() {
-  return (
-    <section aria-labelledby="features-title" className="grid gap-2">
-      <Card className="grid gap-6 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-        <p className="order-2 max-w-md text-muted md:order-1">{HOME.featuresNote}</p>
-        <Title id="features-title" lines={HOME.featuresTitle} className="order-1 md:order-2" />
-      </Card>
-      <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map((f, i) => (
-          <li key={f.title} className="h-full">
-            <Reveal delay={(i % 3) * 0.05} className="h-full">
-              <Card className="flex h-full flex-col p-6">
-                <span className="round grid size-11 place-items-center rounded-full border border-violet/35 bg-violet/15 text-violet-light">{ICONS[f.icon]}</span>
-                <h3 className="mt-5 text-lg font-medium tracking-[-0.03em]">{f.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{f.body}</p>
-              </Card>
-            </Reveal>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
-}
-
-function ChangelogTeaser() {
+function LatestUpdate() {
   const latest = CHANGELOG[0]
+  if (!latest) return null
   return (
-    <section aria-labelledby="changelog-title" className="grid gap-2 lg:grid-cols-[0.8fr_1.2fr]">
-      <Card className="flex min-h-[260px] flex-col justify-between gap-8 p-6 sm:p-8">
-        <Title id="changelog-title" lines={HOME.changelogTitle} align="left" />
-        <div className="flex items-end justify-between gap-6">
-          <div className="w-24" aria-hidden>
-            <Holo kind="star" motion />
-          </div>
-          <ArrowLink to="/changelog" size="sm">
-            Full changelog
-          </ArrowLink>
-        </div>
-      </Card>
-      <Card as="article" className="p-6 sm:p-8">
-        <div className="flex flex-wrap items-center gap-3">
-          <Badge tone="violet">v{latest.version}</Badge>
-          <span className="text-sm text-muted">{latest.date}</span>
-          {latest.tags.map((t) => (
-            <Badge key={t} tone="neutral">
-              {t}
-            </Badge>
-          ))}
-        </div>
-        <h3 className="mt-5 text-[clamp(1.5rem,1.2rem+1vw,2.1rem)] leading-tight font-medium tracking-[-0.035em]">{latest.title}</h3>
-        <p className="mt-3 max-w-xl text-muted">{latest.body}</p>
-        <ul className="mt-6 grid gap-2.5 text-[15px]">
-          {latest.items.slice(0, 3).map((item) => (
-            <li key={item} className="flex items-start gap-2.5">
-              <Check className="mt-0.5 size-4 shrink-0 text-violet" aria-hidden />
-              {item}
-            </li>
-          ))}
-        </ul>
+    <section className="grid gap-2 lg:grid-cols-[.8fr_1.2fr]">
+      <Card className="flex flex-col justify-between gap-8 p-6 sm:p-8"><div><p className="caps text-violet">Release center</p><Title lines={['Always know', 'what changed']} align="left" /></div><ArrowLink to="/changelog" size="sm">View all updates</ArrowLink></Card>
+      <Card className="p-6 sm:p-8">
+        <div className="flex flex-wrap items-center gap-2"><Badge tone="violet">v{latest.version}</Badge><span className="text-sm text-muted">{latest.date}</span>{latest.tags.map((tag) => <Badge key={tag}>{tag}</Badge>)}</div>
+        <h3 className="mt-5 text-2xl font-semibold tracking-[-.035em]">{latest.title}</h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted">{latest.body}</p>
+        <ArrowLink to="/changelog" size="sm" className="mt-6">Read release notes</ArrowLink>
       </Card>
     </section>
   )
 }
 
-function PricingTeaser() {
-  const { format } = useCurrency()
-  const live = launchActive()
+function Closing() {
   return (
-    <section aria-labelledby="pricing-title" className="grid gap-2">
-      <Card className="grid gap-6 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-        <p className="order-2 max-w-md text-muted md:order-1">{HOME.pricingNote}</p>
-        <Title id="pricing-title" lines={HOME.pricingTitle} className="order-1 md:order-2" />
+    <section className="grid gap-2 lg:grid-cols-[1.1fr_.9fr]">
+      <Card tone="violet" className="flex flex-col justify-between gap-8 p-6 sm:p-8">
+        <div><p className="caps text-white/70">Get started with LUNA</p><h2 className="display mt-4 text-[clamp(2.5rem,4vw,4.5rem)]">Your next build starts here.</h2><p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">Explore the platform workflows, compare the available plans, and read the setup guide before installing.</p></div>
+        <div className="flex flex-wrap gap-3"><ButtonLink to="/pricing" variant="light">Compare plans</ButtonLink><ButtonLink to="/store" variant="outline">Browse store</ButtonLink></div>
       </Card>
-      <ul className="grid gap-2 md:grid-cols-3">
-        {TIERS.map((t) => (
-          <li key={t.id} className="h-full">
-            <Card tone={t.featured ? 'violet' : 'white'} className="flex h-full flex-col p-6 sm:p-7">
-              <h3 className={t.featured ? 'text-2xl font-medium uppercase tracking-[-0.03em] text-white' : 'text-2xl font-medium uppercase tracking-[-0.03em]'}>{t.name}</h3>
-              <p className={t.featured ? 'mt-1 text-sm text-white/75' : 'mt-1 text-sm text-muted'}>
-                {t.seats} · {t.machines}
-              </p>
-              <p className="mt-6 text-[clamp(2.2rem,1.6rem+1.4vw,3rem)] leading-none tracking-[-0.05em]">
-                {format(live ? launchPrice(t.price) : t.price)}
-              </p>
-              <p className={t.featured ? 'mt-2 text-[13px] text-white/75' : 'mt-2 text-[13px] text-muted'}>
-                {t.price === 0 ? 'Free forever' : live ? `Launch price, then ${format(t.price)}` : 'One-time licence'}
-              </p>
-              <ul className="mt-6 mb-8 grid gap-2 text-[15px]">
-                {t.points.slice(0, 3).map((p) => (
-                  <li key={p} className="flex items-start gap-2.5">
-                    <Check className={t.featured ? 'mt-0.5 size-4 shrink-0 text-white' : 'mt-0.5 size-4 shrink-0 text-violet'} aria-hidden />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-              <ButtonLink to="/pricing" variant={t.featured ? 'light' : 'outline'} className="mt-auto">
-                {t.cta}
-              </ButtonLink>
-            </Card>
-          </li>
-        ))}
-      </ul>
+      <Card className="p-6 sm:p-8">
+        <div className="flex items-center gap-2"><ShieldCheck className="size-5 text-violet" /><p className="caps text-violet">Clear boundaries</p></div>
+        <h2 className="mt-4 text-2xl font-semibold">Built for projects you own.</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted">LUNA is for legitimate development, validation, packaging, and authorized deployment. It does not inject into, automate, or interfere with live game clients.</p>
+        <div className="mt-6 border-t border-line pt-5"><Link to="/support" className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-violet hov:text-violet-light">Talk to support <ArrowRight className="size-4" /></Link></div>
+      </Card>
     </section>
-  )
-}
-
-function Faq() {
-  return (
-    <Card as="section" aria-labelledby="faq-title" className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_1.6fr]">
-      <div className="flex flex-col justify-between gap-8">
-        <Title id="faq-title" lines={HOME.faqTitle} align="left" />
-        <ArrowLink to="/support" size="sm">
-          Ask us something else
-        </ArrowLink>
-      </div>
-      <Accordion items={PRICING_FAQ} />
-    </Card>
-  )
-}
-
-function Cta() {
-  return (
-    <Card as="section" aria-labelledby="cta-title" className="grid gap-8 p-6 sm:p-8 md:grid-cols-[auto_1fr] md:items-end">
-      <div className="mx-auto w-[min(64vw,300px)] md:mx-0" aria-hidden>
-        <Holo kind="cloud" motion />
-      </div>
-      <div className="flex flex-col items-end gap-6 text-right">
-        <Title id="cta-title" lines={HOME.cta.title} size="lg" />
-        <p className="max-w-md text-muted">{HOME.cta.body}</p>
-        <ButtonLink to="/pricing" variant="violet" size="lg" iconRight={<ArrowRight className="size-5" />}>
-          {HOME.cta.action}
-        </ButtonLink>
-        <p className="flex items-center gap-2 text-[13px] text-muted">
-          <Boxes className="size-4" aria-hidden />
-          {APP.version} · {APP.size} · macOS and Windows
-        </p>
-      </div>
-    </Card>
   )
 }
 
 export function Home() {
-  useDocumentTitle()
+  useDocumentTitle(SITE.name)
   return (
     <div className="grid gap-2 p-2">
       <Hero />
-      <Ticker />
-      <Platforms />
+      <Workflows />
+      <Capabilities />
       <Pipeline />
-      <BuildBand />
-      <Features />
-      <ChangelogTeaser />
-      <PricingTeaser />
-      <Faq />
-      <Cta />
+      <LatestUpdate />
+      <Card as="section" className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[.8fr_1.2fr]">
+        <div><p className="caps text-violet">Questions before you start?</p><Title lines={['Good to', 'know']} align="left" /><ArrowLink to="/docs" size="sm" className="mt-6">Read documentation</ArrowLink></div>
+        <Accordion items={PRICING_FAQ} />
+      </Card>
+      <Closing />
+      <p className="px-2 pb-2 text-center text-xs text-muted">{SITE.tagline} · {SITE.email}</p>
     </div>
   )
 }
