@@ -2,11 +2,15 @@ import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router'
 
+import { AuthProvider } from './components/Auth'
 import { Footer } from './components/Footer'
 import { ToastProvider } from './components/Overlay'
 import { CurrencyProvider } from './components/Price'
 import { LaunchPill, StickyBar } from './components/Storefront'
+import { Account } from './pages/Account'
+import { Login, Register } from './pages/Auth'
 import { Changelog } from './pages/Changelog'
+import { ForumBoard, Forums } from './pages/Forums'
 import { Docs } from './pages/Docs'
 import { Games } from './pages/Games'
 import { Home } from './pages/Home'
@@ -58,6 +62,11 @@ function Pages() {
           <Route path="docs" element={<Docs />} />
           <Route path="licence" element={<Licence />} />
           <Route path="support" element={<Support />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="account" element={<Account />} />
+          <Route path="forums" element={<Forums />} />
+          <Route path="forums/:board" element={<ForumBoard />} />
           <Route path="terms" element={<Terms />} />
           <Route path="refunds" element={<Refunds />} />
           <Route path="privacy" element={<Privacy />} />
@@ -72,7 +81,8 @@ export function App() {
   return (
     <MotionConfig reducedMotion="user">
       <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || undefined}>
-        <CurrencyProvider>
+        <AuthProvider>
+          <CurrencyProvider>
           <ToastProvider>
             <ScrollManager />
             <StickyBar />
@@ -85,7 +95,8 @@ export function App() {
               <Footer />
             </div>
           </ToastProvider>
-        </CurrencyProvider>
+          </CurrencyProvider>
+        </AuthProvider>
       </BrowserRouter>
     </MotionConfig>
   )

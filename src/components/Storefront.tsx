@@ -85,19 +85,20 @@ export function LaunchPill() {
 
   useEffect(() => {
     try {
-      setOpen(localStorage.getItem('modsmith:launch-pill') !== 'dismissed' && launchActive())
+      setOpen(localStorage.getItem('luna:launch-pill') !== 'dismissed' && launchActive())
     } catch {
       setOpen(launchActive())
     }
   }, [])
 
-  // /status is a scanning page: a floating promo would sit over the rows.
-  if (!open || pathname === '/status') return null
+  // Scanning and signing-in pages: a floating promo would sit over the content.
+  const quiet = pathname === '/status' || pathname.startsWith('/forums') || ['/login', '/register', '/account'].includes(pathname)
+  if (!open || quiet) return null
 
   const dismiss = () => {
     setOpen(false)
     try {
-      localStorage.setItem('modsmith:launch-pill', 'dismissed')
+      localStorage.setItem('luna:launch-pill', 'dismissed')
     } catch {
       /* private mode */
     }

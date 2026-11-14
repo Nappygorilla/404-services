@@ -26,7 +26,7 @@
 }
 
 /*
-  Modsmith design tokens. A near-black canvas holds slightly lighter panels
+  luna.win design tokens. A near-black canvas holds slightly lighter panels
   with visible edges, a neon violet accent, an acid status green and mono
   captions. The iridescent artwork (src/components/Holo.tsx) carries the rest.
   Everything rounded is a squircle; true circles opt out with .round.

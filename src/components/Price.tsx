@@ -4,7 +4,7 @@ import { LAUNCH } from '../data'
 import { CURRENCIES, CURRENCY_CODES, convert, detectCurrency, formatPrice, type CurrencyCode } from '../lib/currency'
 import { cx } from '../lib/cx'
 
-const KEY = 'modsmith:currency'
+const KEY = 'luna:currency'
 
 type CurrencyValue = {
   currency: CurrencyCode

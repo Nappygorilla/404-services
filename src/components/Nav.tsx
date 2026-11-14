@@ -5,7 +5,8 @@ import { Link, NavLink, useLocation } from 'react-router'
 
 import { MENU, NAV, SITE } from '../data'
 import { cx } from '../lib/cx'
-import { IconButton } from './Button'
+import { useAuth } from './Auth'
+import { ButtonLink, IconButton } from './Button'
 import { Logo } from './Bits'
 import { Drawer } from './Overlay'
 
@@ -13,6 +14,7 @@ import { Drawer } from './Overlay'
 export function Nav({ tone = 'white' }: { tone?: 'white' | 'night' }) {
   const [open, setOpen] = useState(false)
   const { pathname, hash } = useLocation()
+  const { user } = useAuth()
   const light = tone === 'night'
   return (
     <header className="relative z-10 flex h-14 items-center justify-between gap-4">
@@ -43,11 +45,29 @@ export function Nav({ tone = 'white' }: { tone?: 'white' | 'night' }) {
           })}
         </ul>
       </nav>
-      <IconButton aria-label="Open menu" aria-expanded={open} aria-haspopup="dialog" tone={light ? 'light' : 'ink'} onClick={() => setOpen(true)}>
-        <svg viewBox="0 0 20 20" className="size-[18px]" aria-hidden>
-          <path d="M5 6.5h10M5 10h10M5 13.5h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      </IconButton>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <div className="hidden items-center gap-3 xl:flex">
+          {user ? (
+            <Link to="/account" className="caps text-[12px] text-ink transition-colors hov:text-violet-light">
+              Account
+            </Link>
+          ) : (
+            <>
+              <Link to="/login" className="caps text-[12px] text-ink transition-colors hov:text-violet-light">
+                Sign in
+              </Link>
+              <ButtonLink to="/register" variant="violet" size="sm">
+                Create account
+              </ButtonLink>
+            </>
+          )}
+        </div>
+        <IconButton aria-label="Open menu" aria-expanded={open} aria-haspopup="dialog" tone={light ? 'light' : 'ink'} onClick={() => setOpen(true)}>
+          <svg viewBox="0 0 20 20" className="size-[18px]" aria-hidden>
+            <path d="M5 6.5h10M5 10h10M5 13.5h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </IconButton>
+      </div>
       <Drawer open={open} onClose={() => setOpen(false)} label="Site menu">
         <nav aria-label="Menu" className="mt-6 flex-1">
           <ul className="flex flex-col">
@@ -65,7 +85,24 @@ export function Nav({ tone = 'white' }: { tone?: 'white' | 'night' }) {
             ))}
           </ul>
         </nav>
-        <div className="mt-10 grid gap-6 text-sm text-night-muted sm:grid-cols-2">
+        <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-white/12 pt-6">
+          {user ? (
+            <Link to="/account" onClick={() => setOpen(false)} className="round inline-flex h-11 items-center rounded-full border border-white/25 px-5 text-[15px] font-medium text-white hov:border-white hov:bg-white hov:text-[#08080c]">
+              Your account
+            </Link>
+          ) : (
+            <>
+              <Link to="/login" onClick={() => setOpen(false)} className="round inline-flex h-11 items-center rounded-full border border-white/25 px-5 text-[15px] font-medium text-white hov:border-white hov:bg-white hov:text-[#08080c]">
+                Sign in
+              </Link>
+              <Link to="/register" onClick={() => setOpen(false)} className="round inline-flex h-11 items-center rounded-full bg-violet px-5 text-[15px] font-medium text-white hov:bg-violet-deep">
+                Create account
+              </Link>
+            </>
+          )}
+        </div>
+
+        <div className="mt-8 grid gap-6 text-sm text-night-muted sm:grid-cols-2">
           <div>
             <p className="caps mb-2 text-white">Say hello</p>
             <a className="block min-h-10 py-2 text-white underline-offset-4 hov:underline" href={`mailto:${SITE.email}`}>

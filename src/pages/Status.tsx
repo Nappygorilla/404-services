@@ -32,7 +32,7 @@ export function Status() {
       <PageHero
         title={['System', 'status']}
         eyebrow="Live"
-        intro="What is running, what is not, and which release is current. This page reflects the shipped build, not a per-visitor probe: Modsmith builds offline."
+        intro="What is running, what is not, and which release is current. This page reflects the shipped build, not a per-visitor probe: luna.win builds offline."
         art={<Holo kind="prism" motion />}
       />
 

@@ -4,11 +4,11 @@
 // below it.
 
 export const SITE = {
-  name: 'Modsmith',
+  name: 'luna.win',
   tagline: 'Build, bundle, deploy',
   description:
-    'Modsmith is a desktop pipeline for FiveM and Roblox developers: build, bundle, validate and deploy projects from one place.',
-  email: 'hello@modsmith.dev',
+    'luna.win is a desktop pipeline for FiveM and Roblox developers: build, bundle, validate and deploy projects from one place.',
+  email: 'hello@luna.win',
   company: '[COMPANY NAME]',
   address: ['[Street address]', '[Postcode, City]', '[Country]'],
   hours: 'Monday to Friday, 9:00–17:00 CET',
@@ -18,21 +18,21 @@ export const SITE = {
     { label: 'YouTube', href: 'https://youtube.com' },
   ],
   disclaimer:
-    'Modsmith is an independent product. It is not affiliated with, endorsed by, or sponsored by Rockstar Games, Take-Two Interactive, Cfx.re or Roblox Corporation. FiveM, RedM, Grand Theft Auto and Roblox are trademarks of their respective owners.',
+    'luna.win is an independent product. It is not affiliated with, endorsed by, or sponsored by Rockstar Games, Take-Two Interactive, Cfx.re or Roblox Corporation. FiveM, RedM, Grand Theft Auto and Roblox are trademarks of their respective owners.',
 }
 
 /** Main navigation. The first four sit in the header; the menu shows all of them. */
 export const NAV = [
   { label: 'Games', to: '/games' },
-  { label: 'FiveM', to: '/platforms/fivem' },
-  { label: 'Roblox', to: '/platforms/roblox' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'Changelog', to: '/changelog' },
   { label: 'Status', to: '/status' },
+  { label: 'Forums', to: '/forums' },
 ]
 export const MENU = [
   { label: 'Home', to: '/' },
   { label: 'Games', to: '/games' },
+  { label: 'Forums', to: '/forums' },
   { label: 'FiveM', to: '/platforms/fivem' },
   { label: 'Roblox', to: '/platforms/roblox' },
   { label: 'Pricing', to: '/pricing' },
@@ -83,7 +83,7 @@ export const HOME = {
   headline: ['Build.', 'Bundle.', 'Deploy.'],
   intro:
     'One desktop app that takes a project from loose files to a running server: resolve dependencies, build a clean bundle, validate it, and ship it without leaving your machine.',
-  primaryCta: 'Get Modsmith',
+  primaryCta: 'Get luna.win',
   secondaryCta: 'Read the docs',
   captionTop: 'One pipeline for two platforms',
   captionBottom: 'Runs offline. No account needed to build.',
@@ -143,15 +143,15 @@ export const BUILD_BAND = {
     { d: 'M244 263 C 286 263, 286 47, 244 47', tone: 'warn' as const, dashed: true, delay: 0.9 },
   ] satisfies GraphEdge[],
   log: [
-    ['$', 'modsmith build --target fivem'],
-    ['→', 'reading modsmith.toml · target fivem · 14 resources'],
+    ['$', 'luna.win build --target fivem'],
+    ['→', 'reading luna.win.toml · target fivem · 14 resources'],
     ['✓', 'resolved 14 resources, 3 shared libraries'],
     ['✓', 'fxmanifest generated for 6 resources'],
     ['✓', 'load order: ox_lib, inventory, hud, garage, duty'],
     ['!', 'startup depends on ox_lib but does not declare it'],
-    ['$', 'modsmith validate --strict'],
+    ['$', 'luna.win validate --strict'],
     ['✗', '1 warning: undeclared dependency in startup'],
-    ['$', 'modsmith deploy --profile production'],
+    ['$', 'luna.win deploy --profile production'],
     ['→', 'uploaded 2 chunks · restarted 1 server · health check passed'],
   ] as [string, string][],
   legend: [
@@ -219,20 +219,20 @@ export const PIPELINE: Step[] = [
   {
     step: '01',
     title: 'Build',
-    body: 'Point Modsmith at a project folder. It reads the manifests, resolves every dependency, and produces a build graph you can inspect before anything is written.',
-    command: 'modsmith build',
+    body: 'Point luna.win at a project folder. It reads the manifests, resolves every dependency, and produces a build graph you can inspect before anything is written.',
+    command: 'luna.win build',
   },
   {
     step: '02',
     title: 'Bundle',
     body: 'Pack the graph into a folder or archive with a stable layout. Shared libraries are deduplicated, and nothing outside the graph is copied.',
-    command: 'modsmith bundle',
+    command: 'luna.win bundle',
   },
   {
     step: '03',
     title: 'Deploy',
     body: 'Ship the bundle to a saved profile. Only changed resources restart, and the deploy fails loudly if the health check does not come back green.',
-    command: 'modsmith deploy',
+    command: 'luna.win deploy',
   },
 ]
 
@@ -261,9 +261,9 @@ export const PLATFORMS: Platform[] = [
     art: 'knot',
     cta: 'Read the FiveM guide',
     features: [
-      { title: 'fxmanifest generation', body: 'Write dependencies once in your project file. Modsmith generates the manifest for each resource and refuses to build one that references a file it cannot find.' },
+      { title: 'fxmanifest generation', body: 'Write dependencies once in your project file. luna.win generates the manifest for each resource and refuses to build one that references a file it cannot find.' },
       { title: 'Load order and dependencies', body: 'The graph is ordered the way the server will load it, with shared libraries pulled forward. Cycles are reported with the path that creates them.' },
-      { title: 'Escrow-aware warnings', body: 'Escrowed files are encrypted and cannot be edited. Modsmith flags any resource that expects to patch one, so the limitation appears at build time instead of at runtime.' },
+      { title: 'Escrow-aware warnings', body: 'Escrowed files are encrypted and cannot be edited. luna.win flags any resource that expects to patch one, so the limitation appears at build time instead of at runtime.' },
       { title: 'Server-side checks', body: 'Flags client code that reads or writes what should live on the server, the most common way a resource gets exploited.' },
       { title: 'Deploy profiles', body: 'Save a host, path and restart strategy per environment, then deploy a bundle to staging or production by name.' },
     ],
@@ -290,7 +290,7 @@ export const PLATFORMS: Platform[] = [
     art: 'prism',
     cta: 'Read the Roblox guide',
     features: [
-      { title: 'Project import', body: 'Bring in a place or model file you own and keep the source under version control. Modsmith tracks what changed between builds.' },
+      { title: 'Project import', body: 'Bring in a place or model file you own and keep the source under version control. luna.win tracks what changed between builds.' },
       { title: 'Place build stamps', body: 'Every build records the source revision, the toolchain version and the time. Two builds from the same revision are identical.' },
       { title: 'Asset reference audit', body: 'Lists every asset ID a project references, so you can see what is shared, what is missing and what changed since the last release.' },
       { title: 'Publish to your own experience', body: 'Deploy through your own account authorisation to an experience you own. Nothing is published without an explicit confirm.' },
@@ -338,7 +338,7 @@ export const GENRE_INTRO = {
   eyebrow: 'Categories',
   title: ['Games', 'we build for'],
   intro:
-    'Browse by the kind of project you are making. Every category here runs on a platform Modsmith supports today — the pipeline is the same whether you are shipping a round-based shooter or a roleplay economy.',
+    'Browse by the kind of project you are making. Every category here runs on a platform luna.win supports today — the pipeline is the same whether you are shipping a round-based shooter or a roleplay economy.',
   rule:
     'We only build for platforms whose operators permit modification. We do not sell tools for games where the publisher prohibits it, and nothing here touches a live game client.',
 }
@@ -560,19 +560,19 @@ export const DOC_SECTIONS = [
     id: 'install',
     title: 'Install',
     body: 'Download the build for your platform, open it, and paste your licence key when prompted. The Free tier needs no key.',
-    code: ['# macOS', 'brew install --cask modsmith', '', '# Windows', 'winget install Modsmith.Modsmith'],
+    code: ['# macOS', 'brew install --cask luna.win', '', '# Windows', 'winget install luna.win.luna.win'],
   },
   {
     id: 'first-project',
     title: 'Your first project',
-    body: 'Point the app at a folder containing a `modsmith.toml`, or run `modsmith init` in an existing project to create one.',
-    code: ['cd my-server', 'modsmith init --target fivem', 'modsmith build --open-report'],
+    body: 'Point the app at a folder containing a `luna.win.toml`, or run `luna.win init` in an existing project to create one.',
+    code: ['cd my-server', 'luna.win init --target fivem', 'luna.win build --open-report'],
   },
   {
     id: 'commands',
     title: 'Commands',
     body: 'Every command exits non-zero on failure, which is what makes it safe to run in CI.',
-    code: ['modsmith build     # resolve the graph and report problems', 'modsmith bundle    # write dist/ with a commit stamp', 'modsmith validate  # run checks; --strict fails on warnings', 'modsmith deploy    # push to a saved profile', 'modsmith licence   # show seats and deactivate this machine'],
+    code: ['luna.win build     # resolve the graph and report problems', 'luna.win bundle    # write dist/ with a commit stamp', 'luna.win validate  # run checks; --strict fails on warnings', 'luna.win deploy    # push to a saved profile', 'luna.win licence   # show seats and deactivate this machine'],
   },
   {
     id: 'config',
@@ -585,7 +585,7 @@ export const DOC_SECTIONS = [
 export const DOC_TROUBLESHOOTING = [
   { q: 'The build says a dependency is missing but the folder exists', a: 'Check the resource name in the manifest against the folder name. FiveM resolves by name, not path, and a trailing space in the manifest is the usual cause.' },
   { q: 'Deploy fails its health check but the server is up', a: 'The check calls the endpoint in your deploy profile. If the server sits behind a proxy that rewrites paths, point the profile at the internal address instead.' },
-  { q: 'Roblox publish is refused', a: 'Modsmith can only publish to an experience owned by the account that authorised it. Re-authorise and confirm the experience ID in the project file.' },
+  { q: 'Roblox publish is refused', a: 'luna.win can only publish to an experience owned by the account that authorised it. Re-authorise and confirm the experience ID in the project file.' },
   { q: 'Can I run this on a machine without a licence server connection?', a: 'Yes. Activation is cached for 14 days, so builds keep working offline; the app only needs to reach the licence service occasionally.' },
 ]
 
@@ -625,14 +625,14 @@ export const TERMS: LegalSection[] = [
   {
     heading: 'Who these terms are with',
     body: [
-      `Modsmith is sold by ${SITE.company} ("we", "us"). By buying a licence or using the software you agree to these terms. If you are buying on behalf of a company, you confirm you may bind that company.`,
+      `luna.win is sold by ${SITE.company} ("we", "us"). By buying a licence or using the software you agree to these terms. If you are buying on behalf of a company, you confirm you may bind that company.`,
       'The checkout, payment processing, tax and invoicing are handled by our merchant of record. Their terms apply to the transaction itself; these terms apply to the software and to your licence.',
     ],
   },
   {
     heading: 'What you are licensed to do',
     body: [
-      'We grant you a non-exclusive, non-transferable licence to install and use Modsmith for as many personal or commercial projects as your tier allows. A seat is one person. Solo includes two active machines for that person; Studio includes five people and ten machines.',
+      'We grant you a non-exclusive, non-transferable licence to install and use luna.win for as many personal or commercial projects as your tier allows. A seat is one person. Solo includes two active machines for that person; Studio includes five people and ten machines.',
       'You may use the software to build and deploy projects for clients. You may not resell, sublicense, rent or redistribute the software itself, or include it in a product you distribute.',
     ],
   },
@@ -646,7 +646,7 @@ export const TERMS: LegalSection[] = [
   {
     heading: 'Acceptable use',
     body: [
-      'Modsmith is a development tool. You agree not to use it to cheat, to gain an unfair advantage in another operator’s game, to bypass anti-cheat systems, or to interfere with a game client you do not own. This is a condition of the licence, not a preference.',
+      'luna.win is a development tool. You agree not to use it to cheat, to gain an unfair advantage in another operator’s game, to bypass anti-cheat systems, or to interfere with a game client you do not own. This is a condition of the licence, not a preference.',
       'You also agree not to use the software to infringe intellectual property: no extracting or redistributing assets you do not have the rights to, no publishing to an experience or server you do not administer.',
       'You are responsible for complying with the terms of the platforms you build for, including Rockstar’s terms and the Cfx.re Platform License Agreement, and Roblox’s Terms of Use.',
     ],
@@ -654,7 +654,7 @@ export const TERMS: LegalSection[] = [
   {
     heading: 'Ownership',
     body: [
-      'You own your projects, your code and everything you build with Modsmith. We own the software and its documentation. Nothing in these terms transfers ownership of either.',
+      'You own your projects, your code and everything you build with luna.win. We own the software and its documentation. Nothing in these terms transfers ownership of either.',
     ],
   },
   {
@@ -683,7 +683,7 @@ export const REFUNDS: LegalSection[] = [
   {
     heading: 'Fourteen days, generally',
     body: [
-      'If Modsmith is not what you expected, ask for a refund within fourteen days of purchase and we will refund the full amount to the original payment method. You do not need a reason, though we would like to know what went wrong.',
+      'If luna.win is not what you expected, ask for a refund within fourteen days of purchase and we will refund the full amount to the original payment method. You do not need a reason, though we would like to know what went wrong.',
       'Refunds are processed by our merchant of record and usually appear within five to ten business days, depending on your bank.',
     ],
   },
