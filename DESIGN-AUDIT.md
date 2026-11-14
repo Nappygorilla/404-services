@@ -18,8 +18,16 @@ production build (`bun run build`, served from `dist/client` with SPA fallback):
 
 Each pass checked: page title, real content (h1 and body text), console errors,
 failed requests, document overflow, heading clipping, header auth affordances
-and footer links. All 44 route/size combinations pass. There is no separate
-topic route: threads render in full on the board (see "Lavicheats" below).
+and footer links. All 44 route/size combinations pass on a production build.
+There is no separate topic route: threads render in full on the board (see
+"Lavicheats" below).
+
+One hosting note: GitHub Pages has no server-side redirects, so a hard load of
+a deep path is answered with `404.html` (the app shell) and the browser logs
+that document's 404 status. The page renders and client-side navigation is
+silent; only the initial document response carries the 404. Removing it would
+mean changing hosts or moving the router to hash URLs, neither of which is
+warranted for this site.
 
 ## cosmocheats.com
 
