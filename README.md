@@ -1,94 +1,87 @@
-# Creative agency
+# LUNA
 
-A site for an independent design studio, "Lastwerk". The home page opens on a
-white panel with a slowly turning iridescent chrome knot, three count-up figures and
-a huge uppercase headline. The page is a stack of white, violet and black
-panels on a pale grey canvas: services (hover one and it turns violet), a
-manifesto, the studio's approach, selected work, testimonials, clients and a
-call to action. Behind it is a complete site:
+LUNA is a desktop toolkit for creators working on FiveM and Roblox projects. It focuses on project inspection, dependency validation, repeatable builds, packaging, and authorized deployment.
 
-- **Work** (`/work`): case studies filtered by discipline and searched by
-  client. Filters live in the URL, so a reload keeps them.
-- **Case study** (`/work/:slug`): overview, challenge and approach, results,
-  gallery, client quote and the next project.
-- **Services** (`/services`): five disciplines with deliverables, the
-  four-step process, three ways to engage with starting prices, and an FAQ.
-- **Studio** (`/studio`): numbers, values, team, awards and clients.
-- **Careers** (`/careers`) and **role pages** (`/careers/:slug`) with an
-  application form.
-- **Start a project** (`/contact`): a three-step brief. The draft is kept in
-  the browser as you type; sent briefs are listed with their reference.
-- A 404 page and a live style guide at `/styleguide` (also linked in the footer).
+The repository also contains the LUNA website: a product storefront, platform guides, pricing information, account entry points, documentation, community forums, release notes, and system status.
 
-## Run it
+## Stack
+
+- React 19 + TypeScript
+- Vite 8 and Tailwind CSS 4
+- React Router
+- Motion for transitions and small interactions
+- Cloudflare Workers / Workers Assets
+- Supabase Auth and Postgres for accounts and community data
+
+## Website routes
+
+- `/` — product-focused homepage
+- `/store` — searchable catalog of supported LUNA workflows
+- `/products/fivem`, `/products/roblox` — platform workflow detail pages
+- `/games` — platform/category overview
+- `/pricing` — licence tiers
+- `/downloads` — account-protected download library placeholder
+- `/orders` — account-protected order history placeholder
+- `/account` — customer dashboard
+- `/changelog` — release history
+- `/status` — verified API check and integration configuration
+- `/docs`, `/licence`, `/support`
+- `/forums`, `/forums/announcements`, `/forums/issues`
+- `/terms`, `/refunds`, `/privacy`
+
+The Store catalog describes the existing FiveM and Roblox workflows included in LUNA Desktop. It does not represent separate, independently downloadable products.
+
+## Run locally
+
+Requirements: Node.js 22+ (or the current supported Bun runtime).
 
 ```sh
 bun install
-bun run dev        # http://localhost:5305 (Vite + the Worker in workerd)
-bun run build      # dist/client (assets) + dist/creative_agency/index.js (Worker)
+bun run dev
 bun run typecheck
+bun run build
 ```
 
-## Edit it
+The Vite/Cloudflare plugin runs the Worker during local development. The build output is written to `dist/client` plus the Worker bundle.
 
-- **`src/data.ts` holds every string, figure and piece of seed data.** Start there.
-  - `SITE`, `NAV`, `MENU`: name, contact details, socials and navigation.
-  - `HOME`: the home page copy. `SERVICES`, `APPROACH`, `PROCESS`, `ENGAGEMENTS`, `FAQ`.
-  - `PROJECTS`: the case studies. `TESTIMONIALS`, `CLIENTS`, `STUDIO`, `CAREERS`, `ROLES`, `CONTACT`.
-- **Every image goes through one constant, `IMAGES`, in `src/data.ts`.** The
-  placeholders in `public/images/` are generated (project and studio
-  photography, plus the iridescent objects in `public/images/holo/`), not
-  real client work. To use your own, change each entry's `src` (a file in
-  `public/images/` or any URL) and its `alt`. Projects pick their cover and
-  gallery by key. Ten photos and six renders, about 1.9 MB of webp.
-- **The 3D objects** (`knot`, `sphere`, `cloud`, `scissors`, `star`, `prism`)
-  are transparent webp renders, the `holo*` entries in `IMAGES`, shown by
-  `<Holo kind="…">` in `src/components/Holo.tsx`. Each one also has an SVG
-  drawing (`HoloSvg`) that stands in when its `src` is `''` or the file fails
-  to load. Swap in your own renders as square transparent PNG or webp.
-- **Pages** are in `src/pages/`; routes are declared in `src/App.tsx` with
-  react-router. Pages fade between each other.
-- **What the browser keeps** (`src/lib/storage.ts`): the brief draft, sent
-  briefs and sent job applications, in `localStorage`.
-- **`src/worker/index.ts`** is the Cloudflare Worker:
-  - `POST /api/briefs`, `POST /api/applications` and `POST /api/subscribe`
-    check their input and return `201` (with a `reference` for briefs and
-    applications), `422` with `fieldErrors` for bad fields, and `400` when the
-    body is not a JSON object.
-  - `GET /api/health` returns `{ ok: true }`; any other `/api/*` is a JSON 404.
+## Environment
 
-  The checks live in `src/shared/validation.ts`, shared by the forms and the
-  Worker. To keep briefs, connect these routes to email, a CRM or a D1 table.
+Copy `.env.example` to `.env` and configure:
 
-### Tokens (`src/styles.css`)
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
 
-| Group | Tokens |
-| --- | --- |
-| Colour | `canvas`, `card`, `soft`, `line`, `line-strong`, `ink`, `ink-2`, `muted`, `faint` (decoration only), `night`, `night-2`, `night-muted`, `violet`, `violet-deep`, `violet-soft`, `violet-light`, `pink`, `cyan`, `success`, `danger`, `scrim` |
-| Type | `--font-sans` Inter Tight; utilities `display` (big uppercase) and `caps` (12px captions) |
-| Radius | `xs` 10px, `control` 16px, `card-sm` 22px, `card` 30px; pills use `rounded-full` + `.round` |
-| Shadow | `card`, `float`, `violet`, `focus` |
-| Motion | `--duration-fast/base/slow/hero`, `--ease-out-soft`, `--ease-in-out-soft`; keyframes `spin-slow`, `float`, `marquee`, `shimmer` |
-| State variants | `hov:`, `prs:`, `fv:` and `group-hov:` match the real hover, active and focus-visible states and also `data-force="hover|pressed|focus"`, which the style guide uses to pin states |
+The Supabase browser key is a public anon key. Never place the service-role key, payment secrets, private signing keys, or provider webhooks in a `VITE_*` variable.
 
-The site is light only. With `prefers-reduced-motion`, the knot stops
-turning, the objects stop floating, the marquee stops and figures show their
-final value; fades remain.
+When Supabase is not configured, account- and community-backed surfaces display an explicit configuration notice rather than pretending sign-in or persistence is available.
 
-### Components (`src/components/`)
+## Marketplace database
 
-| File | Components |
-| --- | --- |
-| `Button.tsx` | `Button` / `ButtonLink` (solid, violet, outline, ghost, light; sm/md/lg; loading), `IconButton` (ink, outline, violet, light) |
-| `Field.tsx` | `Field` + `Input` / `Select` / `Textarea`, `Checkbox`, `ChoiceGroup` (radios or checkboxes as pills), `FormMessage` |
-| `Bits.tsx` | `ArrowLink`, `Logo`, `Reveal`, `Photo`, `CountUp`, `Stat`, `Title`, `Badge`, `Chip`, `EmptyState`, `Avatar` |
-| `Card.tsx` | `Card` (white, soft, violet, night) |
-| `Content.tsx` | `Marquee`, `TestimonialSlider`, `Accordion`, `Stepper` |
-| `Overlay.tsx` | `Modal`, `Drawer`, `useFocusTrap` (Tab trapped, Esc closes, focus restored), `ToastProvider` / `useToast` |
-| `Nav.tsx` | `Nav` (header row and site menu), `PageHero` |
-| Others | `Holo`, `ServiceCard`, `ProjectCard`, `RoleRow`, `BriefForm`, `ApplyForm`, `Footer` + `NewsletterForm` |
+The original community schema is in `supabase/schema.sql`. The additive marketplace schema is in `supabase/marketplace.sql`; apply it after the original schema.
 
-## Deploy with Freebuff Sites
+The marketplace schema provides catalog metadata, release records, orders, order items, user entitlements, support tickets, and a private release-asset pointer table. Row-level security permits customers to read only their own account records. Browser clients cannot create orders or entitlements.
 
-`deploy.json` already points at the build output. After `bun run build`, deploy
-it with the `sites_deploy` tool (or the Sites API) from this directory.
+### Not connected yet
+
+This branch intentionally does not claim that commerce or protected downloads are live:
+
+- No payment provider credentials or verified webhook handler are configured.
+- No production product binaries or private storage bucket are configured.
+- No entitlement-backed signed download endpoint is configured.
+- No external uptime monitor or incident feed is configured.
+- The customer Orders and Downloads screens remain explicit placeholders until the server integrations are deployed and tested.
+
+Before accepting payments, implement a server-only checkout session endpoint and verify provider webhook signatures before creating `orders`, `order_items`, and `user_entitlements` rows. Never trust a browser redirect as proof of payment. Before exposing a file, verify the current user's entitlement server-side and issue a short-lived signed URL from a private Storage bucket.
+
+## Project layout
+
+- `src/pages/` — routed page components
+- `src/components/` — shared navigation, cards, forms, overlays, account context
+- `src/data.ts` — product/platform copy and site configuration
+- `src/lib/` — Supabase client, API helpers, local utilities
+- `src/worker/index.ts` — Cloudflare Worker entry point
+- `supabase/` — database schemas and row-level security policies
+
+## Scope
+
+LUNA is intended for legitimate game development, project validation, packaging, customization of projects the user owns, and authorized deployment. It does not inject into, automate, or interfere with live game clients or anti-cheat systems.
