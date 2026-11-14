@@ -1,8 +1,8 @@
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check, Search } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
 
-import { ArrowLink, Badge, Chip, Reveal, Title } from '../components/Bits'
+import { ArrowLink, Badge, Chip, EmptyState, Reveal, Title } from '../components/Bits'
 import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Holo } from '../components/Holo'
@@ -24,7 +24,13 @@ const PLATFORM_LABEL = { fivem: 'FiveM', roblox: 'Roblox' } as const
 export function Games() {
   useDocumentTitle('Games')
   const [filter, setFilter] = useState<Filter>('all')
-  const shown = filter === 'all' ? GENRES : GENRES.filter((g) => g.platforms.includes(filter))
+  const [query, setQuery] = useState('')
+  const q = query.trim().toLowerCase()
+  const shown = GENRES.filter((g) => {
+    if (filter !== 'all' && !g.platforms.includes(filter)) return false
+    if (!q) return true
+    return [g.name, g.line, g.body, ...g.builds].join(' ').toLowerCase().includes(q)
+  })
 
   return (
     <div className="grid gap-2 p-2">
@@ -48,9 +54,22 @@ export function Games() {
               </Chip>
             ))}
           </div>
-          <p className="text-sm text-muted" aria-live="polite">
-            {shown.length} {shown.length === 1 ? 'category' : 'categories'}
-          </p>
+          <div className="flex flex-1 flex-wrap items-center justify-end gap-3">
+            <label className="relative w-full sm:w-64">
+              <span className="sr-only">Search categories</span>
+              <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-faint" aria-hidden />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search categories…"
+                className="round h-11 w-full appearance-none rounded-full border border-line-strong bg-soft pr-4 pl-9 text-[15px] outline-none transition-colors placeholder:text-faint focus-visible:border-violet [&::-webkit-search-cancel-button]:hidden"
+              />
+            </label>
+            <p className="text-sm text-muted tabular-nums" aria-live="polite">
+              {shown.length} {shown.length === 1 ? 'category' : 'categories'}
+            </p>
+          </div>
         </Card>
 
         <ul className="grid gap-2 md:grid-cols-2">
@@ -101,6 +120,27 @@ export function Games() {
             </li>
           ))}
         </ul>
+
+        {shown.length === 0 && (
+          <Card className="p-2">
+            <EmptyState
+              title="Nothing matches"
+              body="No category fits that search on this platform. Try a shorter word, or clear the filters."
+              action={
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('')
+                    setFilter('all')
+                  }}
+                  className="round inline-flex h-11 items-center rounded-full border border-line-strong px-5 text-[15px] font-medium transition-colors hov:border-violet hov:bg-violet hov:text-white"
+                >
+                  Clear filters
+                </button>
+              }
+            />
+          </Card>
+        )}
       </section>
 
       <section aria-labelledby="upcoming" className="grid gap-2 lg:grid-cols-[0.9fr_1.1fr]">

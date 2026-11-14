@@ -15,6 +15,7 @@ import { Licence } from './pages/Licence'
 import { NotFound } from './pages/NotFound'
 import { Platform } from './pages/Platform'
 import { Pricing } from './pages/Pricing'
+import { Status } from './pages/Status'
 import { Support } from './pages/Support'
 
 /** Scroll to the top on a new page, or to the #hash target when there is one. */
@@ -53,6 +54,7 @@ function Pages() {
           <Route path="platforms/:slug" element={<Platform />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="changelog" element={<Changelog />} />
+          <Route path="status" element={<Status />} />
           <Route path="docs" element={<Docs />} />
           <Route path="licence" element={<Licence />} />
           <Route path="support" element={<Support />} />

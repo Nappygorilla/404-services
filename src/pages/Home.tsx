@@ -1,6 +1,7 @@
 import { ArrowRight, Boxes, Check, FileCode2, GitBranch, Package, Rocket, TerminalSquare } from 'lucide-react'
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
+import { Link } from 'react-router'
 
 import { ArrowLink, Badge, Reveal, Title } from '../components/Bits'
 import { BuildBand } from '../components/BuildBand'
@@ -39,10 +40,10 @@ const TICKER = [
 function HeroStatus() {
   return (
     <div className="-mx-5 -mt-3 mb-1 flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line/80 bg-black/30 px-5 py-2 font-mono text-[10.5px] tracking-[0.14em] text-muted uppercase sm:-mx-8 sm:px-8">
-      <span className="flex items-center gap-1.5 text-acid">
+      <Link to="/status" className="flex items-center gap-1.5 text-acid transition-opacity hov:opacity-80">
         <span className="size-1.5 animate-pulse rounded-full bg-acid" aria-hidden />
         Build passing
-      </span>
+      </Link>
       <span className="hidden sm:inline">v{APP.version}</span>
       <span className="hidden sm:inline">Windows · macOS</span>
       <span className="ml-auto hidden text-faint md:inline">no telemetry · offline builds</span>

@@ -6,7 +6,7 @@ import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Holo } from '../components/Holo'
 import { PageHero } from '../components/Nav'
-import { PLATFORMS, platformBySlug } from '../data'
+import { APP, PLATFORMS, platformBySlug } from '../data'
 import { cx } from '../lib/cx'
 import { useDocumentTitle } from '../lib/storage'
 import { NotFound } from './NotFound'
@@ -89,6 +89,44 @@ export function Platform() {
           </ol>
         </Card>
       </section>
+
+      <Card as="section" aria-labelledby="platform-spec" className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <Title id="platform-spec" lines={['Specs and', 'checklist']} align="left" />
+          <p className="mt-4 max-w-sm text-muted">
+            What the app needs and what the licence covers, before you download anything.
+          </p>
+        </div>
+        <div className="grid gap-8 sm:grid-cols-2">
+          <div>
+            <p className="caps text-violet">System requirements</p>
+            <ul className="mt-4 grid gap-2.5 text-[15px]">
+              {APP.requirements.map((r) => (
+                <li key={r} className="flex items-start gap-2.5">
+                  <Check className="mt-0.5 size-4 shrink-0 text-violet" aria-hidden />
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="caps text-violet">Current release</p>
+            <dl className="mt-4 grid gap-2.5 text-[15px]">
+              {[
+                ['Version', `v${APP.version}`],
+                ['Download', APP.size],
+                ['Platforms', APP.platforms.join(' · ')],
+                ['Licence', 'One-time · 12 months of updates'],
+              ].map(([k, v]) => (
+                <div key={k} className="flex items-start justify-between gap-4 border-b border-line pb-2.5 last:border-0">
+                  <dt className="text-muted">{k}</dt>
+                  <dd className="text-right text-ink">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </Card>
 
       <Card as="section" aria-labelledby="platform-limits" className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_1.4fr]">
         <div>

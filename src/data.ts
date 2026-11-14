@@ -28,6 +28,7 @@ export const NAV = [
   { label: 'Roblox', to: '/platforms/roblox' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'Changelog', to: '/changelog' },
+  { label: 'Status', to: '/status' },
 ]
 export const MENU = [
   { label: 'Home', to: '/' },
@@ -36,6 +37,7 @@ export const MENU = [
   { label: 'Roblox', to: '/platforms/roblox' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'Changelog', to: '/changelog' },
+  { label: 'Status', to: '/status' },
   { label: 'Docs', to: '/docs' },
   { label: 'Licence', to: '/licence' },
   { label: 'Support', to: '/support' },
