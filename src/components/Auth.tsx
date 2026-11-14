@@ -25,6 +25,12 @@ const AuthContext = createContext<AuthValue>({
   signOut: async () => {},
 })
 
+/** Confirmation links must return to this deployment, including the Pages base path. */
+function confirmationRedirect(): string | undefined {
+  if (typeof window === 'undefined') return undefined
+  return new URL(import.meta.env.BASE_URL, window.location.origin).toString()
+}
+
 function friendly(message: string): string {
   const m = message.toLowerCase()
   if (m.includes('invalid login credentials')) return 'That email and password do not match an account.'
@@ -67,10 +73,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = useCallback<AuthValue['signUp']>(async (email, password, displayName) => {
     if (!supabase) return { error: NOT_CONNECTED }
+    const emailRedirectTo = confirmationRedirect()
     const { data, error } = await supabase.auth.signUp({
       email: email.trim(),
       password,
-      options: { data: { display_name: displayName.trim() } },
+      options: {
+        data: { display_name: displayName.trim() },
+        ...(emailRedirectTo ? { emailRedirectTo } : {}),
+      },
     })
     if (error) return { error: friendly(error.message) }
     return { needsConfirmation: !data.session }

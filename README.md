@@ -50,6 +50,12 @@ bun run build
 
 The Vite/Cloudflare plugin runs the Worker during local development. The build output is written to `dist/client` plus the Worker bundle.
 
+## Backend setup
+
+Accounts, the issues forum and support tickets use Supabase. The complete
+project, SQL, auth-URL and GitHub Actions setup is in
+[SUPABASE-SETUP.md](SUPABASE-SETUP.md).
+
 ## Environment
 
 Copy `.env.example` to `.env` and configure:
@@ -57,7 +63,7 @@ Copy `.env.example` to `.env` and configure:
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
 
-The Supabase browser key is a public anon key. Never place the service-role key, payment secrets, private signing keys, or provider webhooks in a `VITE_*` variable.
+The Supabase browser key is a public anon or publishable key. Never place the service-role key, database password, payment secrets, private signing keys, or provider webhooks in a `VITE_*` variable.
 
 When Supabase is not configured, account- and community-backed surfaces display an explicit configuration notice rather than pretending sign-in or persistence is available.
 
