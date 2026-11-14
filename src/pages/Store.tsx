@@ -97,7 +97,7 @@ export function Store() {
         </Card>
 
         <div className="grid gap-2 md:grid-cols-2">
-          {workflows.map((platform, index) => (
+          {workflows.map((platform) => (
             <Card key={platform.slug} as="article" className="flex h-full flex-col p-6 sm:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div>
