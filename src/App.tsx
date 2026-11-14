@@ -24,6 +24,7 @@ import { Platform } from './pages/Platform'
 import { Pricing } from './pages/Pricing'
 import { Status } from './pages/Status'
 import { Store } from './pages/Store'
+import { Tickets } from './pages/Tickets'
 import { Support } from './pages/Support'
 
 /** Scroll to the top on a new page, or to the #hash target when there is one. */
@@ -62,6 +63,7 @@ function Pages() {
           <Route path="products/:slug" element={<Product />} />
           <Route path="downloads" element={<Downloads />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="account/tickets" element={<Tickets />} />
           <Route path="account/licenses" element={<Downloads />} />
           <Route path="games" element={<Games />} />
           <Route path="platforms/:slug" element={<Platform />} />
