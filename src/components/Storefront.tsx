@@ -39,7 +39,7 @@ export function StickyBar() {
           <Logo wordmark />
         </Link>
         <span className="hidden items-center gap-1.5 font-mono text-[10.5px] tracking-[0.14em] text-muted uppercase sm:flex">
-          <span className="size-1.5 rounded-full bg-acid" aria-hidden />v{APP.version} · build passing
+          <span className="size-1.5 rounded-full bg-acid" aria-hidden />v{APP.version} · FiveM + Roblox
         </span>
         <div className="ml-auto flex items-center gap-3">
           <span className="hidden font-mono text-[11px] tracking-[0.12em] text-muted uppercase sm:inline">

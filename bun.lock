@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "creative-agency",
+      "name": "luna-win",
       "dependencies": {
         "@supabase/supabase-js": "^2.119.0",
         "hono": "^4.13.0",

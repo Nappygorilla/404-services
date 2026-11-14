@@ -12,14 +12,21 @@ import { Login, Register } from './pages/Auth'
 import { Changelog } from './pages/Changelog'
 import { ForumBoard, Forums } from './pages/Forums'
 import { Docs } from './pages/Docs'
+import { Downloads } from './pages/Downloads'
 import { Games } from './pages/Games'
 import { Home } from './pages/Home'
 import { Privacy, Refunds, Terms } from './pages/Legal'
 import { Licence } from './pages/Licence'
 import { NotFound } from './pages/NotFound'
+import { Orders } from './pages/Orders'
+import { Product } from './pages/Product'
+import { Profile } from './pages/Profile'
 import { Platform } from './pages/Platform'
 import { Pricing } from './pages/Pricing'
 import { Status } from './pages/Status'
+import { Store } from './pages/Store'
+import { Security } from './pages/Security'
+import { Tickets } from './pages/Tickets'
 import { Support } from './pages/Support'
 
 /** Scroll to the top on a new page, or to the #hash target when there is one. */
@@ -54,6 +61,14 @@ function Pages() {
       >
         <Routes location={location}>
           <Route index element={<Home />} />
+          <Route path="store" element={<Store />} />
+          <Route path="products/:slug" element={<Product />} />
+          <Route path="downloads" element={<Downloads />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="account/tickets" element={<Tickets />} />
+          <Route path="account/profile" element={<Profile />} />
+          <Route path="account/security" element={<Security />} />
+          <Route path="account/licenses" element={<Downloads />} />
           <Route path="games" element={<Games />} />
           <Route path="platforms/:slug" element={<Platform />} />
           <Route path="pricing" element={<Pricing />} />

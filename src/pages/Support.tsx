@@ -28,6 +28,7 @@ export function Support() {
               Email support
             </ButtonLink>
             <p className="mt-3 text-[13px] text-muted">{SITE.email}</p>
+            <ButtonLink to="/account/tickets" variant="outline" className="mt-3">Open a support ticket</ButtonLink>
           </div>
         }
       />

@@ -5,17 +5,15 @@
 
 export const SITE = {
   name: 'luna.win',
-  tagline: 'Build, bundle, deploy',
+  tagline: 'Software tools for game creators',
   description:
-    'luna.win is a desktop pipeline for FiveM and Roblox developers: build, bundle, validate and deploy projects from one place.',
+    'luna.win is a desktop toolkit for FiveM and Roblox creators: inspect projects, validate dependencies, build repeatable bundles and deploy to environments you own.',
   email: 'hello@luna.win',
-  company: '[COMPANY NAME]',
-  address: ['[Street address]', '[Postcode, City]', '[Country]'],
+  company: 'LUNA',
+  address: [],
   hours: 'Monday to Friday, 9:00–17:00 CET',
   socials: [
-    { label: 'Discord', href: 'https://discord.com' },
-    { label: 'GitHub', href: 'https://github.com' },
-    { label: 'YouTube', href: 'https://youtube.com' },
+    { label: 'GitHub repository', href: 'https://github.com/Nappygorilla/LUNA-WIN' },
   ],
   disclaimer:
     'luna.win is an independent product. It is not affiliated with, endorsed by, or sponsored by Rockstar Games, Take-Two Interactive, Cfx.re or Roblox Corporation. FiveM, RedM, Grand Theft Auto and Roblox are trademarks of their respective owners.',
@@ -23,21 +21,24 @@ export const SITE = {
 
 /** Main navigation. The first four sit in the header; the menu shows all of them. */
 export const NAV = [
+  { label: 'Store', to: '/store' },
   { label: 'Games', to: '/games' },
   { label: 'Pricing', to: '/pricing' },
-  { label: 'Changelog', to: '/changelog' },
+  { label: 'Updates', to: '/changelog' },
   { label: 'Status', to: '/status' },
-  { label: 'Forums', to: '/forums' },
 ]
 export const MENU = [
   { label: 'Home', to: '/' },
+  { label: 'Store', to: '/store' },
   { label: 'Games', to: '/games' },
-  { label: 'Forums', to: '/forums' },
-  { label: 'FiveM', to: '/platforms/fivem' },
-  { label: 'Roblox', to: '/platforms/roblox' },
+  { label: 'FiveM workflow', to: '/products/fivem' },
+  { label: 'Roblox workflow', to: '/products/roblox' },
   { label: 'Pricing', to: '/pricing' },
-  { label: 'Changelog', to: '/changelog' },
+  { label: 'Downloads', to: '/downloads' },
+  { label: 'Orders', to: '/orders' },
+  { label: 'Updates', to: '/changelog' },
   { label: 'Status', to: '/status' },
+  { label: 'Forums', to: '/forums' },
   { label: 'Docs', to: '/docs' },
   { label: 'Licence', to: '/licence' },
   { label: 'Support', to: '/support' },
