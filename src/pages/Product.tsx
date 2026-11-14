@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Download, FileText, ShieldCheck, X } from 'lucide-react'
+import { ArrowRight, Check, Download, ShieldCheck, X } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 
 import { ArrowLink, Badge, Title } from '../components/Bits'
@@ -140,7 +140,6 @@ export function Product() {
         </div>
       )}
 
-      <div className="sr-only"><FileText /></div>
     </div>
   )
 }
