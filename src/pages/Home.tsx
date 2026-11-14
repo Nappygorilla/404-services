@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Code2, Download, GitBranch, Package, ShieldCheck, Workflow } from 'lucide-react'
+import { ArrowRight, Check, Code2, GitBranch, Package, ShieldCheck, Workflow } from 'lucide-react'
 import { motion } from 'motion/react'
 import { Link } from 'react-router'
 
