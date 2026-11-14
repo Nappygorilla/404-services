@@ -7,6 +7,7 @@ import { Accordion } from '../components/Content'
 import { Holo } from '../components/Holo'
 import { PageHero } from '../components/Nav'
 import { CurrencySwitch, launchActive, launchPrice, useCurrency } from '../components/Price'
+import { Countdown } from '../components/Storefront'
 import { APP, LAUNCH, PRICING_FAQ, PRICING_POINTS, SITE, TIERS } from '../data'
 import { cx } from '../lib/cx'
 import { useDocumentTitle } from '../lib/storage'
@@ -87,7 +88,10 @@ export function Pricing() {
           <p className="text-[15px] text-white">
             Launch pricing runs until <strong className="font-medium">{LAUNCH.endsLabel}</strong>. Buy before then and your renewal price is locked at what you paid.
           </p>
-          <Badge tone="light">Launch window open</Badge>
+          <div className="flex items-center gap-6">
+            <Countdown tone="light" />
+            <Badge tone="light">Launch window open</Badge>
+          </div>
         </Card>
       )}
 

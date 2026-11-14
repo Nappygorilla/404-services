@@ -63,6 +63,7 @@ export function Games() {
                       <div className="flex flex-wrap items-center gap-1.5">
                         {g.platforms.map((p) => (
                           <Badge key={p} tone="outline">
+                            <span className="mr-1.5 inline-block size-1.5 rounded-full bg-acid align-middle" aria-hidden />
                             {PLATFORM_LABEL[p]}
                           </Badge>
                         ))}

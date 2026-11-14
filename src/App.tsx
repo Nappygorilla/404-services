@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes, useLocation } from 'react-router'
 import { Footer } from './components/Footer'
 import { ToastProvider } from './components/Overlay'
 import { CurrencyProvider } from './components/Price'
+import { LaunchPill, StickyBar } from './components/Storefront'
 import { Changelog } from './pages/Changelog'
 import { Docs } from './pages/Docs'
 import { Games } from './pages/Games'
@@ -72,6 +73,8 @@ export function App() {
         <CurrencyProvider>
           <ToastProvider>
             <ScrollManager />
+            <StickyBar />
+            <LaunchPill />
             <a href="#main" className="sr-only z-[100] rounded-full bg-violet px-5 py-3 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
               Skip to content
             </a>

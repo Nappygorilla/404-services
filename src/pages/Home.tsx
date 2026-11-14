@@ -10,6 +10,7 @@ import { Accordion } from '../components/Content'
 import { Holo } from '../components/Holo'
 import { Nav } from '../components/Nav'
 import { launchActive, launchPrice, useCurrency } from '../components/Price'
+import { TrustBar } from '../components/Storefront'
 import { APP, CHANGELOG, FEATURES, HOME, PIPELINE, PLATFORMS, PRICING_FAQ, TIERS } from '../data'
 import { cx } from '../lib/cx'
 import { useDocumentTitle } from '../lib/storage'
@@ -101,13 +102,7 @@ function Hero() {
               Read the docs
             </ButtonLink>
           </div>
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {['Windows', 'macOS', 'Offline builds', 'CLI + GUI'].map((t) => (
-              <li key={t}>
-                <Badge tone="outline">{t}</Badge>
-              </li>
-            ))}
-          </ul>
+          <TrustBar className="mt-8" />
         </div>
         <div className="relative mx-auto w-[min(88vw,520px)]" aria-hidden>
           <Holo kind="knot" motion priority />
