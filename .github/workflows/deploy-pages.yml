@@ -35,8 +35,9 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
-      # GitHub Pages serves 404.html for unknown paths; a copy of the app shell
-      # lets the client-side router handle deep links such as /LUNA-WIN/pricing.
+      # The postbuild step already writes app shells for every known route and
+      # product slug. Copy the shell to 404.html as the last-resort fallback for
+      # unknown paths, where GitHub Pages returns that document's 404 status.
       - name: SPA fallback
         run: cp dist/client/index.html dist/client/404.html
 

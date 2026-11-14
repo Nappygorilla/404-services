@@ -9,7 +9,8 @@ Route coverage and the open items are at the end.
 ## Route coverage
 
 Every path the router exposes was walked at 1440×900 and 390×844 against a
-production build (`bun run build`, served from `dist/client` with SPA fallback):
+production build (`bun run build`, served from `dist/client` with generated route
+shells):
 
 - `/`, `/store`, `/store?platform=fivem`, `/store?type=Validate`,
   `/products/manifest-forge`, `/products/complete-toolkit`, `/pricing`,
@@ -29,11 +30,13 @@ sizes (30 combinations), and all four legacy redirects were exercised at both
 sizes. No route failed on a production build; there were no console errors and
 no horizontal overflow.
 
-GitHub Pages has no server-side SPA rewrites, so a hard load of a **new** deep
-path such as `/products/manifest-forge` is answered with `404.html` (the app
-shell) and the browser logs that document's 404 status. The page renders and
-client-side navigation is silent. The retired platform URLs now have static
-redirect files, so they answer with a 200 redirect page before the app boots.
+GitHub Pages has no server-side SPA rewrites. The build writes the app shell
+into a directory for every known route and product slug, so a hard load of
+`/store`, `/pricing` or `/products/manifest-forge` answers 200 and boots without
+a document-404. The catalogue in `src/data.ts` supplies the product slugs, and
+`404.html` remains the fallback for unknown paths. The retired platform URLs
+have static redirect files, so they answer with a 200 redirect page before the
+app boots into the filtered store.
 
 ## The item catalogue
 
