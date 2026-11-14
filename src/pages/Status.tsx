@@ -21,8 +21,11 @@ export function Status() {
   useEffect(() => {
     let active = true
     fetch('/api/health', { cache: 'no-store' })
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Health check failed')))
-      .then((data: { ok?: boolean }) => { if (active) setApiState(data.ok ? 'operational' : 'unavailable') })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Health check failed')
+        return await response.json() as { ok?: boolean }
+      })
+      .then((data) => { if (active) setApiState(data.ok ? 'operational' : 'unavailable') })
       .catch(() => { if (active) setApiState('unavailable') })
     return () => { active = false }
   }, [])
