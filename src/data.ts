@@ -9,13 +9,11 @@ export const SITE = {
   description:
     'luna.win is a desktop toolkit for FiveM and Roblox creators: inspect projects, validate dependencies, build repeatable bundles and deploy to environments you own.',
   email: 'hello@luna.win',
-  company: '[COMPANY NAME]',
-  address: ['[Street address]', '[Postcode, City]', '[Country]'],
+  company: 'LUNA',
+  address: [],
   hours: 'Monday to Friday, 9:00–17:00 CET',
   socials: [
-    { label: 'Discord', href: 'https://discord.com' },
-    { label: 'GitHub', href: 'https://github.com' },
-    { label: 'YouTube', href: 'https://youtube.com' },
+    { label: 'GitHub repository', href: 'https://github.com/Nappygorilla/LUNA-WIN' },
   ],
   disclaimer:
     'luna.win is an independent product. It is not affiliated with, endorsed by, or sponsored by Rockstar Games, Take-Two Interactive, Cfx.re or Roblox Corporation. FiveM, RedM, Grand Theft Auto and Roblox are trademarks of their respective owners.',
