@@ -1,6 +1,6 @@
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { useEffect } from 'react'
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router'
 
 import { AuthProvider } from './components/Auth'
 import { Footer } from './components/Footer'
@@ -21,7 +21,6 @@ import { NotFound } from './pages/NotFound'
 import { Orders } from './pages/Orders'
 import { Product } from './pages/Product'
 import { Profile } from './pages/Profile'
-import { Platform } from './pages/Platform'
 import { Pricing } from './pages/Pricing'
 import { Status } from './pages/Status'
 import { Store } from './pages/Store'
@@ -44,6 +43,12 @@ function ScrollManager() {
     return () => window.clearTimeout(t)
   }, [pathname, hash])
   return null
+}
+
+/** The old platform routes now resolve to the licence product pages. */
+function PlatformRedirect() {
+  const { slug = '' } = useParams()
+  return <Navigate to={`/products/${slug}`} replace />
 }
 
 function Pages() {
@@ -70,7 +75,7 @@ function Pages() {
           <Route path="account/security" element={<Security />} />
           <Route path="account/licenses" element={<Downloads />} />
           <Route path="games" element={<Games />} />
-          <Route path="platforms/:slug" element={<Platform />} />
+          <Route path="platforms/:slug" element={<PlatformRedirect />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="changelog" element={<Changelog />} />
           <Route path="status" element={<Status />} />

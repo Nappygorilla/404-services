@@ -31,8 +31,8 @@ export const MENU = [
   { label: 'Home', to: '/' },
   { label: 'Store', to: '/store' },
   { label: 'Games', to: '/games' },
-  { label: 'FiveM workflow', to: '/products/fivem' },
-  { label: 'Roblox workflow', to: '/products/roblox' },
+  { label: 'FiveM licence', to: '/products/fivem' },
+  { label: 'Roblox licence', to: '/products/roblox' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'Downloads', to: '/downloads' },
   { label: 'Orders', to: '/orders' },
@@ -88,7 +88,7 @@ export const HOME = {
   secondaryCta: 'Read the docs',
   captionTop: 'One pipeline for two platforms',
   captionBottom: 'Runs offline. No account needed to build.',
-  platformTitle: ['Same app,', 'two workflows'],
+  platformTitle: ['Same app,', 'two licences'],
   platformNote:
     'The build pipeline is shared. What changes is how a project is assembled, what gets checked, and where it lands.',
   pipelineTitle: ['Three steps,', 'one command'],
@@ -101,7 +101,7 @@ export const HOME = {
   faqTitle: ['Before', 'you buy'],
   cta: {
     title: ['Ship the', 'next build'],
-    body: 'Pick a tier, point the app at a project, and see the dependency graph before you change anything.',
+    body: 'Pick a platform, point the app at a project, and see the dependency graph before you change anything.',
     action: 'See pricing',
   },
 }
@@ -245,6 +245,8 @@ export type Platform = {
   tagline: string
   intro: string
   art: HoloKind
+  /** One-time price in euro cents. Platforms are sold separately. */
+  price: number
   cta: string
   features: { title: string; body: string }[]
   workflow: string[]
@@ -260,7 +262,8 @@ export const PLATFORMS: Platform[] = [
     intro:
       'Built around how a FiveM server is actually assembled: resources, shared libraries, load order and a manifest that has to be exactly right.',
     art: 'knot',
-    cta: 'Read the FiveM guide',
+    price: 3900,
+    cta: 'View FiveM licence',
     features: [
       { title: 'fxmanifest generation', body: 'Write dependencies once in your project file. luna.win generates the manifest for each resource and refuses to build one that references a file it cannot find.' },
       { title: 'Load order and dependencies', body: 'The graph is ordered the way the server will load it, with shared libraries pulled forward. Cycles are reported with the path that creates them.' },
@@ -289,7 +292,8 @@ export const PLATFORMS: Platform[] = [
     intro:
       'The same build and bundle model, applied to a Roblox project you own: a stable place file, a versioned build, and a deploy that you can undo.',
     art: 'prism',
-    cta: 'Read the Roblox guide',
+    price: 3900,
+    cta: 'View Roblox licence',
     features: [
       { title: 'Project import', body: 'Bring in a place or model file you own and keep the source under version control. luna.win tracks what changed between builds.' },
       { title: 'Place build stamps', body: 'Every build records the source revision, the toolchain version and the time. Two builds from the same revision are identical.' },
@@ -439,65 +443,27 @@ export const LAUNCH = {
   multiplier: 0.8,
 }
 
-export type Tier = {
-  id: 'free' | 'solo' | 'studio'
-  name: string
-  price: number
-  seats: string
-  machines: string
-  body: string
-  points: string[]
-  cta: string
-  featured?: boolean
-}
-
-export const TIERS: Tier[] = [
-  {
-    id: 'free',
-    name: 'Free',
-    price: 0,
-    seats: '1 person',
-    machines: '1 machine',
-    body: 'For trying it on a real project before paying anything.',
-    points: ['One local project', 'Build and validate', 'Bundle without deploy', 'Community support'],
-    cta: 'Start free',
-  },
-  {
-    id: 'solo',
-    name: 'Solo',
-    price: 3900,
-    seats: '1 person',
-    machines: '2 machines',
-    body: 'For the developer who runs their own server or ships for clients.',
-    points: ['Unlimited projects', 'Bundles and deploy profiles', 'Strict validation and CI token', '12 months of updates', 'Email support, 2 working days'],
-    cta: 'Buy Solo',
-    featured: true,
-  },
-  {
-    id: 'studio',
-    name: 'Studio',
-    price: 12900,
-    seats: '5 people',
-    machines: '10 machines',
-    body: 'For a team maintaining more than one server or experience.',
-    points: ['Everything in Solo', 'Shared build profiles', 'Team licence management', 'Priority support, 1 working day', 'Invoice billing on request'],
-    cta: 'Buy Studio',
-  },
+/** What every platform licence includes, whatever the platform. */
+export const LICENCE_INCLUDES = [
+  'Twelve months of updates',
+  'One person, two machines',
+  'Unlimited projects and servers',
+  'Offline builds, no telemetry',
 ]
 
 export const PRICING_POINTS = [
+  { title: 'One licence per platform', body: 'FiveM and Roblox are sold separately, so you only pay for the platform you build on. Add the other licence later at the same price.' },
   { title: 'One-time, not a subscription', body: 'You buy the licence once. The app keeps working after the update year ends — you simply stop receiving new versions.' },
   { title: 'Updates for twelve months', body: 'Every release for a year, including platform changes. After that, renew at 50% of what you paid if you want another year.' },
-  { title: 'Launch price is locked in', body: 'Buy during the launch window and your renewal is calculated on that lower price, permanently.' },
-  { title: 'Seats, not servers', body: 'A seat is a person. Solo runs on two machines so you can use a laptop and a desktop; moving to a new machine takes one click in the app.' },
+  { title: 'Two machines, no server limit', body: 'A licence covers one person on two machines, so a laptop and a desktop both work. Projects and servers are unlimited on the platform the licence names.' },
 ]
 
 export const PRICING_FAQ = [
+  { q: 'Do I need both licences?', a: 'Only if you build on both platforms. Each licence is sold separately and covers one platform; buying the other later costs the same as buying it now.' },
   { q: 'What happens when my update year ends?', a: 'The app keeps working at the last version you received. Renewing is optional and costs 50% of the price you originally paid; there is no automatic charge and nothing stops working.' },
-  { q: 'Can I move my licence to a new computer?', a: 'Yes. Deactivate the old machine in the app under Account → Licence, then activate the new one. Solo allows two active machines at a time.' },
-  { q: 'Is there a discount for students or open-source maintainers?', a: 'Email us from the address on your project or school account. We approve these case by case.' },
-  { q: 'Do you offer invoices and VAT numbers?', a: 'Yes. Checkout collects a VAT number for business buyers and the invoice is issued by the merchant of record. Studio customers can ask for invoicing by bank transfer.' },
-  { q: 'Can I use one licence for several servers?', a: 'A licence covers a person, not a server. One developer running three servers needs one seat; three developers need three.' },
+  { q: 'Can I move my licence to a new computer?', a: 'Yes. Deactivate the old machine in the app under Account → Licence, then activate the new one. Every licence allows two active machines at a time.' },
+  { q: 'Do you offer invoices and VAT numbers?', a: 'Yes. Checkout collects a VAT number for business buyers and the invoice is issued by the merchant of record. If you buy both platform licences, email us and we will put them on one invoice.' },
+  { q: 'Can I use one licence for several servers?', a: 'Yes. A licence covers a person, not a server, and projects and servers are unlimited on the platform it names.' },
   { q: 'What is your refund policy?', a: 'Fourteen days, unless you asked to start using the software immediately and confirmed you understood that ends the right. The full policy is on the refunds page.' },
 ]
 
@@ -560,7 +526,7 @@ export const DOC_SECTIONS = [
   {
     id: 'install',
     title: 'Install',
-    body: 'Download the build for your platform, open it, and paste your licence key when prompted. The Free tier needs no key.',
+    body: 'Download the build, open it, and paste the licence key for the platform you bought when prompted. Each licence covers one platform.',
     code: ['# macOS', 'brew install --cask luna.win', '', '# Windows', 'winget install luna.win.luna.win'],
   },
   {
@@ -597,9 +563,8 @@ export const SUPPORT = {
   intro:
     'Email reaches a person, not a ticket queue. Include your version, your platform and the last few lines of the build log — that is usually enough to answer in one reply.',
   responseTimes: [
-    { tier: 'Free', time: 'Community Discord, best effort' },
-    { tier: 'Solo', time: 'Email, within 2 working days' },
-    { tier: 'Studio', time: 'Email, within 1 working day' },
+    { audience: 'Before you buy', time: 'Email, within 2 working days' },
+    { audience: 'Licence holders', time: 'Email, within 1 working day' },
   ],
   checklist: [
     'The app version from Help → About, and your OS version.',
@@ -611,8 +576,9 @@ export const SUPPORT = {
 
 export const SUPPORT_FAQ = [
   { q: 'Where do I get my licence key?', a: 'It is in the receipt email from the store, and on the download page after checkout. If it is lost, email us from the address you bought with and we will resend it.' },
-  { q: 'How many machines can I activate?', a: 'Solo allows two active machines and Studio allows ten across five people. Deactivate a machine in the app before moving to a new one.' },
-  { q: 'Do you offer migration help from another toolchain?', a: 'For Studio customers, yes — we will look at your project layout and tell you what a migration would involve. It is a conversation, not a paid service.' },
+  { q: 'How many machines can I activate?', a: 'Every platform licence activates on two machines for one person. Deactivate a machine in the app before moving to a new one.' },
+  { q: 'Do I need a separate licence for each platform?', a: 'Yes. The FiveM licence and the Roblox licence are bought separately; each one unlocks the workflows and deploys for that platform.' },
+  { q: 'Do you offer migration help from another toolchain?', a: 'Yes — we will look at your project layout and tell you what a migration would involve. It is a conversation, not a paid service.' },
   { q: 'Is there a Discord?', a: 'Yes, for community help and release notes. It is not required to buy, download or run anything.' },
 ]
 
@@ -620,7 +586,7 @@ export const SUPPORT_FAQ = [
 
 export type LegalSection = { heading: string; body: string[] }
 
-export const LEGAL_UPDATED = '13 November 2026'
+export const LEGAL_UPDATED = '14 November 2026'
 
 export const TERMS: LegalSection[] = [
   {
@@ -633,7 +599,7 @@ export const TERMS: LegalSection[] = [
   {
     heading: 'What you are licensed to do',
     body: [
-      'We grant you a non-exclusive, non-transferable licence to install and use luna.win for as many personal or commercial projects as your tier allows. A seat is one person. Solo includes two active machines for that person; Studio includes five people and ten machines.',
+      'We grant you a non-exclusive, non-transferable licence to install and use luna.win for the platform the licence names, on up to two active machines. A seat is one person. Projects and servers on that platform are unlimited. The FiveM and Roblox licences are separate products.',
       'You may use the software to build and deploy projects for clients. You may not resell, sublicense, rent or redistribute the software itself, or include it in a product you distribute.',
     ],
   },

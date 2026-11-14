@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
-import { APP, LAUNCH, TIERS } from '../data'
+import { APP, LAUNCH, PLATFORMS } from '../data'
 import { cx } from '../lib/cx'
 import { Logo } from './Bits'
 import { ButtonLink } from './Button'
@@ -21,7 +21,8 @@ export function StickyBar() {
   const [shown, setShown] = useState(false)
   const { format } = useCurrency()
   const live = launchActive()
-  const price = live ? launchPrice(TIERS[1].price) : TIERS[1].price
+  const from = Math.min(...PLATFORMS.map((platform) => platform.price))
+  const price = live ? launchPrice(from) : from
 
   useEffect(() => {
     const onScroll = () => setShown(window.scrollY > 560)
@@ -45,8 +46,8 @@ export function StickyBar() {
           <span className="hidden font-mono text-[11px] tracking-[0.12em] text-muted uppercase sm:inline">
             from <span className="text-ink">{format(price)}</span>
           </span>
-          <ButtonLink to="/pricing" variant="violet" size="sm" iconRight={<ArrowRight className="size-4" />}>
-            Get {APP.name}
+          <ButtonLink to="/store" variant="violet" size="sm" iconRight={<ArrowRight className="size-4" />}>
+            Get a licence
           </ButtonLink>
         </div>
       </div>

@@ -16,10 +16,10 @@ The repository also contains the LUNA website: a product storefront, platform gu
 ## Website routes
 
 - `/` — product-focused homepage
-- `/store` — searchable catalog of supported LUNA workflows
-- `/products/fivem`, `/products/roblox` — platform workflow detail pages
-- `/games` — platform/category overview
-- `/pricing` — licence tiers
+- `/store` — two platform licences, each sold separately
+- `/products/fivem`, `/products/roblox` — licence detail pages with price and buy action
+- `/games` — category overview; categories are examples included in a platform licence
+- `/pricing` — per-platform licence pricing
 - `/downloads` — account-protected download library placeholder
 - `/orders` — account-protected order history placeholder
 - `/account` — customer dashboard
@@ -33,7 +33,7 @@ The repository also contains the LUNA website: a product storefront, platform gu
 - `/forums`, `/forums/announcements`, `/forums/issues`
 - `/terms`, `/refunds`, `/privacy`
 
-The Store catalog describes the existing FiveM and Roblox workflows included in LUNA Desktop. It does not represent separate, independently downloadable products.
+The Store sells the FiveM licence and the Roblox licence as two separate products, each with its own price and buy action. Every category on `/games` is included in the matching platform licence; categories are examples, not additional SKUs. Checkout is handled by email until card payments are connected, and the site says so rather than presenting a fake basket.
 
 ## Run locally
 

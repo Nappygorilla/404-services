@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router'
+import { Link, useLocation } from 'react-router'
 
 import { MENU, NAV, SITE } from '../data'
 import { cx } from '../lib/cx'
@@ -24,10 +24,14 @@ export function Nav({ tone = 'white' }: { tone?: 'white' | 'night' }) {
       <nav aria-label="Main" className="hidden md:block">
         <ul className="flex items-center gap-[clamp(2rem,1rem+3.4vw,5.5rem)]">
           {NAV.map((item) => {
-            const active = item.to.includes('#') ? pathname === '/' && hash === item.to.slice(1) : pathname.startsWith(item.to)
+            const active = item.to.includes('#')
+              ? pathname === '/' && hash === item.to.slice(1)
+              : item.to === '/store'
+                ? pathname.startsWith('/store') || pathname.startsWith('/products')
+                : pathname.startsWith(item.to)
             return (
               <li key={item.to}>
-                <NavLink
+                <Link
                   to={item.to}
                   aria-current={active ? 'page' : undefined}
                   className={cx(
@@ -39,7 +43,7 @@ export function Nav({ tone = 'white' }: { tone?: 'white' | 'night' }) {
                   )}
                 >
                   {item.label}
-                </NavLink>
+                </Link>
               </li>
             )
           })}

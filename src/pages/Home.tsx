@@ -6,7 +6,7 @@ import { ArrowLink, Badge, Reveal, Title } from '../components/Bits'
 import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Accordion } from '../components/Content'
-import { Holo } from '../components/Holo'
+import { LicenceCard } from '../components/LicenceCard'
 import { Nav } from '../components/Nav'
 import { TrustBar } from '../components/Storefront'
 import { APP, CHANGELOG, FEATURES, PIPELINE, PLATFORMS, PRICING_FAQ, SITE } from '../data'
@@ -89,7 +89,7 @@ function Hero() {
               <span className="block bg-gradient-to-r from-white via-violet-light to-violet bg-clip-text text-transparent">confidence.</span>
             </h1>
             <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-pretty text-ink-2">
-              A focused desktop toolkit for FiveM and Roblox creators. Inspect projects, validate dependencies, create repeatable builds, and manage authorized deployments from one place.
+              A focused desktop toolkit for FiveM and Roblox creators. Inspect projects, validate dependencies, create repeatable builds, and manage authorized deployments from one place — with a separate licence for each platform.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink to="/store" variant="violet" size="lg" iconRight={<ArrowRight className="size-5" />}>Explore the store</ButtonLink>
@@ -115,24 +115,13 @@ function Workflows() {
   return (
     <section className="grid gap-2">
       <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-        <div><p className="caps text-violet">One desktop application</p><Title lines={['Choose your', 'workflow']} align="left" /></div>
-        <div className="max-w-md"><p className="text-sm leading-relaxed text-muted">LUNA shares the same build foundation across both platforms. Each workflow adds the checks, requirements, and publishing steps relevant to your project.</p><ArrowLink to="/store" size="sm" className="mt-4">Browse all workflows</ArrowLink></div>
+        <div><p className="caps text-violet">Two platform licences</p><Title lines={['Pick the', 'platform']} align="left" /></div>
+        <div className="max-w-md"><p className="text-sm leading-relaxed text-muted">The same desktop toolkit, sold as a FiveM licence or a Roblox licence. Each is its own product, and every category on that platform is included — there are no add-ons or tiers.</p><ArrowLink to="/store" size="sm" className="mt-4">Compare licences</ArrowLink></div>
       </Card>
       <div className="grid gap-2 md:grid-cols-2">
         {PLATFORMS.map((platform, index) => (
           <Reveal key={platform.slug} delay={index * .07}>
-            <Card className="flex h-full flex-col p-6 sm:p-8">
-              <div className="flex items-start justify-between gap-4">
-                <div><Badge tone="outline">{platform.name}</Badge><h3 className="display mt-4 text-[clamp(2rem,1.5rem+2.1vw,3.2rem)]">{platform.name}</h3></div>
-                <div className="w-24 shrink-0"><Holo kind={platform.art} /></div>
-              </div>
-              <p className="mt-3 text-[15px] text-violet">{platform.tagline}</p>
-              <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{platform.intro}</p>
-              <ul className="mt-6 grid gap-2.5">
-                {platform.features.slice(0, 3).map((feature) => <li key={feature.title} className="flex items-start gap-2.5 text-sm text-ink-2"><Check className="mt-0.5 size-4 shrink-0 text-violet" />{feature.title}</li>)}
-              </ul>
-              <ArrowLink to={`/products/${platform.slug}`} size="sm" className="mt-7">Explore {platform.name}</ArrowLink>
-            </Card>
+            <LicenceCard platform={platform} />
           </Reveal>
         ))}
       </div>
@@ -191,8 +180,8 @@ function Closing() {
   return (
     <section className="grid gap-2 lg:grid-cols-[1.1fr_.9fr]">
       <Card tone="violet" className="flex flex-col justify-between gap-8 p-6 sm:p-8">
-        <div><p className="caps text-white/70">Get started with LUNA</p><h2 className="display mt-4 text-[clamp(2.5rem,4vw,4.5rem)]">Your next build starts here.</h2><p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">Explore the platform workflows, compare the available plans, and read the setup guide before installing.</p></div>
-        <div className="flex flex-wrap gap-3"><ButtonLink to="/pricing" variant="light">Compare plans</ButtonLink><ButtonLink to="/store" variant="outline">Browse store</ButtonLink></div>
+        <div><p className="caps text-white/70">Get started with LUNA</p><h2 className="display mt-4 text-[clamp(2.5rem,4vw,4.5rem)]">Your next build starts here.</h2><p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">Explore the FiveM licence or the Roblox licence, compare the terms, and read the setup guide before installing.</p></div>
+        <div className="flex flex-wrap gap-3"><ButtonLink to="/store" variant="light">Browse licences</ButtonLink><ButtonLink to="/games" variant="outline">Browse categories</ButtonLink></div>
       </Card>
       <Card className="p-6 sm:p-8">
         <div className="flex items-center gap-2"><ShieldCheck className="size-5 text-violet" /><p className="caps text-violet">Clear boundaries</p></div>
@@ -205,7 +194,7 @@ function Closing() {
 }
 
 export function Home() {
-  useDocumentTitle(SITE.name)
+  useDocumentTitle('Software tools for game creators')
   return (
     <div className="grid gap-2 p-2">
       <Hero />

@@ -5,42 +5,39 @@ import { ArrowLink, Badge, Title } from '../components/Bits'
 import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Holo } from '../components/Holo'
+import { LicenceBuyBox } from '../components/LicenceCard'
 import { PageHero } from '../components/Nav'
-import { APP, PLATFORMS, platformBySlug } from '../data'
+import { APP, GENRES, PLATFORMS, platformBySlug } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 import { NotFound } from './NotFound'
 
 export function Product() {
   const { slug = '' } = useParams()
   const platform = platformBySlug(slug)
-  useDocumentTitle(platform ? `${platform.name} workflow` : 'Product not found')
+  useDocumentTitle(platform ? `${platform.name} licence` : 'Product not found')
 
   if (!platform) {
-    return <NotFound title="Product not found" body="This workflow is not in the LUNA catalog. Browse the supported platforms to see what is available." to="/store" action="Browse the store" />
+    return <NotFound title="Product not found" body="This licence is not in the LUNA store. Browse the supported platforms to see what is available." to="/store" action="Browse the store" />
   }
 
   const other = PLATFORMS.find((item) => item.slug !== platform.slug)
+  const categories = GENRES.filter((genre) => (genre.platforms as readonly string[]).includes(platform.slug))
 
   return (
     <div className="grid gap-2 p-2">
       <PageHero
-        title={[platform.name, 'workflow']}
-        eyebrow="Included in LUNA Desktop"
+        title={[platform.name, 'licence']}
+        eyebrow="Platform licence · one-time purchase"
         intro={platform.intro}
         art={<Holo kind={platform.art} motion />}
         titleSize="compact"
-        aside={
-          <div className="mt-6 flex flex-wrap gap-3">
-            <ButtonLink to="/pricing" variant="violet" iconRight={<ArrowRight className="size-4" />}>View LUNA plans</ButtonLink>
-            <ArrowLink to="/docs" tone="ink" size="sm">Documentation</ArrowLink>
-          </div>
-        }
+        aside={<LicenceBuyBox platform={platform} />}
       />
 
       <Card className="grid gap-5 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <Badge tone="success">Supported workflow</Badge>
+            <Badge tone="success">Supported platform</Badge>
             <Badge tone="outline">LUNA Desktop v{APP.version}</Badge>
           </div>
           <h2 className="mt-4 text-2xl font-medium tracking-[-0.04em]">Designed for projects you own or are authorized to manage.</h2>
@@ -55,10 +52,10 @@ export function Product() {
       <section aria-labelledby="product-features" className="grid gap-2">
         <Card className="flex flex-col gap-5 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-8">
           <div>
-            <p className="caps text-violet">Capabilities</p>
+            <p className="caps text-violet">Included in this licence</p>
             <Title id="product-features" lines={['What is', 'included']} align="left" />
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-muted">A closer look at the tools available in the {platform.name} workflow.</p>
+          <p className="max-w-md text-sm leading-relaxed text-muted">Every tool in the {platform.name} licence. The same desktop app covers both platforms, but each licence unlocks its own workflows.</p>
         </Card>
         <div className="grid gap-2 md:grid-cols-2">
           {platform.features.map((feature, index) => (
@@ -70,6 +67,46 @@ export function Product() {
           ))}
         </div>
       </section>
+
+      {categories.length > 0 && (
+        <section aria-labelledby="product-categories" className="grid gap-2">
+          <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
+            <div>
+              <p className="caps text-violet">Example categories</p>
+              <Title id="product-categories" lines={['What you can', 'build']} align="left" />
+            </div>
+            <div className="max-w-md">
+              <p className="text-sm leading-relaxed text-muted">These are examples of projects this licence covers — not separate products. One {platform.name} licence includes every category below.</p>
+              <ArrowLink to="/games" size="sm" className="mt-4">See all categories</ArrowLink>
+            </div>
+          </Card>
+          <div className="grid gap-2 md:grid-cols-2">
+            {categories.map((category) => (
+              <Card key={category.slug} className="flex h-full flex-col p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <Badge tone="outline">Example</Badge>
+                    <h3 className="mt-3 text-xl font-medium tracking-[-0.03em]">{category.name}</h3>
+                    <p className="mt-1 text-sm text-violet">{category.line}</p>
+                  </div>
+                  <div className="w-16 shrink-0" aria-hidden>
+                    <Holo kind={category.art} />
+                  </div>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-muted">{category.body}</p>
+                <ul className="mt-4 grid gap-2">
+                  {category.builds.slice(0, 2).map((build) => (
+                    <li key={build} className="flex items-start gap-2 text-sm text-ink-2">
+                      <Check className="mt-0.5 size-4 shrink-0 text-violet" aria-hidden />
+                      {build}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="grid gap-2 lg:grid-cols-2">
         <Card tone="night" className="p-6 sm:p-8">
@@ -119,11 +156,11 @@ export function Product() {
       <Card className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <div>
           <p className="caps text-violet">Next step</p>
-          <h2 className="mt-2 text-2xl font-medium">Ready to explore LUNA Desktop?</h2>
-          <p className="mt-2 text-sm text-muted">Compare the available licence plans or review the documentation first.</p>
+          <h2 className="mt-2 text-2xl font-medium">Ready for the {platform.name} licence?</h2>
+          <p className="mt-2 text-sm text-muted">Buy it on its own, or compare what the other platform licence includes first.</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <ButtonLink to="/pricing" variant="violet">Compare plans</ButtonLink>
+          <ButtonLink to="/support#buy" variant="violet" iconRight={<ArrowRight className="size-4" />}>Buy {platform.name} licence</ButtonLink>
           <ButtonLink to="/downloads" variant="outline" icon={<Download className="size-4" />}>My downloads</ButtonLink>
         </div>
       </Card>
@@ -131,8 +168,8 @@ export function Product() {
       {other && (
         <div className="flex flex-wrap items-center justify-between gap-4 px-2 py-4">
           <div>
-            <p className="caps text-muted">Explore another workflow</p>
-            <p className="mt-1 text-xl font-medium">{other.name}</p>
+            <p className="caps text-muted">Building on both platforms?</p>
+            <p className="mt-1 text-xl font-medium">The {other.name} licence is sold separately.</p>
           </div>
           <Link to={`/products/${other.slug}`} className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-violet hov:text-violet-light">
             View {other.name} <ArrowRight className="size-4" aria-hidden />

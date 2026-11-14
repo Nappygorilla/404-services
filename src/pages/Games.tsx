@@ -107,10 +107,10 @@ export function Games() {
                     {g.platforms.map((p) => (
                       <Link
                         key={p}
-                        to={`/platforms/${p}`}
+                        to={`/products/${p}`}
                         className={cx('inline-flex min-h-10 items-center gap-1.5 text-sm font-medium text-ink underline-offset-4 hov:text-violet hov:underline')}
                       >
-                        {PLATFORM_LABEL[p]} pipeline
+                        {PLATFORM_LABEL[p]} licence
                         <ArrowRight className="size-3.5" aria-hidden />
                       </Link>
                     ))}

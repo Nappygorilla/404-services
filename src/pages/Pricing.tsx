@@ -1,21 +1,21 @@
-import { ArrowRight, Check, ReceiptText, ShieldCheck, WifiOff } from 'lucide-react'
+import { ReceiptText, ShieldCheck, WifiOff } from 'lucide-react'
 
-import { ArrowLink, Badge, Reveal, Title } from '../components/Bits'
-import { ButtonLink } from '../components/Button'
+import { ArrowLink, Badge, Title } from '../components/Bits'
 import { Card } from '../components/Card'
 import { Accordion } from '../components/Content'
 import { Holo } from '../components/Holo'
 import { PageHero } from '../components/Nav'
-import { CurrencySwitch, launchActive, launchPrice, useCurrency } from '../components/Price'
+import { CurrencySwitch, launchActive } from '../components/Price'
+import { LicenceCard } from '../components/LicenceCard'
 import { Countdown } from '../components/Storefront'
-import { APP, LAUNCH, PRICING_FAQ, PRICING_POINTS, SITE, TIERS } from '../data'
-import { cx } from '../lib/cx'
+import { LAUNCH, PLATFORMS, PRICING_FAQ, PRICING_POINTS, SITE } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
 /*
-  The buying-assurance row these shops put under the cart, filled with facts
-  this site already states elsewhere: the fourteen-day refund window, the
-  merchant of record, and cached activation that keeps builds running offline.
+  Two products, not three tiers. Each platform licence has its own price and
+  its own buying action, laid out like the per-product store the reference
+  shops run. The assurances below the grid answer the questions buyers ask
+  before paying.
 */
 const ASSURANCES = [
   { icon: ShieldCheck, title: '14-day refund', body: 'Ask within fourteen days of purchase, no reason needed.' },
@@ -25,73 +25,27 @@ const ASSURANCES = [
 
 export function Pricing() {
   useDocumentTitle('Pricing')
-  const { format } = useCurrency()
   const live = launchActive()
 
   return (
     <div className="grid gap-2 p-2">
       <PageHero
         title={['Simple', 'pricing']}
-        eyebrow="One-time licence"
-        intro="Buy once, keep the version you have, and take updates for a year. No subscription to keep the app running."
+        eyebrow="Two licences, sold separately"
+        intro="Buy the FiveM licence or the Roblox licence on its own. One payment each, twelve months of updates, no subscription."
         art={<Holo kind="sphere" motion />}
         aside={
           <div className="mt-6 flex flex-col gap-3">
             <CurrencySwitch />
-            <p className="text-[13px] text-muted">Prices include VAT where it applies. The exact amount is confirmed on your invoice.</p>
+            <p className="text-[13px] text-muted">Prices include VAT where it applies. Each licence is for one person on two machines.</p>
           </div>
         }
       />
 
-      <section aria-label="Licence tiers" className="grid gap-2 md:grid-cols-3">
-        {TIERS.map((t, i) => {
-          const price = live ? launchPrice(t.price) : t.price
-          return (
-            <Reveal key={t.id} delay={i * 0.06} className="h-full">
-              <Card
-                as="article"
-                tone={t.featured ? 'night' : 'white'}
-                className="relative flex h-full flex-col p-6 sm:p-8"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <h2 className={cx('text-2xl font-medium uppercase tracking-[-0.03em]', t.featured && 'text-white')}>{t.name}</h2>
-                  {t.featured && <Badge tone="light">Most chosen</Badge>}
-                </div>
-                <p className={cx('mt-1 text-sm', t.featured ? 'text-night-muted' : 'text-muted')}>
-                  {t.seats} · {t.machines}
-                </p>
-
-                <p className="mt-8 text-[clamp(2.4rem,1.8rem+1.6vw,3.4rem)] leading-none tracking-[-0.055em]">{format(price)}</p>
-                <p className={cx('mt-2 text-[13px]', t.featured ? 'text-night-muted' : 'text-muted')}>
-                  {t.price === 0
-                    ? 'Free forever'
-                    : live
-                      ? `Launch price until ${LAUNCH.endsLabel}, then ${format(t.price)}`
-                      : `One-time · renew updates for ${format(launchPrice(t.price))}`}
-                </p>
-
-                <p className={cx('mt-6 text-[15px]', t.featured ? 'text-white/85' : 'text-ink-2')}>{t.body}</p>
-                <ul className="mt-6 mb-8 grid gap-2.5 text-[15px]">
-                  {t.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2.5">
-                      <Check className={cx('mt-0.5 size-4 shrink-0', t.featured ? 'text-violet-light' : 'text-violet')} aria-hidden />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-
-                <ButtonLink
-                  to={t.id === 'free' ? '/docs' : '/support#buy'}
-                  variant={t.featured ? 'light' : 'outline'}
-                  className="mt-auto"
-                  iconRight={<ArrowRight className="size-4" />}
-                >
-                  {t.cta}
-                </ButtonLink>
-              </Card>
-            </Reveal>
-          )
-        })}
+      <section aria-label="Licence prices" className="grid gap-2 md:grid-cols-2">
+        {PLATFORMS.map((platform) => (
+          <LicenceCard key={platform.slug} platform={platform} />
+        ))}
       </section>
 
       {live && (
@@ -108,7 +62,7 @@ export function Pricing() {
 
       <section aria-labelledby="pricing-points" className="grid gap-2">
         <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-          <p className="order-2 max-w-md text-muted md:order-1">Four things worth knowing before you choose a tier.</p>
+          <p className="order-2 max-w-md text-muted md:order-1">Four things worth knowing before you pick a platform.</p>
           <Title id="pricing-points" lines={['How the', 'licence works']} className="order-1 md:order-2" />
         </Card>
         <ul className="grid gap-2 sm:grid-cols-2">
@@ -128,7 +82,7 @@ export function Pricing() {
         <div className="flex flex-col justify-between gap-8">
           <Title id="pricing-faq" lines={['Licence', 'questions']} align="left" />
           <ArrowLink to="/support" size="sm">
-            Ask about a tier
+            Ask about a licence
           </ArrowLink>
         </div>
         <Accordion items={PRICING_FAQ} />
@@ -155,7 +109,7 @@ export function Pricing() {
         </ul>
         <div className="flex flex-wrap items-center justify-between gap-3 px-2 py-1 text-sm text-muted">
           <p>
-            {APP.name} Studio licences can also be invoiced by bank transfer, and prices include VAT where it applies.
+            Need both platforms on one invoice? Email us. Prices include VAT where it applies.
           </p>
           <ArrowLink to="/refunds" tone="ink" size="sm">
             Refund policy

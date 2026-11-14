@@ -37,30 +37,30 @@ export function Support() {
         <Card tone="night" className="p-6 sm:p-8">
           <Title id="buy-title" lines={['Buying a', 'licence']} align="left" size="sm" />
           <p className="mt-5 max-w-xl text-white/85">
-            Checkout is handled by email while the store link is being connected. Write to us with the tier you want and we will send a payment link and a VAT
+            Checkout is handled by email while card payments are being connected. Write to us with the platform licence you want and we will send a payment link and a VAT
             invoice, then issue your key.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-4">
             <ButtonLink
-              to={`mailto:${SITE.email}?subject=${encodeURIComponent('Licence enquiry')}&body=${encodeURIComponent('Tier (Free / Solo / Studio):\nName:\nCountry:\nVAT number (optional):')}`}
+              to={`mailto:${SITE.email}?subject=${encodeURIComponent('Licence enquiry')}&body=${encodeURIComponent('Platform (FiveM / Roblox):\nName:\nCountry:\nVAT number (optional):')}`}
               variant="light"
               iconRight={<ArrowRight className="size-4" />}
             >
               Ask for a payment link
             </ButtonLink>
             <ArrowLink to="/pricing" tone="light" size="sm">
-              Compare tiers
+              Compare licences
             </ArrowLink>
           </div>
-          <p className="mt-6 text-sm text-night-muted">Free tier needs no key and no email — download and build.</p>
+          <p className="mt-6 text-sm text-night-muted">Each platform is a separate licence; buying one does not unlock the other.</p>
         </Card>
 
         <Card className="p-6 sm:p-8">
           <h2 className="text-lg font-medium tracking-[-0.03em]">Response times</h2>
           <ul className="mt-4 divide-y divide-line border-y border-line">
             {SUPPORT.responseTimes.map((r) => (
-              <li key={r.tier} className="flex items-center justify-between gap-4 py-3 text-[15px]">
-                <span className="font-medium">{r.tier}</span>
+              <li key={r.audience} className="flex items-center justify-between gap-4 py-3 text-[15px]">
+                <span className="font-medium">{r.audience}</span>
                 <span className="text-right text-muted">{r.time}</span>
               </li>
             ))}

@@ -6,7 +6,7 @@ import { Card } from '../components/Card'
 import { Accordion } from '../components/Content'
 import { Holo } from '../components/Holo'
 import { PageHero } from '../components/Nav'
-import { PRICING_FAQ, SITE, TIERS } from '../data'
+import { PLATFORMS, PRICING_FAQ, SITE } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
 const STEPS = [
@@ -16,7 +16,7 @@ const STEPS = [
 ]
 
 const FACTS = [
-  { icon: <KeyRound className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Seats are people', body: 'Solo is one person on two machines, Studio is five people on ten machines. A machine counts while it is activated; deactivating frees it immediately.' },
+  { icon: <KeyRound className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Seats are people', body: 'Every platform licence is one person on two machines. A machine counts while it is activated; deactivating frees it immediately.' },
   { icon: <WifiOff className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Works offline', body: 'The licence check is cached for fourteen days, so a build on a plane or in a locked-down network keeps working. After that the app asks once for a connection.' },
   { icon: <MonitorSmartphone className="size-5" strokeWidth={1.6} aria-hidden />, title: 'No seat monitoring', body: 'We count activations to enforce the licence. We do not read your projects, your file names or your build output, and nothing is uploaded when you build.' },
 ]
@@ -28,15 +28,15 @@ export function Licence() {
       <PageHero
         title={['Your', 'licence']}
         eyebrow="Activation, seats and moving machines"
-        intro="A licence is a key you paste once. Nothing about it is tied to a server, and nothing stops working when the update year ends."
+        intro="Each platform has its own licence — a key you paste once. Nothing is tied to a server, and nothing stops working when the update year ends."
         art={<Holo kind="cloud" motion />}
         aside={
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <ButtonLink to="/support#buy" variant="violet" iconRight={<ArrowRight className="size-4" />}>
               Get a licence
             </ButtonLink>
-            <ArrowLink to="/pricing" tone="ink" size="sm">
-              Compare tiers
+            <ArrowLink to="/store" tone="ink" size="sm">
+              Compare licences
             </ArrowLink>
           </div>
         }
@@ -54,22 +54,25 @@ export function Licence() {
 
       <section aria-labelledby="seats" className="grid gap-2">
         <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-          <p className="order-2 max-w-md text-muted md:order-1">One licence covers one person. Servers and experiences are unlimited on every paid tier.</p>
+          <p className="order-2 max-w-md text-muted md:order-1">One licence covers one person on the platform it names. Projects and servers are unlimited there; the other platform is a separate licence.</p>
           <Title id="seats" lines={['How seats', 'are counted']} className="order-1 md:order-2" />
         </Card>
         <ul className="grid gap-2 md:grid-cols-3">
-          {TIERS.map((t) => (
-            <li key={t.id} className="h-full">
-              <Card tone={t.featured ? 'violet' : 'white'} className="flex h-full flex-col p-6">
+          {PLATFORMS.map((platform) => (
+            <li key={platform.slug} className="h-full">
+              <Card className="flex h-full flex-col p-6">
                 <div className="flex items-center justify-between gap-3">
-                  <h3 className={t.featured ? 'text-xl font-medium uppercase tracking-[-0.03em] text-white' : 'text-xl font-medium uppercase tracking-[-0.03em]'}>{t.name}</h3>
-                  {t.featured && <Badge tone="light">Popular</Badge>}
+                  <h3 className="text-xl font-medium tracking-[-0.03em]">{platform.name}</h3>
+                  <Badge tone="outline">Platform licence</Badge>
                 </div>
-                <p className={t.featured ? 'mt-4 text-3xl tracking-[-0.05em] text-white' : 'mt-4 text-3xl tracking-[-0.05em]'}>
-                  {t.seats}
+                <p className="mt-4 text-3xl tracking-[-0.05em]">1 person</p>
+                <p className="text-sm text-muted">2 machines</p>
+                <p className="mt-6 text-[15px] text-muted">
+                  Unlimited {platform.slug === 'fivem' ? 'servers' : 'experiences'} and projects, with twelve months of updates.
                 </p>
-                <p className={t.featured ? 'text-sm text-white/75' : 'text-sm text-muted'}>{t.machines}</p>
-                <p className={t.featured ? 'mt-6 text-[15px] text-white/85' : 'mt-6 text-[15px] text-muted'}>{t.body}</p>
+                <ArrowLink to={`/products/${platform.slug}`} size="sm" className="mt-auto pt-6">
+                  View {platform.name} licence
+                </ArrowLink>
               </Card>
             </li>
           ))}

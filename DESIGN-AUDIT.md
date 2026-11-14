@@ -1,7 +1,9 @@
 # luna.win — store reference audit
 
 What was taken from each reference store, where it lives in this codebase, and
-how it was adapted so the site reads as one product rather than a collage.
+how it was adapted so the site reads as one storefront rather than a collage.
+LUNA now sells two platform licences — FiveM and Roblox — as separate products,
+which is the part of the reference shops that was previously missing.
 Route coverage and the open item are at the end.
 
 ## Route coverage
@@ -9,16 +11,34 @@ Route coverage and the open item are at the end.
 Every path the router exposes was walked at 1440×900 and 390×844 against a
 production build (`bun run build`, served from `dist/client` with SPA fallback):
 
-- `/`, `/games`, `/platforms/fivem`, `/platforms/roblox`, `/pricing`,
+- `/`, `/store`, `/products/fivem`, `/products/roblox`, `/games`, `/pricing`,
   `/changelog`, `/status`, `/docs`, `/licence`, `/support`
-- `/login`, `/register`, `/account`
+- `/orders`, `/downloads`, `/account`
+- `/login`, `/register`
 - `/forums`, `/forums/announcements`, `/forums/issues`
 - `/terms`, `/refunds`, `/privacy`
-- the unknown-path fallback plus `/forums/nope` and `/platforms/nope`
+- `/platforms/fivem` (redirects to `/products/fivem`)
 
 Each pass checked: page title, real content (h1 and body text), console errors,
-failed requests, document overflow, heading clipping, header auth affordances
-and footer links. All 44 route/size combinations pass on a production build.
+document overflow, the number of h1s, buy links, and header auth affordances.
+All 46 route/size combinations pass on a production build with no console
+errors and no horizontal overflow.
+
+## The per-platform shop
+
+- **Two products, not tiers.** `PLATFORMS` carries a one-time `price`; `/store`,
+  `/pricing` and the home page render the same `LicenceCard` for each platform.
+  The old Free/Solo/Studio tiers are gone from copy, legal text and support.
+- **One product page per platform.** `/products/fivem` and `/products/roblox`
+  show the price, a buy box in the hero, what the licence includes, its
+  requirements and limits. The old `/platforms/:slug` guides redirect here.
+- **Categories are examples, not SKUs.** `/games` remains the category
+  overview; each product page repeats only that platform's categories and
+  labels them "Example". There is no per-category price or buy button.
+- **One honest checkout path.** Every buy action leads to `/support#buy`, which
+  explains the email checkout and payment link instead of showing a fake cart.
+- **No basket.** Two separately priced products do not justify a cart; the
+  reference shops' cart chrome was deliberately not copied.
 There is no separate topic route: threads render in full on the board (see
 "Lavicheats" below).
 
@@ -61,8 +81,9 @@ cart chrome, the first-order discount popup.
 - Review scores, "520,000+ orders" and balance/credit counters were **not**
   copied. There is no real order data behind them; the trust strip instead
   states product facts (`TrustBar` in `src/components/Storefront.tsx`).
-- The cart/checkout chrome was **not** copied. luna.win sells one desktop
-  licence with tiers, so `/pricing` is a decision page, not a basket.
+- The cart/checkout chrome was **not** copied. luna.win sells two platform
+  licences as separate products, so `/store` and `/pricing` are decision pages
+  with a direct email checkout, not a basket.
 
 ## hera.gg
 
@@ -86,8 +107,8 @@ FAQ, Trustpilot block, status references.
 **Adapted or dropped**
 - Hera's "+0 completed orders / customers / rate" counters were **not**
   copied — animating numbers with no source would be invented proof.
-- The slide-out cart has no equivalent: there is nothing to bundle into a
-  basket. Pricing tiers act directly.
+- The slide-out cart has no equivalent: there is no bundle and no basket.
+  Each platform licence is bought directly at its own price.
 - Trustpilot review content was **not** reproduced; it would be fabricated
   social proof.
 
@@ -107,7 +128,8 @@ Invision forums and review topics, online-member count, plan copy.
   read-only announcements board from a members-only issues board. The row-level
   policies enforce both.
 - **Search in the store.** Became the category search on `/games`
-  (`src/pages/Games.tsx`), filter chips included.
+  (`src/pages/Games.tsx`), filter chips included. The two-product store itself
+  does not need search; the old workflow catalogue did.
 - **Status updates as a first-class page.** Became `/status` and the release
   entries on `/changelog`.
 
@@ -133,7 +155,7 @@ HTML was read for this audit, but no store flow was exercised.*
   and spoofer status; ours is a single `/status` page reached from the header.
 - **A persistent conversion bar once the hero is gone.** This is the pattern
   behind `StickyBar` (`src/components/Storefront.tsx`): wordmark, build state,
-  starting price and one buying action after 560px of scroll.
+  the lowest platform price and one buying action after 560px of scroll.
 - **Community + forum entry points beside the store.** Became Forums in the
   header and drawer, plus the footer community column.
 - **Support framed as a person, with stated hours.** Became `/support` with a
