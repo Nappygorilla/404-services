@@ -6,7 +6,7 @@ import { AuthProvider } from './components/Auth'
 import { Footer } from './components/Footer'
 import { ToastProvider } from './components/Overlay'
 import { CurrencyProvider } from './components/Price'
-import { LaunchPill, StickyBar } from './components/Storefront'
+import { StickyBar } from './components/Storefront'
 import { Account } from './pages/Account'
 import { Login, Register } from './pages/Auth'
 import { Changelog } from './pages/Changelog'
@@ -86,7 +86,6 @@ export function App() {
           <ToastProvider>
             <ScrollManager />
             <StickyBar />
-            <LaunchPill />
             <a href="#main" className="sr-only z-[100] rounded-full bg-violet px-5 py-3 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
               Skip to content
             </a>

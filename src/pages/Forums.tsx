@@ -251,8 +251,10 @@ export function ForumBoard() {
   return (
     <div className="grid gap-2 p-2">
       <PageHero
-        title={[meta.name]}
-        eyebrow="Forum"
+        // A single eight-syllable word cannot hold the hero scale at 390px, so
+        // the announcements board reads as two short lines like the changelog.
+        title={meta.slug === 'announcements' ? ['Team', 'updates'] : [meta.name]}
+        eyebrow={meta.slug === 'announcements' ? 'Announcements' : 'Forum'}
         intro={meta.blurb}
         art={<Holo kind={meta.slug === 'issues' ? 'knot' : 'star'} motion />}
         titleSize="compact"

@@ -1,6 +1,6 @@
-import { ArrowRight, X } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router'
+import { Link } from 'react-router'
 
 import { APP, LAUNCH, TIERS } from '../data'
 import { cx } from '../lib/cx'
@@ -75,51 +75,6 @@ export function TrustBar({ className }: { className?: string }) {
         </div>
       ))}
     </dl>
-  )
-}
-
-/** Dismissible launch-price pill, bottom left. */
-export function LaunchPill() {
-  const [open, setOpen] = useState(false)
-  const { pathname } = useLocation()
-
-  useEffect(() => {
-    try {
-      setOpen(localStorage.getItem('luna:launch-pill') !== 'dismissed' && launchActive())
-    } catch {
-      setOpen(launchActive())
-    }
-  }, [])
-
-  // Scanning and signing-in pages: a floating promo would sit over the content.
-  const quiet = pathname === '/status' || pathname.startsWith('/forums') || ['/login', '/register', '/account'].includes(pathname)
-  if (!open || quiet) return null
-
-  const dismiss = () => {
-    setOpen(false)
-    try {
-      localStorage.setItem('luna:launch-pill', 'dismissed')
-    } catch {
-      /* private mode */
-    }
-  }
-
-  return (
-    <div className="fixed bottom-3 left-3 z-40 hidden items-center gap-1 rounded-full border border-violet/45 bg-card/95 py-1 pr-1 pl-4 shadow-[var(--shadow-float)] backdrop-blur-md sm:flex">
-      <Link to="/pricing" className="flex items-center gap-2 py-1.5 font-mono text-[10.5px] tracking-[0.12em] uppercase">
-        <span className="text-acid">−20%</span>
-        <span className="text-ink">Launch pricing</span>
-        <span className="hidden text-faint sm:inline">ends {LAUNCH.endsLabel}</span>
-      </Link>
-      <button
-        type="button"
-        onClick={dismiss}
-        aria-label="Dismiss launch pricing notice"
-        className="round grid size-7 shrink-0 place-items-center rounded-full text-faint transition-colors hov:bg-soft hov:text-ink"
-      >
-        <X className="size-3.5" aria-hidden />
-      </button>
-    </div>
   )
 }
 
