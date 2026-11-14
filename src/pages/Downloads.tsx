@@ -1,5 +1,5 @@
 import { ArrowRight, DownloadCloud, LockKeyhole } from 'lucide-react'
-import { Navigate, Link } from 'react-router'
+import { Navigate } from 'react-router'
 
 import { useAuth } from '../components/Auth'
 import { BackendNotice } from '../components/BackendNotice'
