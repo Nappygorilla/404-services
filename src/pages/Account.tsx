@@ -1,4 +1,4 @@
-import { ArrowRight, CreditCard, Download, FileText, LifeBuoy, LogOut, ShieldCheck, UserRound } from 'lucide-react'
+import { ArrowRight, CreditCard, Download, FileText, LifeBuoy, LogOut, MessageSquareText, ShieldCheck, UserRound } from 'lucide-react'
 import { Link, Navigate, useNavigate } from 'react-router'
 
 import { displayNameOf, useAuth } from '../components/Auth'
@@ -14,6 +14,7 @@ const ACCOUNT_LINKS = [
   { to: '/downloads', title: 'Downloads', body: 'Authorized installers and release files', icon: Download },
   { to: '/orders', title: 'Order history', body: 'Purchases and invoice references', icon: CreditCard },
   { to: '/account/licenses', title: 'Licenses', body: 'Your active product entitlements', icon: ShieldCheck },
+  { to: '/account/tickets', title: 'Support tickets', body: 'Submit and track private requests', icon: MessageSquareText },
   { to: '/forums', title: 'Community', body: 'Announcements and member discussions', icon: FileText },
   { to: '/support', title: 'Support', body: 'Get help with LUNA', icon: LifeBuoy },
 ]
