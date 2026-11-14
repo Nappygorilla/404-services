@@ -36,7 +36,7 @@ export function StickyBar() {
     <div className="fixed inset-x-0 top-0 z-50 border-b border-line bg-canvas/85 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-[1500px] items-center gap-4 px-3 sm:px-5">
         <Link to="/" aria-label={`${APP.name} home`} className="round -m-1 shrink-0 rounded-full p-1">
-          <Logo />
+          <Logo wordmark />
         </Link>
         <span className="hidden items-center gap-1.5 font-mono text-[10.5px] tracking-[0.14em] text-muted uppercase sm:flex">
           <span className="size-1.5 rounded-full bg-acid" aria-hidden />v{APP.version} · build passing

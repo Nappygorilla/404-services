@@ -61,7 +61,7 @@ export function Status() {
             <dd className="mt-1 font-mono text-[15px] text-ink">{APP.size}</dd>
           </div>
         </dl>
-        <ArrowLink to="/changelog" tone="violet" size="sm" className="md:justify-self-end">
+        <ArrowLink to="/changelog" tone="violet" size="sm" className="md:justify-self-end md:pl-8">
           Release notes
         </ArrowLink>
       </Card>
