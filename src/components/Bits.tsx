@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ImgHTMLAtt
 import { Link, type LinkProps } from 'react-router'
 
 import { IMAGES, SITE, type ImageKey } from '../data'
+import { asset } from '../lib/asset'
 import { cx } from '../lib/cx'
 
 /** The violet "Reach out ↗" link: caps text with an arrow that nudges on hover. */
@@ -78,7 +79,7 @@ export function Photo({
   return (
     <div className={cx('relative overflow-hidden bg-soft', className)} style={ratio ? { aspectRatio: ratio } : undefined}>
       <img
-        src={p.src}
+        src={asset(p.src)}
         alt={alt ?? p.alt}
         loading="lazy"
         decoding="async"

@@ -8,3 +8,5 @@ dist
 *.log
 /freebuff-sites-build/
 /artifacts/
+.deploy-key
+.deploy-key.pub

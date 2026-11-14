@@ -1,6 +1,7 @@
 import { useId, useState, type SVGProps } from 'react'
 
 import { IMAGES, type HoloKind } from '../data'
+import { asset } from '../lib/asset'
 import { cx } from '../lib/cx'
 
 /*
@@ -48,7 +49,7 @@ const motionClass = (kind: HoloKind, motion: boolean) =>
   cx(motion && kind === 'knot' && 'animate-[spin-slow_80s_linear_infinite]', motion && kind !== 'knot' && 'animate-float')
 
 export function Holo({ kind, motion = false, priority = false, className, ...rest }: Props) {
-  const src: string = RENDER[kind].src
+  const src: string = asset(RENDER[kind].src)
   const [failed, setFailed] = useState(false)
   if (src && !failed) {
     return (
