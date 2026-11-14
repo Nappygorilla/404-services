@@ -57,10 +57,10 @@ cart chrome, the first-order discount popup.
 **Borrowed**
 - **Dual hero CTA with a secondary community link.** Cosmo pairs
   "Browse the store" with "Join our discord". Ours is
-  "Get luna.win" / "Read the docs" in `src/pages/Home.tsx`.
+  "Explore the store" / "Read documentation" in `src/pages/Home.tsx`.
 - **Store navigation that separates Store, Status and Support.** Became the
-  five-item header in `src/components/Nav.tsx` (Games, Pricing, Changelog,
-  Status, Forums) with Docs, Licence and Support in the drawer/footer
+  five-item header in `src/components/Nav.tsx` (Store, Games, Pricing, Updates,
+  Status) with Forums, Docs, Licence and Support in the drawer/footer
   (`MENU` in `src/data.ts`).
 - **Public status board.** Cosmo's per-product "undetected" state maps to
   `/status` in `src/pages/Status.tsx`: component rows, one release number and
