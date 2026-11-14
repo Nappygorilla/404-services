@@ -34,12 +34,6 @@ export function Status() {
         eyebrow="Live"
         intro="What is running, what is not, and which release is current. This page reflects the shipped build, not a per-visitor probe: Modsmith builds offline."
         art={<Holo kind="prism" motion />}
-        aside={
-          <div className="mt-6 flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] text-muted uppercase">
-            <span className="size-1.5 rounded-full bg-acid" aria-hidden />
-            All systems operational
-          </div>
-        }
       />
 
       <Card as="section" aria-label="Current release" className="grid gap-6 p-6 sm:p-8 md:grid-cols-[1.2fr_1fr_auto] md:items-center">

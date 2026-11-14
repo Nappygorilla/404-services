@@ -1,4 +1,4 @@
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check, ReceiptText, ShieldCheck, WifiOff } from 'lucide-react'
 
 import { ArrowLink, Badge, Reveal, Title } from '../components/Bits'
 import { ButtonLink } from '../components/Button'
@@ -11,6 +11,17 @@ import { Countdown } from '../components/Storefront'
 import { APP, LAUNCH, PRICING_FAQ, PRICING_POINTS, SITE, TIERS } from '../data'
 import { cx } from '../lib/cx'
 import { useDocumentTitle } from '../lib/storage'
+
+/*
+  The buying-assurance row these shops put under the cart, filled with facts
+  this site already states elsewhere: the fourteen-day refund window, the
+  merchant of record, and cached activation that keeps builds running offline.
+*/
+const ASSURANCES = [
+  { icon: ShieldCheck, title: '14-day refund', body: 'Ask within fourteen days of purchase, no reason needed.' },
+  { icon: ReceiptText, title: 'Merchant of record', body: 'Checkout, tax and invoicing handled by them. Card details never reach us.' },
+  { icon: WifiOff, title: '14 days offline', body: 'Activation is cached, so builds keep running without a connection.' },
+]
 
 export function Pricing() {
   useDocumentTitle('Pricing')
@@ -123,14 +134,34 @@ export function Pricing() {
         <Accordion items={PRICING_FAQ} />
       </Card>
 
-      <Card className="flex flex-wrap items-center justify-between gap-4 p-6 text-sm text-muted sm:px-8">
-        <p>
-          Checkout, payment and VAT are handled by our merchant of record. Invoices are issued in {APP.name}&rsquo;s place by them, and your card details never reach us.
-        </p>
-        <ArrowLink to="/refunds" tone="ink" size="sm">
-          Refund policy
-        </ArrowLink>
-      </Card>
+      <section aria-labelledby="pricing-assurance" className="grid gap-2">
+        <h2 id="pricing-assurance" className="sr-only">
+          Buying assurances
+        </h2>
+        <ul className="grid gap-2 sm:grid-cols-3">
+          {ASSURANCES.map(({ icon: Icon, title, body }) => (
+            <li key={title} className="h-full">
+              <Card className="flex h-full items-start gap-3 p-5 sm:p-6">
+                <span className="round grid size-9 shrink-0 place-items-center rounded-full border border-violet/35 bg-violet/15 text-violet-light">
+                  <Icon className="size-4" aria-hidden />
+                </span>
+                <div>
+                  <p className="text-[15px] font-medium">{title}</p>
+                  <p className="mt-1 text-[13px] leading-relaxed text-muted">{body}</p>
+                </div>
+              </Card>
+            </li>
+          ))}
+        </ul>
+        <div className="flex flex-wrap items-center justify-between gap-3 px-2 py-1 text-sm text-muted">
+          <p>
+            {APP.name} Studio licences can also be invoiced by bank transfer, and prices include VAT where it applies.
+          </p>
+          <ArrowLink to="/refunds" tone="ink" size="sm">
+            Refund policy
+          </ArrowLink>
+        </div>
+      </section>
 
       <p className="px-2 pb-2 text-center text-[13px] text-faint">
         {SITE.disclaimer}

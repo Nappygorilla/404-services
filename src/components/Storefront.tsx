@@ -1,6 +1,6 @@
 import { ArrowRight, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 
 import { APP, LAUNCH, TIERS } from '../data'
 import { cx } from '../lib/cx'
@@ -81,6 +81,7 @@ export function TrustBar({ className }: { className?: string }) {
 /** Dismissible launch-price pill, bottom left. */
 export function LaunchPill() {
   const [open, setOpen] = useState(false)
+  const { pathname } = useLocation()
 
   useEffect(() => {
     try {
@@ -90,7 +91,8 @@ export function LaunchPill() {
     }
   }, [])
 
-  if (!open) return null
+  // /status is a scanning page: a floating promo would sit over the rows.
+  if (!open || pathname === '/status') return null
 
   const dismiss = () => {
     setOpen(false)
@@ -102,7 +104,7 @@ export function LaunchPill() {
   }
 
   return (
-    <div className="fixed bottom-3 left-3 z-40 flex items-center gap-1 rounded-full border border-violet/45 bg-card/95 py-1 pr-1 pl-4 shadow-[var(--shadow-float)] backdrop-blur-md">
+    <div className="fixed bottom-3 left-3 z-40 hidden items-center gap-1 rounded-full border border-violet/45 bg-card/95 py-1 pr-1 pl-4 shadow-[var(--shadow-float)] backdrop-blur-md sm:flex">
       <Link to="/pricing" className="flex items-center gap-2 py-1.5 font-mono text-[10.5px] tracking-[0.12em] uppercase">
         <span className="text-acid">−20%</span>
         <span className="text-ink">Launch pricing</span>
