@@ -6,10 +6,10 @@ import { ArrowLink, Badge, Reveal, Title } from '../components/Bits'
 import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Accordion } from '../components/Content'
-import { LicenceCard } from '../components/LicenceCard'
 import { Nav } from '../components/Nav'
+import { BundleBanner, ToolCard } from '../components/ProductCards'
 import { TrustBar } from '../components/Storefront'
-import { APP, CHANGELOG, FEATURES, PIPELINE, PLATFORMS, PRICING_FAQ, SITE } from '../data'
+import { APP, BUNDLE, CHANGELOG, FEATURES, PIPELINE, PRICING_FAQ, SITE, TOOLS } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
 const ICONS = [GitBranch, Package, Check, ShieldCheck, Code2, Workflow]
@@ -89,7 +89,7 @@ function Hero() {
               <span className="block bg-gradient-to-r from-white via-violet-light to-violet bg-clip-text text-transparent">confidence.</span>
             </h1>
             <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-pretty text-ink-2">
-              A focused desktop toolkit for FiveM and Roblox creators. Inspect projects, validate dependencies, create repeatable builds, and manage authorized deployments from one place — with a separate licence for each platform.
+              A focused desktop toolkit for FiveM and Roblox creators. Inspect projects, validate dependencies, create repeatable builds, and manage authorized deployments — buying only the individual tools you need, or the complete toolkit if you want all of them.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink to="/store" variant="violet" size="lg" iconRight={<ArrowRight className="size-5" />}>Explore the store</ButtonLink>
@@ -111,20 +111,23 @@ function Hero() {
   )
 }
 
-function Workflows() {
+function Tools() {
+  const featured = TOOLS.filter((tool) => tool.featured)
+  const compareAt = TOOLS.reduce((sum, tool) => sum + tool.price, 0)
   return (
     <section className="grid gap-2">
       <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-        <div><p className="caps text-violet">Two platform licences</p><Title lines={['Pick the', 'platform']} align="left" /></div>
-        <div className="max-w-md"><p className="text-sm leading-relaxed text-muted">The same desktop toolkit, sold as a FiveM licence or a Roblox licence. Each is its own product, and every category on that platform is included — there are no add-ons or tiers.</p><ArrowLink to="/store" size="sm" className="mt-4">Compare licences</ArrowLink></div>
+        <div><p className="caps text-violet">Individual tools</p><Title lines={['Buy the', 'piece you need']} align="left" /></div>
+        <div className="max-w-md"><p className="text-sm leading-relaxed text-muted">Every tool is its own product with its own price, page and buy action. Add the ones you need, one at a time; {BUNDLE.name} is an optional bundle, not a tier.</p><ArrowLink to="/store" size="sm" className="mt-4">Browse all {TOOLS.length} tools</ArrowLink></div>
       </Card>
-      <div className="grid gap-2 md:grid-cols-2">
-        {PLATFORMS.map((platform, index) => (
-          <Reveal key={platform.slug} delay={index * .07}>
-            <LicenceCard platform={platform} />
+      <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+        {featured.map((tool, index) => (
+          <Reveal key={tool.slug} delay={(index % 3) * .04}>
+            <ToolCard tool={tool} />
           </Reveal>
         ))}
       </div>
+      <BundleBanner bundle={BUNDLE} compareAt={compareAt} />
     </section>
   )
 }
@@ -180,8 +183,8 @@ function Closing() {
   return (
     <section className="grid gap-2 lg:grid-cols-[1.1fr_.9fr]">
       <Card tone="violet" className="flex flex-col justify-between gap-8 p-6 sm:p-8">
-        <div><p className="caps text-white/70">Get started with LUNA</p><h2 className="display mt-4 text-[clamp(2.5rem,4vw,4.5rem)]">Your next build starts here.</h2><p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">Explore the FiveM licence or the Roblox licence, compare the terms, and read the setup guide before installing.</p></div>
-        <div className="flex flex-wrap gap-3"><ButtonLink to="/store" variant="light">Browse licences</ButtonLink><ButtonLink to="/games" variant="outline">Browse categories</ButtonLink></div>
+        <div><p className="caps text-white/70">Get started with LUNA</p><h2 className="display mt-4 text-[clamp(2.5rem,4vw,4.5rem)]">Your next build starts here.</h2><p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">Every tool is sold separately, and the complete toolkit is optional. Compare the prices, read the requirements on each product page, and start with the one problem in front of you.</p></div>
+        <div className="flex flex-wrap gap-3"><ButtonLink to="/store" variant="light">Browse tools</ButtonLink><ButtonLink to="/pricing" variant="outline">Compare prices</ButtonLink></div>
       </Card>
       <Card className="p-6 sm:p-8">
         <div className="flex items-center gap-2"><ShieldCheck className="size-5 text-violet" /><p className="caps text-violet">Clear boundaries</p></div>
@@ -198,7 +201,7 @@ export function Home() {
   return (
     <div className="grid gap-2 p-2">
       <Hero />
-      <Workflows />
+      <Tools />
       <Capabilities />
       <Pipeline />
       <LatestUpdate />

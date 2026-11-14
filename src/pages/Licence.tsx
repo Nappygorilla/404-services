@@ -6,17 +6,17 @@ import { Card } from '../components/Card'
 import { Accordion } from '../components/Content'
 import { Holo } from '../components/Holo'
 import { PageHero } from '../components/Nav'
-import { PLATFORMS, PRICING_FAQ, SITE } from '../data'
+import { BUNDLE, PRICING_FAQ, SITE, TOOLS } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
 const STEPS = [
-  { title: 'Paste the key once', body: 'On first launch the app asks for your licence key. It is in your receipt email; the app checks it against the licence service and stores it in the operating system’s credential store, not in a config file.' },
+  { title: 'Paste the key once', body: 'On first launch the app asks for the licence key of the tool or bundle you bought. It is in your receipt email; the app checks it against the licence service and stores it in the operating system’s credential store, not in a config file.' },
   { title: 'Activate the machine', body: 'Activation registers a hashed machine identifier, so the app can count seats without collecting hardware details. A hash matches or it does not; it cannot be turned back into a description of your computer.' },
   { title: 'Deactivate before you move', body: 'Under Account → Licence, deactivate a machine to free the seat. Do this before wiping a disk, or you will need support to clear the old activation.' },
 ]
 
 const FACTS = [
-  { icon: <KeyRound className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Seats are people', body: 'Every platform licence is one person on two machines. A machine counts while it is activated; deactivating frees it immediately.' },
+  { icon: <KeyRound className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Seats are people', body: 'Every tool and bundle licence is one person on two machines. A machine counts while it is activated; deactivating frees it immediately.' },
   { icon: <WifiOff className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Works offline', body: 'The licence check is cached for fourteen days, so a build on a plane or in a locked-down network keeps working. After that the app asks once for a connection.' },
   { icon: <MonitorSmartphone className="size-5" strokeWidth={1.6} aria-hidden />, title: 'No seat monitoring', body: 'We count activations to enforce the licence. We do not read your projects, your file names or your build output, and nothing is uploaded when you build.' },
 ]
@@ -26,65 +26,80 @@ export function Licence() {
   return (
     <div className="grid gap-2 p-2">
       <PageHero
-        title={['Your', 'licence']}
+        title={['Your', 'licences']}
         eyebrow="Activation, seats and moving machines"
-        intro="Each platform has its own licence — a key you paste once. Nothing is tied to a server, and nothing stops working when the update year ends."
+        intro={`Every tool has its own licence and key. ${BUNDLE.name} is an optional bundle with one key for all current tools. Nothing is tied to a server, and nothing stops working when the update year ends.`}
         art={<Holo kind="cloud" motion />}
         aside={
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <ButtonLink to="/support#buy" variant="violet" iconRight={<ArrowRight className="size-4" />}>
-              Get a licence
+            <ButtonLink to="/store" variant="violet" iconRight={<ArrowRight className="size-4" aria-hidden />}>
+              Buy a tool
             </ButtonLink>
-            <ArrowLink to="/store" tone="ink" size="sm">
-              Compare licences
+            <ArrowLink to="/pricing" tone="ink" size="sm">
+              Compare prices
             </ArrowLink>
           </div>
         }
       />
 
       <section aria-labelledby="activation" className="grid gap-2 md:grid-cols-3">
-        {STEPS.map((s, i) => (
-          <Card key={s.title} className="flex h-full flex-col p-6 sm:p-7">
-            <span className="caps text-violet tabular-nums">0{i + 1}</span>
-            <h2 className="mt-3 text-xl font-medium tracking-[-0.03em]">{s.title}</h2>
-            <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.body}</p>
+        {STEPS.map((step, index) => (
+          <Card key={step.title} className="flex h-full flex-col p-6 sm:p-7">
+            <span className="caps text-violet tabular-nums">0{index + 1}</span>
+            <h2 className="mt-3 text-xl font-medium tracking-[-0.03em]">{step.title}</h2>
+            <p className="mt-2 text-[15px] leading-relaxed text-muted">{step.body}</p>
           </Card>
         ))}
       </section>
 
       <section aria-labelledby="seats" className="grid gap-2">
         <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-          <p className="order-2 max-w-md text-muted md:order-1">One licence covers one person on the platform it names. Projects and servers are unlimited there; the other platform is a separate licence.</p>
+          <p className="order-2 max-w-md text-muted md:order-1">A licence covers one person. Projects and servers are unlimited on the platform a tool supports.</p>
           <Title id="seats" lines={['How seats', 'are counted']} className="order-1 md:order-2" />
         </Card>
         <ul className="grid gap-2 md:grid-cols-3">
-          {PLATFORMS.map((platform) => (
-            <li key={platform.slug} className="h-full">
-              <Card className="flex h-full flex-col p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-xl font-medium tracking-[-0.03em]">{platform.name}</h3>
-                  <Badge tone="outline">Platform licence</Badge>
-                </div>
-                <p className="mt-4 text-3xl tracking-[-0.05em]">1 person</p>
-                <p className="text-sm text-muted">2 machines</p>
-                <p className="mt-6 text-[15px] text-muted">
-                  Unlimited {platform.slug === 'fivem' ? 'servers' : 'experiences'} and projects, with twelve months of updates.
-                </p>
-                <ArrowLink to={`/products/${platform.slug}`} size="sm" className="mt-auto pt-6">
-                  View {platform.name} licence
-                </ArrowLink>
-              </Card>
-            </li>
-          ))}
+          <li className="h-full">
+            <Card className="flex h-full flex-col p-6">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-xl font-medium tracking-[-0.03em]">Any tool</h3>
+                <Badge tone="outline">Single product</Badge>
+              </div>
+              <p className="mt-4 text-3xl tracking-[-0.05em]">1 person</p>
+              <p className="text-sm text-muted">2 machines</p>
+              <p className="mt-6 text-[15px] text-muted">One key for one tool. Buy only the products you need; each has its own key and download.</p>
+            </Card>
+          </li>
+          <li className="h-full">
+            <Card tone="violet" className="flex h-full flex-col p-6">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-xl font-medium tracking-[-0.03em] text-white">{BUNDLE.name}</h3>
+                <Badge tone="light">Optional</Badge>
+              </div>
+              <p className="mt-4 text-3xl tracking-[-0.05em] text-white">{BUNDLE.includes.length} tools</p>
+              <p className="text-sm text-white/75">1 licence key</p>
+              <p className="mt-6 text-[15px] text-white/85">All {TOOLS.length} current tools and both platforms, with the same one-person, two-machine terms.</p>
+            </Card>
+          </li>
+          <li className="h-full">
+            <Card className="flex h-full flex-col p-6">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-xl font-medium tracking-[-0.03em]">Updates</h3>
+                <Badge tone="outline">Included</Badge>
+              </div>
+              <p className="mt-4 text-3xl tracking-[-0.05em]">12 months</p>
+              <p className="text-sm text-muted">Optional renewal</p>
+              <p className="mt-6 text-[15px] text-muted">The product keeps working after the update year. Renew at 50% of what you paid if you want another year of releases.</p>
+            </Card>
+          </li>
         </ul>
       </section>
 
       <section aria-labelledby="facts" className="grid gap-2 md:grid-cols-3">
-        {FACTS.map((f) => (
-          <Card key={f.title} className="flex h-full flex-col p-6">
-            <span className="round grid size-11 place-items-center rounded-full border border-violet/35 bg-violet/15 text-violet-light">{f.icon}</span>
-            <h2 className="mt-5 text-lg font-medium tracking-[-0.03em]">{f.title}</h2>
-            <p className="mt-2 text-[15px] leading-relaxed text-muted">{f.body}</p>
+        {FACTS.map((fact) => (
+          <Card key={fact.title} className="flex h-full flex-col p-6">
+            <span className="round grid size-11 place-items-center rounded-full border border-violet/35 bg-violet/15 text-violet-light">{fact.icon}</span>
+            <h2 className="mt-5 text-lg font-medium tracking-[-0.03em]">{fact.title}</h2>
+            <p className="mt-2 text-[15px] leading-relaxed text-muted">{fact.body}</p>
           </Card>
         ))}
       </section>
@@ -92,9 +107,7 @@ export function Licence() {
       <Card as="section" aria-labelledby="licence-faq" className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_1.6fr]">
         <div className="flex flex-col justify-between gap-8">
           <Title id="licence-faq" lines={['Licence', 'questions']} align="left" />
-          <ArrowLink to="/support" size="sm">
-            Email us about a key
-          </ArrowLink>
+          <ArrowLink to="/support" size="sm">Email us about a key</ArrowLink>
         </div>
         <Accordion items={PRICING_FAQ.slice(1)} />
       </Card>

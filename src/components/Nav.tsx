@@ -139,6 +139,7 @@ export function PageHero({
   intro,
   aside,
   art,
+  artSize = 'default',
   titleSize = 'default',
   children,
 }: {
@@ -147,6 +148,8 @@ export function PageHero({
   intro?: string
   aside?: React.ReactNode
   art?: React.ReactNode
+  /** `compact` shrinks the product art so the buy box stays close to the title on mobile. */
+  artSize?: 'default' | 'compact'
   /** `compact` for long multi-word titles that would otherwise run to the card edge. */
   titleSize?: 'default' | 'compact'
   children?: React.ReactNode
@@ -161,7 +164,15 @@ export function PageHero({
           {aside}
         </div>
         {art ? (
-          <div className="pointer-events-none order-2 mx-auto w-[min(62vw,300px)] self-center lg:w-[min(22vw,340px)] lg:-translate-x-[8%]" aria-hidden>
+          <div
+            className={cx(
+              'pointer-events-none order-2 mx-auto self-center lg:-translate-x-[8%]',
+              artSize === 'compact'
+                ? 'w-[min(46vw,220px)] lg:w-[min(18vw,260px)]'
+                : 'w-[min(62vw,300px)] lg:w-[min(22vw,340px)]',
+            )}
+            aria-hidden
+          >
             {art}
           </div>
         ) : (

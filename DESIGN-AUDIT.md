@@ -2,52 +2,69 @@
 
 What was taken from each reference store, where it lives in this codebase, and
 how it was adapted so the site reads as one storefront rather than a collage.
-LUNA now sells two platform licences — FiveM and Roblox — as separate products,
-which is the part of the reference shops that was previously missing.
-Route coverage and the open item are at the end.
+The shop now sells **individual development tools**: each has its own price,
+product page and buy action, and the Complete Toolkit is an optional bundle.
+Route coverage and the open items are at the end.
 
 ## Route coverage
 
 Every path the router exposes was walked at 1440×900 and 390×844 against a
 production build (`bun run build`, served from `dist/client` with SPA fallback):
 
-- `/`, `/store`, `/products/fivem`, `/products/roblox`, `/games`, `/pricing`,
-  `/changelog`, `/status`, `/docs`, `/licence`, `/support`
-- `/orders`, `/downloads`, `/account`
-- `/login`, `/register`
+- `/`, `/store`, `/store?platform=fivem`, `/store?type=Validate`,
+  `/products/manifest-forge`, `/products/complete-toolkit`, `/pricing`,
+  `/games`, `/licence`, `/support?product=manifest-forge#buy`
+- `/orders`, `/downloads`, `/account`, `/login`, `/register`
 - `/forums`, `/forums/announcements`, `/forums/issues`
-- `/terms`, `/refunds`, `/privacy`
-- `/platforms/fivem` (redirects to `/products/fivem`)
+- `/terms`, `/refunds`, `/privacy`, `/changelog`, `/status`, `/docs`
+- legacy `/products/fivem`, `/products/roblox`, `/platforms/fivem`,
+  `/platforms/roblox` (static redirect files and client redirects)
+- unknown paths fall through to the product/store not-found states
 
 Each pass checked: page title, real content (h1 and body text), console errors,
-document overflow, the number of h1s, buy links, and header auth affordances.
-All 46 route/size combinations pass on a production build with no console
-errors and no horizontal overflow.
+document overflow, the number of h1s, visible buy links and their checkout
+hrefs, and header auth affordances. All 24 app routes were walked at both
+sizes (48 combinations), every one of the 15 product pages was checked at both
+sizes (30 combinations), and all four legacy redirects were exercised at both
+sizes. No route failed on a production build; there were no console errors and
+no horizontal overflow.
 
-## The per-platform shop
+GitHub Pages has no server-side SPA rewrites, so a hard load of a **new** deep
+path such as `/products/manifest-forge` is answered with `404.html` (the app
+shell) and the browser logs that document's 404 status. The page renders and
+client-side navigation is silent. The retired platform URLs now have static
+redirect files, so they answer with a 200 redirect page before the app boots.
 
-- **Two products, not tiers.** `PLATFORMS` carries a one-time `price`; `/store`,
-  `/pricing` and the home page render the same `LicenceCard` for each platform.
-  The old Free/Solo/Studio tiers are gone from copy, legal text and support.
-- **One product page per platform.** `/products/fivem` and `/products/roblox`
-  show the price, a buy box in the hero, what the licence includes, its
-  requirements and limits. The old `/platforms/:slug` guides redirect here.
-- **Categories are examples, not SKUs.** `/games` remains the category
-  overview; each product page repeats only that platform's categories and
-  labels them "Example". There is no per-category price or buy button.
-- **One honest checkout path.** Every buy action leads to `/support#buy`, which
-  explains the email checkout and payment link instead of showing a fake cart.
-- **No basket.** Two separately priced products do not justify a cart; the
-  reference shops' cart chrome was deliberately not copied.
-There is no separate topic route: threads render in full on the board (see
-"Lavicheats" below).
+## The item catalogue
 
-One hosting note: GitHub Pages has no server-side redirects, so a hard load of
-a deep path is answered with `404.html` (the app shell) and the browser logs
-that document's 404 status. The page renders and client-side navigation is
-silent; only the initial document response carries the 404. Removing it would
-mean changing hosts or moving the router to hash URLs, neither of which is
-warranted for this site.
+- **One source of truth.** `TOOLS` in `src/data.ts` holds every tool's slug,
+  name, short description, platform, type, price, deliverables, requirements
+  and limits. `BUNDLE.includes` is built from `TOOLS.map(...)`, so the bundle
+  can never list a product that is not in the catalogue.
+- **Every tool is a product.** `/store` renders one card per entry in `TOOLS`,
+  with status, platform/type badges, the price and a buy action. The same cards
+  appear on the home page for featured tools and in related-product rows.
+- **Every tool has a page.** `/products/:slug` shows the price and buy box in
+  the hero, an about panel, what is included, requirements, limits, related
+  tools, back-links to the store and a link to the optional bundle. The bundle
+  page lists every included tool with a link to its own page.
+- **Filters and search.** Platform filters cover FiveM, Roblox and the shared
+  tools; type filters cover Build, Validate, Deploy, Project and Automate.
+  The search box and filters are reflected in the URL, so a filtered view can
+  be linked or refreshed.
+- **One optional bundle.** The Complete Toolkit is not a tier and not a
+  platform licence. Its card states the saving against the current individual
+  prices and has its own buy action; `/pricing` lists every individual price
+  next to it.
+- **One honest checkout path.** Every buy action goes to
+  `/support?product=<slug>#buy`. The support page shows the selected product
+  and opens a product-specific email with a payment-link request. There is no
+  card form, fake basket or invented payment success state.
+- **Categories are not SKUs.** `/games` remains a project-type overview. Its
+  links go to filtered store views, not to separate prices.
+- **No fake proof.** No ratings, order totals, member counts, live chat,
+  "undetected" claims or automated downloads. Status is limited to the
+  product's availability and the real service-status page.
 
 ## cosmocheats.com
 
@@ -55,35 +72,29 @@ warranted for this site.
 cart chrome, the first-order discount popup.
 
 **Borrowed**
-- **Dual hero CTA with a secondary community link.** Cosmo pairs
-  "Browse the store" with "Join our discord". Ours is
-  "Explore the store" / "Read documentation" in `src/pages/Home.tsx`.
-- **Store navigation that separates Store, Status and Support.** Became the
-  five-item header in `src/components/Nav.tsx` (Store, Games, Pricing, Updates,
-  Status) with Forums, Docs, Licence and Support in the drawer/footer
-  (`MENU` in `src/data.ts`).
-- **Public status board.** Cosmo's per-product "undetected" state maps to
-  `/status` in `src/pages/Status.tsx`: component rows, one release number and
-  an acid-green dot only when a component is operational.
-- **Why-us grid and FAQ.** Adapted in `HOME.features` / `HOME.faq` and rendered
-  in `src/pages/Home.tsx`; the same FAQ pattern is reused on pricing and support.
-- **Account area.** Cosmo's signed-in header becomes the auth controls in the
-  header and drawer, `/account` in `src/pages/Account.tsx`, and the
-  Supabase session in `src/components/Auth.tsx`.
+- **Product-first hero and store navigation.** The home hero pairs one dominant
+  store action with documentation, and the header separates Store, Games,
+  Pricing, Updates and Status (`src/components/Nav.tsx`). Docs, Licence,
+  Support and Forums live in the drawer/footer (`MENU` in `src/data.ts`).
+- **Product cards with state.** Cosmo's product tiles inform the item-level
+  `ToolCard`: badges for platform and type, an "Available" state, a short
+  description, a price and a direct buy action.
+- **Public status board.** Cosmo's per-product state maps to `/status` in
+  `src/pages/Status.tsx`: component rows, one release number and an acid-green
+  dot only when a component is operational.
+- **FAQ and account area.** The shared FAQ block is used on home, pricing,
+  support and docs. Cosmo's signed-in header becomes the auth controls and the
+  Supabase-backed `/account` area.
 
 **Adapted or dropped**
-- The floating 20% first-order popup was borrowed as `LaunchPill` in an earlier
-  pass and **dropped in this audit**: at 1440 it sat over pricing features,
-  changelog items and docs code, and it repeated the launch price already shown
-  by the sticky bar and countdown. A fixed promo that covers content fails the
-  "no overlap, no duplicated information" rule, so the launch offer now lives
-  only in the marquee, the countdown and the sticky bar.
-- Review scores, "520,000+ orders" and balance/credit counters were **not**
-  copied. There is no real order data behind them; the trust strip instead
-  states product facts (`TrustBar` in `src/components/Storefront.tsx`).
-- The cart/checkout chrome was **not** copied. luna.win sells two platform
-  licences as separate products, so `/store` and `/pricing` are decision pages
-  with a direct email checkout, not a basket.
+- The floating 20% first-order popup was **not** rebuilt. It covered content,
+  repeated the launch price and failed the no-overlap rule. The launch offer
+  lives in the price notes, the pricing strip and the sticky bar.
+- Review scores, order totals and balance counters were **not** copied. There
+  is no data behind them; `TrustBar` states only product facts.
+- Cart chrome was **not** copied. Individual products are bought directly, and
+  the one optional bundle has a direct buy action, so a fake basket would add
+  steps without adding value.
 
 ## hera.gg
 
@@ -91,24 +102,20 @@ cart chrome, the first-order discount popup.
 FAQ, Trustpilot block, status references.
 
 **Borrowed**
-- **Hero with one dominant action and a Discord/community secondary.** The
-  composition and the ratio of display type to supporting copy inform
-  `PageHero` (`src/components/Nav.tsx`) and the home hero.
+- **Hero hierarchy.** One dominant action, short supporting copy and a strong
+  display title inform `PageHero` (`src/components/Nav.tsx`) and the home hero.
 - **Benefit grid with short, parallel headings.** Reused as the six-feature
   grid on `/` (`FEATURES` in `src/data.ts`) and the buying assurances on
-  `/pricing` (`src/pages/Pricing.tsx`), with the claims rewritten for a build
-  tool rather than a cheat loader.
-- **FAQ accordion.** Same interaction pattern in the shared FAQ block used by
-  home, pricing, support and docs.
-- **Product cards with a state badge.** Became category cards on `/games`
-  (`src/pages/Games.tsx`) with platform and state badges; the status vocabulary
-  is limited to real product states.
+  `/pricing`, with the claims rewritten for development tools.
+- **Product cards with a state badge.** Reused directly in the catalogue and
+  related-tool rows; the status vocabulary is limited to real states.
+- **FAQ accordion.** The shared interaction pattern is used across the site.
 
 **Adapted or dropped**
 - Hera's "+0 completed orders / customers / rate" counters were **not**
   copied — animating numbers with no source would be invented proof.
-- The slide-out cart has no equivalent: there is no bundle and no basket.
-  Each platform licence is bought directly at its own price.
+- The slide-out cart has no equivalent. Every tool has a direct buy action and
+  the optional bundle has one too.
 - Trustpilot review content was **not** reproduced; it would be fabricated
   social proof.
 
@@ -119,17 +126,15 @@ Invision forums and review topics, online-member count, plan copy.
 
 **Borrowed**
 - **A real community area behind sign-in, with boards and member posting.**
-  This is the clearest structural borrow: `/forums`, `/forums/announcements`
-  and `/forums/issues` (`src/pages/Forums.tsx`), with auth at `/login` and
-  `/register` (`src/pages/Auth.tsx`) and persistence rules in
-  `supabase/schema.sql`, accessed through `src/lib/forum.ts`.
-- **Announcements written by the team, issues written by members.** Lavi
-  separates staff updates from customer review topics; ours separates a
-  read-only announcements board from a members-only issues board. The row-level
-  policies enforce both.
-- **Search in the store.** Became the category search on `/games`
-  (`src/pages/Games.tsx`), filter chips included. The two-product store itself
-  does not need search; the old workflow catalogue did.
+  `/forums`, `/forums/announcements` and `/forums/issues`
+  (`src/pages/Forums.tsx`), with auth at `/login` and `/register` and
+  persistence rules in `supabase/schema.sql`.
+- **Announcements written by the team, issues written by members.** The
+  read-only announcements board and the members-only issues board are enforced
+  by row-level policies.
+- **Search and filters in the store.** The item catalogue has platform and type
+  chips plus a search field, with the state kept in the URL. `/games` keeps its
+  own category search and links into the filtered shop.
 - **Status updates as a first-class page.** Became `/status` and the release
   entries on `/changelog`.
 
@@ -137,10 +142,8 @@ Invision forums and review topics, online-member count, plan copy.
 - The "89 online" counter and member totals were **not** copied: there is no
   presence service, so any number would be untrue.
 - Forum signatures, reputation and reaction counts were **not** reproduced.
-  A topic is a title, an author, a date and the body; that is all the data the
-  schema actually holds.
-- The full Invision navigation was reduced to five header items so the store,
-  status and community fit one row without wrapping.
+- The navigation was reduced to five header items so the store, status and
+  community fit one row without wrapping.
 
 ## battlelog.co
 
@@ -153,48 +156,48 @@ HTML was read for this audit, but no store flow was exercised.*
 **Borrowed**
 - **A status page linked from the hero and the header.** Battlelog splits cheat
   and spoofer status; ours is a single `/status` page reached from the header.
-- **A persistent conversion bar once the hero is gone.** This is the pattern
-  behind `StickyBar` (`src/components/Storefront.tsx`): wordmark, build state,
-  the lowest platform price and one buying action after 560px of scroll.
-- **Community + forum entry points beside the store.** Became Forums in the
-  header and drawer, plus the footer community column.
-- **Support framed as a person, with stated hours.** Became `/support` with a
-  response-time table and a checklist, instead of a live-chat button that would
-  open nothing.
+- **A persistent conversion bar once the hero is gone.** `StickyBar`
+  (`src/components/Storefront.tsx`) shows the wordmark, release state, the
+  lowest individual tool price and a "Browse tools" action after 560px.
+- **Community + forum entry points beside the store.** Forums sit in the header
+  drawer and the footer community column.
+- **Support framed as a person, with stated hours.** `/support` uses a
+  response-time table, a checklist and a real email, not a fake live-chat
+  button.
 
 **Adapted or dropped**
 - The bottom-right "24/7 live chat" bubble was **not** built. There is no chat
   backend, and a decorative chat button is exactly the kind of fake affordance
   this pass removes.
 - Member counts and "largest supplier" claims were **not** copied.
-- The hero's dual CTA was kept in shape but not in wording: luna.win sells a
-  build pipeline, so the secondary action is documentation, not a status check.
+- The hero's dual CTA was kept in shape but not in wording: luna.win sells
+  individual development tools, so the secondary action is documentation.
 
 ## How the borrowed pieces were made to fit
 
 - **One accent, one meaning.** Violet is buying and account action; acid green
-  is live status only. The source stores use green for "undetected" marketing;
-  here green never decorates, it reports a state. This is why status dots are
-  small and the pricing CTAs are violet.
+  is live status only. Status dots are small; buy buttons are violet.
 - **Honesty over proof theatre.** No ratings, order totals, member counts or
   live chat. Where a backend is absent, `src/components/BackendNotice.tsx` says
   so and forms stay disabled.
 - **Typography reined in.** Display caps are reserved for page titles; mono is
-  reserved for numbers, versions and technical labels (`caps` and font tokens
-  in `src/styles.css`); body copy stays sentence case. The result keeps the
-  reference stores' technical flavour without the all-caps wall.
+  reserved for numbers, versions and technical labels; body copy stays sentence
+  case.
 - **One spacing system.** 16px panels, 2px gutters, shared `Card`, `Badge`,
-  `Title`, `Button` and `Field` components. Every borrowed module was rebuilt
-  from these rather than restyled per page.
-- **No duplicated information in a viewport.** This rule removed the floating
-  promo and keeps the launch price in one place at a time.
-- **Mobile collapses instead of shrinking.** Dense store grids become single
-  columns; header auth moves into the drawer below 1280px; the hero becomes a
-  title, artwork and intro stack. Nothing borrows a desktop-only layout.
+  `Title`, `Button` and `Field` components. Borrowed modules are rebuilt from
+  these rather than restyled per page.
+- **No duplicated information in a viewport.** The floating promo stayed gone,
+  and the launch price is shown either in a card or in the sticky bar, not both
+  at once.
+- **Mobile collapses instead of shrinking.** The product grid goes to one
+  column, header auth moves into the drawer below 1280px, and the product hero
+  uses a smaller art treatment so the price and buy action stay near the fold.
 
-## Open item
+## Open items
 
-The live Supabase round-trip (sign-up, confirmation, sign-in, posting and
-deleting a topic) is still unverified because `SUPABASE_URL` and
-`SUPABASE_ANON_KEY` are not configured. The unconfigured state is audited and
-honest; the real flow is the only remaining unverified surface.
+- Checkout is still the honest email/payment-link path. There is no payment
+  provider, webhook, automatic order creation or licence-key issuance.
+- The live Supabase round-trip (sign-up, confirmation, sign-in, posting and
+  deleting a topic) is still unverified because `SUPABASE_URL` and
+  `SUPABASE_ANON_KEY` are not configured. The unconfigured state is audited and
+  honest; the real flow is the only remaining unverified surface.

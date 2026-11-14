@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
-import { APP, LAUNCH, PLATFORMS } from '../data'
+import { APP, LAUNCH, TOOLS } from '../data'
 import { cx } from '../lib/cx'
 import { Logo } from './Bits'
 import { ButtonLink } from './Button'
@@ -21,7 +21,7 @@ export function StickyBar() {
   const [shown, setShown] = useState(false)
   const { format } = useCurrency()
   const live = launchActive()
-  const from = Math.min(...PLATFORMS.map((platform) => platform.price))
+  const from = Math.min(...TOOLS.map((tool) => tool.price))
   const price = live ? launchPrice(from) : from
 
   useEffect(() => {
@@ -46,8 +46,8 @@ export function StickyBar() {
           <span className="hidden font-mono text-[11px] tracking-[0.12em] text-muted uppercase sm:inline">
             from <span className="text-ink">{format(price)}</span>
           </span>
-          <ButtonLink to="/store" variant="violet" size="sm" iconRight={<ArrowRight className="size-4" />}>
-            Get a licence
+          <ButtonLink to="/store#catalogue" variant="violet" size="sm" iconRight={<ArrowRight className="size-4" />}>
+            Browse tools
           </ButtonLink>
         </div>
       </div>
@@ -59,7 +59,7 @@ export function StickyBar() {
 export function TrustBar({ className }: { className?: string }) {
   const facts = [
     { value: '02', label: 'Platforms supported' },
-    { value: '12', label: 'Months of updates' },
+    { value: String(TOOLS.length).padStart(2, '0'), label: 'Tools sold separately' },
     { value: '1×', label: 'One-time licence' },
   ]
   return (

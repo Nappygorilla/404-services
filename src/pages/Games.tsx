@@ -107,10 +107,10 @@ export function Games() {
                     {g.platforms.map((p) => (
                       <Link
                         key={p}
-                        to={`/products/${p}`}
+                        to={`/store?platform=${p}`}
                         className={cx('inline-flex min-h-10 items-center gap-1.5 text-sm font-medium text-ink underline-offset-4 hov:text-violet hov:underline')}
                       >
-                        {PLATFORM_LABEL[p]} licence
+                        {PLATFORM_LABEL[p]} tools
                         <ArrowRight className="size-3.5" aria-hidden />
                       </Link>
                     ))}
@@ -174,9 +174,9 @@ export function Games() {
 
       <Card className="flex flex-wrap items-center justify-between gap-6 p-6 sm:p-8">
         <p className="max-w-xl text-muted">
-          Building something that does not fit a category? The pipeline does not care what genre it is — point it at the project and it will tell you what is missing.
+          Building something that does not fit a category? The tools do not care what genre it is — point them at the project and they will tell you what is missing.
         </p>
-        <ArrowLink to="/docs">Read the docs</ArrowLink>
+        <div className="flex flex-wrap items-center gap-5"><ArrowLink to="/store">Browse the tools</ArrowLink><ArrowLink to="/docs" tone="ink">Read the docs</ArrowLink></div>
       </Card>
     </div>
   )

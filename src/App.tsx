@@ -45,10 +45,11 @@ function ScrollManager() {
   return null
 }
 
-/** The old platform routes now resolve to the licence product pages. */
+/** Old platform URLs resolve to the filtered shop instead of 404ing. */
 function PlatformRedirect() {
   const { slug = '' } = useParams()
-  return <Navigate to={`/products/${slug}`} replace />
+  const known = slug === 'fivem' || slug === 'roblox'
+  return <Navigate to={known ? `/store?platform=${slug}` : '/store'} replace />
 }
 
 function Pages() {

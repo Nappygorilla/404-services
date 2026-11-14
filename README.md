@@ -2,7 +2,7 @@
 
 LUNA is a desktop toolkit for creators working on FiveM and Roblox projects. It focuses on project inspection, dependency validation, repeatable builds, packaging, and authorized deployment.
 
-The repository also contains the LUNA website: a product storefront, platform guides, pricing information, account entry points, documentation, community forums, release notes, and system status.
+The repository also contains the LUNA website: an item-level product storefront, per-product pricing, account entry points, documentation, community forums, release notes, and system status.
 
 ## Stack
 
@@ -16,10 +16,12 @@ The repository also contains the LUNA website: a product storefront, platform gu
 ## Website routes
 
 - `/` — product-focused homepage
-- `/store` — two platform licences, each sold separately
-- `/products/fivem`, `/products/roblox` — licence detail pages with price and buy action
-- `/games` — category overview; categories are examples included in a platform licence
-- `/pricing` — per-platform licence pricing
+- `/store` — item catalogue with platform/type filters and search; every tool is sold separately
+- `/products/:slug` — tool and bundle detail pages with price, buy action, requirements, limits and related products
+- `/products/complete-toolkit` — the optional all-tools bundle
+- `/games` — category overview; categories are project types, not products
+- `/pricing` — every individual price plus the optional bundle
+- legacy `/products/fivem`, `/products/roblox`, `/platforms/fivem` and `/platforms/roblox` — redirect into the filtered store
 - `/downloads` — account-protected download library placeholder
 - `/orders` — account-protected order history placeholder
 - `/account` — customer dashboard
@@ -33,7 +35,7 @@ The repository also contains the LUNA website: a product storefront, platform gu
 - `/forums`, `/forums/announcements`, `/forums/issues`
 - `/terms`, `/refunds`, `/privacy`
 
-The Store sells the FiveM licence and the Roblox licence as two separate products, each with its own price and buy action. Every category on `/games` is included in the matching platform licence; categories are examples, not additional SKUs. Checkout is handled by email until card payments are connected, and the site says so rather than presenting a fake basket.
+The Store sells every tool as its own product, with its own price, product page and buy action. The Complete Toolkit is an optional bundle built from the same catalogue; it is not required and it is priced below the sum of the individual tools. Categories on `/games` are project types, not SKUs. Checkout is handled by email until card payments are connected, and the site says so rather than presenting a fake basket.
 
 ## Run locally
 
@@ -83,7 +85,7 @@ Before accepting payments, implement a server-only checkout session endpoint and
 
 - `src/pages/` — routed page components
 - `src/components/` — shared navigation, cards, forms, overlays, account context
-- `src/data.ts` — product/platform copy and site configuration
+- `src/data.ts` — the single catalogue of tools and bundles, plus site copy and configuration
 - `src/lib/` — Supabase client, API helpers, local utilities
 - `src/worker/index.ts` — Cloudflare Worker entry point
 - `supabase/` — database schemas and row-level security policies

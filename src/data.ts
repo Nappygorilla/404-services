@@ -31,8 +31,8 @@ export const MENU = [
   { label: 'Home', to: '/' },
   { label: 'Store', to: '/store' },
   { label: 'Games', to: '/games' },
-  { label: 'FiveM licence', to: '/products/fivem' },
-  { label: 'Roblox licence', to: '/products/roblox' },
+  { label: 'FiveM tools', to: '/store?platform=fivem' },
+  { label: 'Roblox tools', to: '/store?platform=roblox' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'Downloads', to: '/downloads' },
   { label: 'Orders', to: '/orders' },
@@ -84,24 +84,24 @@ export const HOME = {
   headline: ['Build.', 'Bundle.', 'Deploy.'],
   intro:
     'One desktop app that takes a project from loose files to a running server: resolve dependencies, build a clean bundle, validate it, and ship it without leaving your machine.',
-  primaryCta: 'Get luna.win',
+  primaryCta: 'Browse tools',
   secondaryCta: 'Read the docs',
   captionTop: 'One pipeline for two platforms',
   captionBottom: 'Runs offline. No account needed to build.',
-  platformTitle: ['Same app,', 'two licences'],
+  platformTitle: ['One app,', 'every tool'],
   platformNote:
-    'The build pipeline is shared. What changes is how a project is assembled, what gets checked, and where it lands.',
+    'The build pipeline is shared. Each tool solves one part of it, so you can buy only the pieces you need and add the rest later.',
   pipelineTitle: ['Three steps,', 'one command'],
   pipelineNote: 'Every step is scriptable, and none of them touch a running game client.',
   featuresTitle: ['What it', 'actually does'],
   featuresNote: 'Built for people who ship resources to a live server on a Friday night and would rather not be woken up.',
   changelogTitle: ['Always', 'moving'],
   pricingTitle: ['Simple', 'pricing'],
-  pricingNote: 'One-time licence. Twelve months of updates. No subscription to keep running.',
+  pricingNote: 'Individual tools, one-time prices. The complete bundle is optional. No subscription to keep running.',
   faqTitle: ['Before', 'you buy'],
   cta: {
     title: ['Ship the', 'next build'],
-    body: 'Pick a platform, point the app at a project, and see the dependency graph before you change anything.',
+    body: 'Pick a tool, point it at a project you own, and see the result before you change anything.',
     action: 'See pricing',
   },
 }
@@ -245,13 +245,6 @@ export type Platform = {
   tagline: string
   intro: string
   art: HoloKind
-  /** One-time price in euro cents. Platforms are sold separately. */
-  price: number
-  cta: string
-  features: { title: string; body: string }[]
-  workflow: string[]
-  requirements: string[]
-  limits: string[]
 }
 
 export const PLATFORMS: Platform[] = [
@@ -262,28 +255,6 @@ export const PLATFORMS: Platform[] = [
     intro:
       'Built around how a FiveM server is actually assembled: resources, shared libraries, load order and a manifest that has to be exactly right.',
     art: 'knot',
-    price: 3900,
-    cta: 'View FiveM licence',
-    features: [
-      { title: 'fxmanifest generation', body: 'Write dependencies once in your project file. luna.win generates the manifest for each resource and refuses to build one that references a file it cannot find.' },
-      { title: 'Load order and dependencies', body: 'The graph is ordered the way the server will load it, with shared libraries pulled forward. Cycles are reported with the path that creates them.' },
-      { title: 'Escrow-aware warnings', body: 'Escrowed files are encrypted and cannot be edited. luna.win flags any resource that expects to patch one, so the limitation appears at build time instead of at runtime.' },
-      { title: 'Server-side checks', body: 'Flags client code that reads or writes what should live on the server, the most common way a resource gets exploited.' },
-      { title: 'Deploy profiles', body: 'Save a host, path and restart strategy per environment, then deploy a bundle to staging or production by name.' },
-    ],
-    workflow: [
-      'Open a project folder or clone a repository from inside the app.',
-      'Build the graph and read the dependency report.',
-      'Bundle to `dist/` with a commit stamp.',
-      'Validate in strict mode, fix what it names.',
-      'Deploy to a saved profile and watch the health check.',
-    ],
-    requirements: ['A FiveM server you administer', 'Resources in a folder or Git repository', 'SFTP or provider API access for deploys'],
-    limits: [
-      'Does not modify escrowed (encrypted) assets — it works with them, not inside them.',
-      'Does not inject into the FiveM client, and never will.',
-      'Does not include or redistribute any Rockstar or Cfx.re content.',
-    ],
   },
   {
     slug: 'roblox',
@@ -292,33 +263,419 @@ export const PLATFORMS: Platform[] = [
     intro:
       'The same build and bundle model, applied to a Roblox project you own: a stable place file, a versioned build, and a deploy that you can undo.',
     art: 'prism',
-    price: 3900,
-    cta: 'View Roblox licence',
-    features: [
-      { title: 'Project import', body: 'Bring in a place or model file you own and keep the source under version control. luna.win tracks what changed between builds.' },
-      { title: 'Place build stamps', body: 'Every build records the source revision, the toolchain version and the time. Two builds from the same revision are identical.' },
-      { title: 'Asset reference audit', body: 'Lists every asset ID a project references, so you can see what is shared, what is missing and what changed since the last release.' },
-      { title: 'Publish to your own experience', body: 'Deploy through your own account authorisation to an experience you own. Nothing is published without an explicit confirm.' },
-      { title: 'Rollback', body: 'Keep the last N builds and republish one by name, rather than rebuilding from memory while players are online.' },
+  },
+]
+
+export const PLATFORM_LABEL: Record<'fivem' | 'roblox' | 'both', string> = {
+  fivem: 'FiveM',
+  roblox: 'Roblox',
+  both: 'Both platforms',
+}
+
+export const TOOL_KINDS = ['Build', 'Validate', 'Deploy', 'Project', 'Automate'] as const
+export type ToolKind = (typeof TOOL_KINDS)[number]
+export type ProductPlatform = 'fivem' | 'roblox' | 'both'
+
+export type ToolProduct = {
+  slug: string
+  name: string
+  tagline: string
+  description: string
+  kind: ToolKind
+  platform: ProductPlatform
+  /** One-time price in euro cents. Every tool is sold on its own. */
+  price: number
+  art: HoloKind
+  featured?: boolean
+  deliverables: string[]
+  requirements: string[]
+  limits: string[]
+}
+
+export type BundleProduct = {
+  slug: string
+  name: string
+  tagline: string
+  description: string
+  /** One-time bundle price in euro cents. */
+  price: number
+  art: HoloKind
+  deliverables: string[]
+  requirements: string[]
+  limits: string[]
+  /** Populated from TOOLS so the bundle can never drift from the catalogue. */
+  includes: string[]
+}
+
+export type Product = ToolProduct | BundleProduct
+
+/*
+  The catalogue. Every name, price, description, requirement and limit shown
+  anywhere on the site comes from this list — individual cards, product pages,
+  pricing rows, the home page and the support enquiry form all read it.
+  Prices are one-time, in euro cents, and cover one person on two machines.
+*/
+export const TOOLS: ToolProduct[] = [
+  {
+    slug: 'manifest-forge',
+    name: 'Manifest Forge',
+    tagline: 'Generate a valid fxmanifest for every resource.',
+    description:
+      'Write dependencies once in your project file. Manifest Forge generates the manifest for each resource, checks every referenced file exists, and fails the build instead of shipping something the server cannot load.',
+    kind: 'Build',
+    platform: 'fivem',
+    price: 1500,
+    art: 'knot',
+    featured: true,
+    deliverables: [
+      'A generated fxmanifest for each resource',
+      'Missing-file and path validation',
+      'A diff preview before anything is written',
     ],
-    workflow: [
-      'Import a place or model file you own, or connect a repository.',
-      'Run the asset audit and review the reference list.',
-      'Build a versioned place file.',
-      'Publish to a test experience first.',
-      'Promote the same build to production.',
+    requirements: [
+      'A FiveM resource folder or repository you administer',
+      'A luna.win project file',
     ],
-    requirements: ['A Roblox experience you own', 'An account with publish permission', 'Place or model files you are licensed to use'],
     limits: [
-      'Publishes only to experiences you own — never to another creator’s game.',
-      'Does not extract, rip or convert assets out of published Roblox games.',
+      'Does not edit escrowed or encrypted files.',
+      'Generates manifests only; it does not create server content.',
+    ],
+  },
+  {
+    slug: 'load-order',
+    name: 'Load Order',
+    tagline: 'Resolve shared libraries before the server does.',
+    description:
+      'Build the dependency graph in the order the server will load it. Shared libraries are pulled forward, and cycles are reported with the path that created them instead of failing silently at startup.',
+    kind: 'Build',
+    platform: 'fivem',
+    price: 1900,
+    art: 'star',
+    featured: true,
+    deliverables: [
+      'A dependency graph in server load order',
+      'Missing-dependency and cycle reports',
+      'A graph export your CI can read',
+    ],
+    requirements: [
+      'A FiveM project with two or more resources',
+      'Resource manifests present in the project',
+    ],
+    limits: [
+      'Does not install dependencies or download libraries.',
+      'Does not restart or modify a running server.',
+    ],
+  },
+  {
+    slug: 'escrow-guard',
+    name: 'Escrow Guard',
+    tagline: 'Catch escrow conflicts before runtime.',
+    description:
+      'Flags resources that expect to patch encrypted assets, so an escrow limitation appears during the build instead of on a live server. Each warning names the resource and the file it expected to edit.',
+    kind: 'Validate',
+    platform: 'fivem',
+    price: 1200,
+    art: 'scissors',
+    deliverables: [
+      'An escrow-aware validation pass',
+      'Resource and file references in every warning',
+      'A strict-mode option that fails the build',
+    ],
+    requirements: ['A FiveM project that uses escrowed assets'],
+    limits: [
+      'Does not decrypt or modify escrowed files.',
+      'Cannot make an encrypted asset editable.',
+    ],
+  },
+  {
+    slug: 'server-audit',
+    name: 'Server Audit',
+    tagline: 'Find client-side trust in server code.',
+    description:
+      'Flags client code that reads or writes state which belongs on the server, then points to the exact file and event. It is a static review tool, not a runtime exploit scanner.',
+    kind: 'Validate',
+    platform: 'fivem',
+    price: 1700,
+    art: 'sphere',
+    deliverables: [
+      'Server/client boundary checks',
+      'Event and state access warnings',
+      'A report you can attach to a code review',
+    ],
+    requirements: ['A FiveM resource you own or administer'],
+    limits: [
+      'A static check, not a runtime security test.',
+      'Does not patch your code automatically.',
+    ],
+  },
+  {
+    slug: 'deploy-profiles',
+    name: 'Deploy Profiles',
+    tagline: 'Ship a bundle to staging or production by name.',
+    description:
+      'Save a host, path and restart strategy per environment. Deploy Profiles uploads only the resources that changed, restarts just those, and waits for a health check before marking the deploy complete.',
+    kind: 'Deploy',
+    platform: 'fivem',
+    price: 2500,
+    art: 'prism',
+    featured: true,
+    deliverables: [
+      'Named staging and production profiles',
+      'Changed-resource restarts',
+      'A health-check gate and last-known-good bundle',
+    ],
+    requirements: [
+      'SFTP or provider API access to a server you administer',
+      'A project that already builds successfully',
+    ],
+    limits: [
+      'Does not host your server or manage its infrastructure.',
+      'Never deploys to a server you do not control.',
+    ],
+  },
+  {
+    slug: 'project-import',
+    name: 'Project Import',
+    tagline: 'Bring a place or model file under version control.',
+    description:
+      'Imports a Roblox place or model file you own, tracks what changed between builds, and keeps the source in your repository. No extraction from published games.',
+    kind: 'Project',
+    platform: 'roblox',
+    price: 1500,
+    art: 'cloud',
+    deliverables: [
+      'Place and model file import',
+      'Revision-aware source tracking',
+      'A build-to-build change list',
+    ],
+    requirements: [
+      'A Roblox experience you own',
+      'Place or model files you are licensed to use',
+    ],
+    limits: [
+      'Does not extract, rip or convert assets from published games.',
       'Does not modify or automate the Roblox client.',
+    ],
+  },
+  {
+    slug: 'build-stamps',
+    name: 'Build Stamps',
+    tagline: 'Make every Roblox build traceable.',
+    description:
+      'Records the source revision, toolchain version and build time, so two builds from the same revision are identical and a release can be traced back to a commit.',
+    kind: 'Build',
+    platform: 'roblox',
+    price: 1200,
+    art: 'sphere',
+    deliverables: [
+      'Commit and toolchain stamps',
+      'Reproducible build metadata',
+      'Build history inside the app',
+    ],
+    requirements: ['A Roblox project imported into luna.win'],
+    limits: [
+      'Stamps are metadata, not a cryptographic signature.',
+      'Does not publish anything by itself.',
+    ],
+  },
+  {
+    slug: 'asset-audit',
+    name: 'Asset Audit',
+    tagline: 'See every asset ID before you publish.',
+    description:
+      'Lists every asset a project references, shows what is shared or missing, and reports what changed since the previous release. It checks references; it does not download or re-host assets.',
+    kind: 'Validate',
+    platform: 'roblox',
+    price: 1700,
+    art: 'prism',
+    featured: true,
+    deliverables: [
+      'A complete asset ID inventory',
+      'Missing, shared and changed flags',
+      'The owning experience for each reference',
+    ],
+    requirements: ['A Roblox project you own'],
+    limits: [
+      'Does not download or re-host assets.',
+      'Cannot verify rights you do not hold.',
+    ],
+  },
+  {
+    slug: 'owned-publish',
+    name: 'Owned Publish',
+    tagline: 'Publish to an experience you own, with a confirm step.',
+    description:
+      'Uses your own Roblox authorisation to publish a build to a chosen owned experience. Nothing is published without an explicit confirmation, and test-to-production is the same build.',
+    kind: 'Deploy',
+    platform: 'roblox',
+    price: 2500,
+    art: 'star',
+    deliverables: [
+      'Authorisation through your own account',
+      'Test-to-production promotion',
+      'An explicit confirm before every publish',
+    ],
+    requirements: [
+      'A Roblox experience you own',
+      'An account with publish permission',
+    ],
+    limits: [
+      'Never publishes to another creator’s experience.',
+      'Does not automate the Roblox client.',
+    ],
+  },
+  {
+    slug: 'build-rollback',
+    name: 'Build Rollback',
+    tagline: 'Republish a known-good build by name.',
+    description:
+      'Keeps recent builds and lets you republish one without rebuilding while players are online. Rollback works on the builds luna.win retained, not on history that was never stored.',
+    kind: 'Deploy',
+    platform: 'roblox',
+    price: 1400,
+    art: 'cloud',
+    deliverables: [
+      'Configurable build retention',
+      'One-step republish of a retained build',
+      'Build notes and revision history',
+    ],
+    requirements: ['A project with at least one retained build'],
+    limits: [
+      'Rollback is limited to builds luna.win retained.',
+      'Does not restore deleted Roblox assets.',
+    ],
+  },
+  {
+    slug: 'strict-validation',
+    name: 'Strict Validation',
+    tagline: 'Turn warnings into a failed build.',
+    description:
+      'Runs the same checks as the app with strict mode enabled, names the file, line and suggested fix, and exits non-zero so CI cannot ship a warning as a release.',
+    kind: 'Validate',
+    platform: 'both',
+    price: 1900,
+    art: 'scissors',
+    deliverables: [
+      'Strict mode for every check',
+      'File and line references in each failure',
+      'Documented exit codes for CI',
+    ],
+    requirements: [
+      'A project that already builds',
+      'The LUNA CLI for CI use',
+    ],
+    limits: [
+      'Checks code; it does not run your server.',
+      'Does not fix warnings automatically.',
+    ],
+  },
+  {
+    slug: 'deterministic-bundles',
+    name: 'Deterministic Bundles',
+    tagline: 'The same input, byte for byte the same output.',
+    description:
+      'Packages only what is in the dependency graph, deduplicates shared libraries and stamps the archive with a commit. No stale files from three builds ago.',
+    kind: 'Build',
+    platform: 'both',
+    price: 1900,
+    art: 'knot',
+    deliverables: [
+      'A stable archive layout',
+      'Shared-library deduplication',
+      'A commit-stamped output',
+    ],
+    requirements: ['A project with resolved dependencies'],
+    limits: [
+      'Does not include undeclared files.',
+      'Does not upload the bundle anywhere.',
+    ],
+  },
+  {
+    slug: 'git-stamps',
+    name: 'Git Stamps',
+    tagline: 'Refuse a release from a dirty tree.',
+    description:
+      'Reads the working tree and stamps each build with its commit, while refusing to run on uncommitted changes unless you explicitly allow it. Rolling back starts with checking out.',
+    kind: 'Project',
+    platform: 'both',
+    price: 1200,
+    art: 'star',
+    deliverables: [
+      'Commit and branch metadata',
+      'A dirty-tree guard',
+      'Build-to-commit traceability',
+    ],
+    requirements: [
+      'A Git repository',
+      'Git installed on the build machine',
+    ],
+    limits: [
+      'Does not host or push your repository.',
+      'Does not resolve merge conflicts.',
+    ],
+  },
+  {
+    slug: 'ci-token',
+    name: 'CI Token',
+    tagline: 'Run the same checks from your pipeline.',
+    description:
+      'A scoped token lets CI build, bundle and validate with the same engine as the desktop app. Deploy permission is deliberately separate, and every failure has a documented exit code.',
+    kind: 'Automate',
+    platform: 'both',
+    price: 1900,
+    art: 'sphere',
+    deliverables: [
+      'A scoped CI token',
+      'Build, bundle and validate access',
+      'Deploy permission kept separate',
+    ],
+    requirements: [
+      'A CI runner with the LUNA CLI',
+      'A project that builds locally',
+    ],
+    limits: [
+      'CI tokens cannot deploy.',
+      'Tokens are revocable and expire.',
     ],
   },
 ]
 
+export const BUNDLE: BundleProduct = {
+  slug: 'complete-toolkit',
+  name: 'The Complete Toolkit',
+  tagline: 'Every tool in the catalogue, one optional bundle.',
+  description:
+    'All current FiveM and Roblox tools in one licence. The bundle is optional: buy a single tool if that is all you need, or take the complete toolkit and save against buying every product separately.',
+  price: 14900,
+  art: 'sphere',
+  deliverables: [
+    'Every tool currently in the catalogue',
+    'One bundle licence key',
+    'Both FiveM and Roblox workflows',
+    'Twelve months of updates',
+  ],
+  requirements: [
+    'A FiveM or Roblox project you own',
+    'Windows 10 (64-bit) or macOS 13 or later',
+  ],
+  limits: [
+    'Includes the tools listed at purchase; later tools are sold separately.',
+    'A bundle licence covers one person on two machines, not a team.',
+    'Does not include server hosting or third-party subscriptions.',
+  ],
+  includes: TOOLS.map((tool) => tool.slug),
+}
+
+export function isBundle(product: Product): product is BundleProduct {
+  return 'includes' in product
+}
+
+export function productBySlug(slug: string): Product | undefined {
+  return TOOLS.find((tool) => tool.slug === slug) ?? (BUNDLE.slug === slug ? BUNDLE : undefined)
+}
+
 export function platformBySlug(slug: string) {
-  return PLATFORMS.find((p) => p.slug === slug)
+  return PLATFORMS.find((platform) => platform.slug === slug)
 }
 
 /* ------------------------------------------------------------------- games */
@@ -443,28 +800,58 @@ export const LAUNCH = {
   multiplier: 0.8,
 }
 
-/** What every platform licence includes, whatever the platform. */
+/** What every tool or bundle licence includes. */
 export const LICENCE_INCLUDES = [
-  'Twelve months of updates',
+  'One-time payment · twelve months of updates',
   'One person, two machines',
-  'Unlimited projects and servers',
-  'Offline builds, no telemetry',
+  'Offline validation and builds',
+  'No telemetry, no subscription',
 ]
 
 export const PRICING_POINTS = [
-  { title: 'One licence per platform', body: 'FiveM and Roblox are sold separately, so you only pay for the platform you build on. Add the other licence later at the same price.' },
-  { title: 'One-time, not a subscription', body: 'You buy the licence once. The app keeps working after the update year ends — you simply stop receiving new versions.' },
-  { title: 'Updates for twelve months', body: 'Every release for a year, including platform changes. After that, renew at 50% of what you paid if you want another year.' },
-  { title: 'Two machines, no server limit', body: 'A licence covers one person on two machines, so a laptop and a desktop both work. Projects and servers are unlimited on the platform the licence names.' },
+  {
+    title: 'Buy one tool at a time',
+    body: 'Every tool in the store is its own product with its own price, product page and buy action. Start with the one problem you need to solve today.',
+  },
+  {
+    title: 'The bundle is optional',
+    body: 'The Complete Toolkit collects every current tool for less than buying them separately. It is a bundle, not a subscription and not a requirement.',
+  },
+  {
+    title: 'One-time, not a subscription',
+    body: 'You buy the licence once. The tool keeps working after the update year ends — you simply stop receiving new versions.',
+  },
+  {
+    title: 'Updates for twelve months',
+    body: 'Every release for a year, including platform changes. After that, renew at 50% of what you paid if you want another year.',
+  },
 ]
 
 export const PRICING_FAQ = [
-  { q: 'Do I need both licences?', a: 'Only if you build on both platforms. Each licence is sold separately and covers one platform; buying the other later costs the same as buying it now.' },
-  { q: 'What happens when my update year ends?', a: 'The app keeps working at the last version you received. Renewing is optional and costs 50% of the price you originally paid; there is no automatic charge and nothing stops working.' },
-  { q: 'Can I move my licence to a new computer?', a: 'Yes. Deactivate the old machine in the app under Account → Licence, then activate the new one. Every licence allows two active machines at a time.' },
-  { q: 'Do you offer invoices and VAT numbers?', a: 'Yes. Checkout collects a VAT number for business buyers and the invoice is issued by the merchant of record. If you buy both platform licences, email us and we will put them on one invoice.' },
-  { q: 'Can I use one licence for several servers?', a: 'Yes. A licence covers a person, not a server, and projects and servers are unlimited on the platform it names.' },
-  { q: 'What is your refund policy?', a: 'Fourteen days, unless you asked to start using the software immediately and confirmed you understood that ends the right. The full policy is on the refunds page.' },
+  {
+    q: 'Do I have to buy the whole toolkit?',
+    a: 'No. Every tool is sold separately. Buy only the products you need; the Complete Toolkit is an optional bundle for people who want all of them.',
+  },
+  {
+    q: 'Does the bundle cost less than buying separately?',
+    a: 'Yes. The bundle price is lower than the sum of the current individual tool prices, and the store shows both so you can decide. The saving is calculated from the catalogue, not a countdown trick.',
+  },
+  {
+    q: 'Can I add a tool later?',
+    a: 'Yes. Tools are separate products, so you can buy one now and another when you need it. If you already own a tool, the bundle price is not automatically reduced — contact us before buying the bundle.',
+  },
+  {
+    q: 'What happens when my update year ends?',
+    a: 'Each tool keeps working at the last version you received. Renewing is optional and costs 50% of the price you originally paid; there is no automatic charge.',
+  },
+  {
+    q: 'Can I move a licence to a new computer?',
+    a: 'Yes. Deactivate the old machine in the app under Account → Licence, then activate the new one. Every product licence allows two active machines for one person.',
+  },
+  {
+    q: 'Do you offer invoices and VAT numbers?',
+    a: 'Yes. Checkout collects a VAT number for business buyers and the invoice is issued by the merchant of record. If you buy several tools, email us and we will put them on one invoice.',
+  },
 ]
 
 /* -------------------------------------------------------------- changelog */
@@ -526,7 +913,7 @@ export const DOC_SECTIONS = [
   {
     id: 'install',
     title: 'Install',
-    body: 'Download the build, open it, and paste the licence key for the platform you bought when prompted. Each licence covers one platform.',
+    body: 'Download the app, open it, and paste the licence key for the tool or bundle you bought when prompted. Every product has its own key and covers one person on two machines.',
     code: ['# macOS', 'brew install --cask luna.win', '', '# Windows', 'winget install luna.win.luna.win'],
   },
   {
@@ -561,7 +948,7 @@ export const DOC_TROUBLESHOOTING = [
 export const SUPPORT = {
   title: ['Get', 'unstuck'],
   intro:
-    'Email reaches a person, not a ticket queue. Include your version, your platform and the last few lines of the build log — that is usually enough to answer in one reply.',
+    'Email reaches a person, not a ticket queue. Include your version, the tool or bundle you are asking about, and the last few lines of the build log — that is usually enough to answer in one reply.',
   responseTimes: [
     { audience: 'Before you buy', time: 'Email, within 2 working days' },
     { audience: 'Licence holders', time: 'Email, within 1 working day' },
@@ -569,15 +956,16 @@ export const SUPPORT = {
   checklist: [
     'The app version from Help → About, and your OS version.',
     'The command you ran and the full output, not a screenshot of part of it.',
-    'Whether the project is FiveM or Roblox, and roughly how many resources it has.',
+    'Whether the product is a single tool or the bundle, which platform you build on, and roughly how many resources the project has.',
     'Anything you changed since the last build that worked.',
   ],
 }
 
 export const SUPPORT_FAQ = [
   { q: 'Where do I get my licence key?', a: 'It is in the receipt email from the store, and on the download page after checkout. If it is lost, email us from the address you bought with and we will resend it.' },
-  { q: 'How many machines can I activate?', a: 'Every platform licence activates on two machines for one person. Deactivate a machine in the app before moving to a new one.' },
-  { q: 'Do I need a separate licence for each platform?', a: 'Yes. The FiveM licence and the Roblox licence are bought separately; each one unlocks the workflows and deploys for that platform.' },
+  { q: 'How many machines can I activate?', a: 'Every tool and bundle licence activates on two machines for one person. Deactivate a machine in the app before moving to a new one.' },
+  { q: 'Do I need the complete kit?', a: 'No. Each tool is sold separately. If you only need one workflow, buy that tool; the Complete Toolkit is an optional bundle.' },
+  { q: 'Is the bundle cheaper than buying every tool?', a: 'Yes. The bundle is priced below the sum of the current individual products. If you already own some tools, contact us before buying the bundle.' },
   { q: 'Do you offer migration help from another toolchain?', a: 'Yes — we will look at your project layout and tell you what a migration would involve. It is a conversation, not a paid service.' },
   { q: 'Is there a Discord?', a: 'Yes, for community help and release notes. It is not required to buy, download or run anything.' },
 ]
@@ -599,7 +987,7 @@ export const TERMS: LegalSection[] = [
   {
     heading: 'What you are licensed to do',
     body: [
-      'We grant you a non-exclusive, non-transferable licence to install and use luna.win for the platform the licence names, on up to two active machines. A seat is one person. Projects and servers on that platform are unlimited. The FiveM and Roblox licences are separate products.',
+      'We grant you a non-exclusive, non-transferable licence to install and use the luna.win tool or bundle the licence names, on up to two active machines. A seat is one person. Projects and servers you administer are unlimited. Individual tools and the Complete Toolkit are separate products, and the bundle only includes the tools listed on its product page at purchase.',
       'You may use the software to build and deploy projects for clients. You may not resell, sublicense, rent or redistribute the software itself, or include it in a product you distribute.',
     ],
   },
