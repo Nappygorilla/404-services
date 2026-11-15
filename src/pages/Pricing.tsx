@@ -144,7 +144,7 @@ export function Pricing() {
           ))}
         </ul>
         <div className="flex flex-wrap items-center justify-between gap-3 px-2 py-1 text-sm text-muted">
-          <p>Buying several profiles? Email us for one invoice. Prices include VAT where it applies.</p>
+          <p>Prices include VAT where it applies. Paddle issues the invoice as merchant of record.</p>
           <ArrowLink to="/refunds" tone="ink" size="sm">Refund policy</ArrowLink>
         </div>
       </section>

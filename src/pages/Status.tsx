@@ -35,7 +35,7 @@ export function Status() {
     { name: 'Website API', detail: 'Cloudflare Worker health endpoint', icon: Server, label: apiLabel, ok: apiState === 'operational' },
     { name: 'Account configuration', detail: 'Supabase client environment settings are present', icon: ShieldCheck, label: supabaseConfigured ? 'Configured' : 'Not configured', ok: supabaseConfigured },
     { name: 'Secure downloads', detail: 'Private file storage and entitlement checks', icon: CloudDownload, label: 'Not connected', ok: false },
-    { name: 'Checkout', detail: 'Payment provider and verified purchase webhooks', icon: CreditCard, label: 'Not connected', ok: false },
+    { name: 'Checkout', detail: 'Paddle hosted checkout and signature-verified purchase webhooks', icon: CreditCard, label: 'Server-side', ok: false },
   ]
   const latest = CHANGELOG[0]
 

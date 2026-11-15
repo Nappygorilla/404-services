@@ -1,11 +1,11 @@
 import { SITE } from '../data'
 
-/** Every buy action lands on the support page with the product preselected. */
+/** Every buy action starts the signed-in Paddle checkout for one product. */
 export function checkoutHref(slug: string) {
-  return `/support?product=${encodeURIComponent(slug)}#buy`
+  return `/checkout?product=${encodeURIComponent(slug)}`
 }
 
-/** A product-specific email enquiry for the existing email/payment-link checkout. */
+/** A product-specific email enquiry for pre-sale or order support. */
 export function orderMailto(productName: string) {
   const subject = `${productName} — licence enquiry`
   const body = [

@@ -9,7 +9,7 @@ import { Holo } from '../components/Holo'
 import { PageHero } from '../components/Nav'
 import { PriceTag } from '../components/ProductCards'
 import { APP, BUNDLE, PLATFORM_LABEL, SITE, SUPPORT, SUPPORT_FAQ, isBundle, productBySlug } from '../data'
-import { orderMailto } from '../lib/commerce'
+import { checkoutHref, orderMailto } from '../lib/commerce'
 import { useDocumentTitle } from '../lib/storage'
 
 export function Support() {
@@ -43,7 +43,7 @@ export function Support() {
         <Card tone="night" className="p-6 sm:p-8">
           <Title id="buy-title" lines={['Buying', selected ? 'this cheat' : 'a licence']} align="left" size="sm" />
           <p className="mt-5 max-w-xl text-white/85">
-            Checkout is handled by email while card payments are being connected. Every cheat is sold separately and {BUNDLE.name} is optional. Write to us with the profile you want and we will send a payment link and a VAT invoice, then issue your key.
+            Checkout is handled by Paddle, our merchant of record. Sign in, choose a cheat and pay on Paddle’s hosted checkout; card details never reach this site. Every cheat is sold separately and {BUNDLE.name} is optional. After Paddle confirms payment, the order and download entitlement appear in your account.
           </p>
 
           {selected && (
@@ -61,18 +61,18 @@ export function Support() {
 
           <div className="mt-7 flex flex-wrap items-center gap-4">
             <ButtonLink
-              to={orderMailto(selected?.name ?? 'Cheat licence')}
+              to={selected ? checkoutHref(selected.slug) : '/store'}
               variant="light"
               iconRight={<ArrowRight className="size-4" aria-hidden />}
             >
-              Ask for a payment link
+              {selected ? 'Continue to checkout' : 'Choose a cheat'}
             </ButtonLink>
             <ArrowLink to="/pricing" tone="light" size="sm">
               Compare prices
             </ArrowLink>
           </div>
           <p className="mt-6 text-sm text-night-muted">
-            {selected ? 'The price above is fixed for the launch window; your email gets a payment link for that cheat.' : 'Browse the store to see every cheat and its price before you write.'}
+            {selected ? 'Paddle shows the final amount, currency and applicable tax before you pay.' : 'Browse the store to see every cheat and its price, then start checkout from its product page.'}
           </p>
         </Card>
 

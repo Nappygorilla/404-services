@@ -43,7 +43,7 @@ export function Footer() {
               <Logo wordmark />
             </Link>
             <p className="mt-5 text-[15px] leading-relaxed text-white/55">
-              One loader, {TOOLS.length} FiveM and Roblox profiles. Visuals, aim assist, executors, scripts and mod menus — picked by you, delivered by email.
+              One loader, {TOOLS.length} FiveM and Roblox profiles. Visuals, aim assist, executors, scripts and mod menus — picked by you, delivered through your account.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <ButtonLink to="/store" variant="violet" size="sm" iconRight={<ArrowUpRight className="size-4" aria-hidden />}>
@@ -100,9 +100,9 @@ export function Footer() {
 
         <div className="flex flex-col gap-4 border-b border-white/10 py-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] text-white/40">
-            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-3.5 text-acid" /> Checkout by email and secure payment link</span>
+            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-3.5 text-acid" /> Secure checkout by Paddle</span>
             <span>One-time licence</span>
-            <span>Key delivered by email</span>
+            <span>Access in your account</span>
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-1">
             {FOOTER.legalLinks.map((item) => (

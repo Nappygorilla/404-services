@@ -4,9 +4,11 @@ This is the backend runbook for accounts, the issues forum and support tickets.
 The storefront catalogue itself is static; it does not need a database.
 
 > **Existing project:** The `404-services` project has already been aligned
-> with the storefront and seeded. If you are repairing that project, apply
-> `supabase/migrations/20261115_align_404_services_backend.sql` once instead of
-> the two setup files in step 3. Use the setup files only for a fresh project.
+> with the storefront, seeded, and given the Paddle fulfillment migration. If
+> you are repairing that project, apply
+> `supabase/migrations/20261115_align_404_services_backend.sql` and
+> `supabase/migrations/20261115_paddle_fulfillment.sql` once each instead of the
+> two setup files in step 3. Use the setup files only for a fresh project.
 
 ## 1. Create the project
 
@@ -66,10 +68,12 @@ Open **SQL Editor** and run these in order:
    support tickets.
 3. `supabase/migrations/20261115_create_release_bucket.sql` — the private
    `product-releases` Storage bucket.
+4. `supabase/migrations/20261115_paddle_fulfillment.sql` — Paddle price mapping,
+   bundle composition and the atomic `fulfill_paddle_order` function.
 
-The files are idempotent for tables, indexes, policies and the bucket, so they
-can be run again to repair a partial setup. They must still be run in that order
-on a fresh project.
+The files are idempotent for tables, indexes, policies, functions and the bucket,
+so they can be run again to repair a partial setup. On a fresh project, run them
+in that order.
 
 The browser can only read its own orders, entitlements and tickets. Orders,
 order items, entitlements and release-asset pointers have no browser write
@@ -152,7 +156,150 @@ root after logging in:
 supabase functions deploy signed-download
 ```
 
-## 6. Smoke test
+## 6. Connect Paddle
+
+Paddle Billing is the merchant of record. The browser never chooses a price or a
+customer; it asks `paddle-checkout` for a hosted checkout, and access is granted
+only by the signature-verified `paddle-webhook`. Never put a Paddle key or
+webhook secret in a `VITE_*` variable.
+
+### 6.1 Create Paddle prices
+
+Create one **one-time** Paddle price per published product. Use EUR prices so
+they match the storefront. The storefront currently shows a launch price until
+31 January 2027; create the Paddle price for the amount customers should
+actually pay at checkout. If you do not want launch pricing, change `LAUNCH` in
+`src/data.ts` before creating the prices.
+
+| Product slug | Base EUR | Launch EUR (until 31 Jan 2027) |
+| --- | ---: | ---: |
+| `fivem-external` | 19.99 | 16.00 |
+| `fivem-internal` | 29.99 | 24.00 |
+| `fivem-aim` | 14.99 | 12.00 |
+| `fivem-visuals` | 17.99 | 14.00 |
+| `fivem-lua` | 14.99 | 12.00 |
+| `fivem-script-hub` | 24.99 | 20.00 |
+| `roblox-executor` | 19.99 | 16.00 |
+| `roblox-aim` | 14.99 | 12.00 |
+| `roblox-visuals` | 17.99 | 14.00 |
+| `roblox-script-hub` | 24.99 | 20.00 |
+| `roblox-mod-menu` | 29.99 | 24.00 |
+| `roblox-external` | 24.99 | 20.00 |
+| `stream-proof` | 9.99 | 8.00 |
+| `cloud-configs` | 7.99 | 6.00 |
+| `complete-toolkit` | 69.99 | 56.00 |
+
+The optional `complete-toolkit` bundle includes every other published product
+through `product_bundle_items`. Its own Paddle price is the only price needed for
+the bundle; the webhook grants the included products.
+
+### 6.2 Map price IDs
+
+Copy each `pri_…` ID from Paddle, replace every `pri_REPLACE` below, and run the
+statement in the SQL editor. Price IDs must be unique.
+
+```sql
+update public.products p
+set paddle_price_id = v.price_id
+from (values
+  ('fivem-external', 'pri_REPLACE'),
+  ('fivem-internal', 'pri_REPLACE'),
+  ('fivem-aim', 'pri_REPLACE'),
+  ('fivem-visuals', 'pri_REPLACE'),
+  ('fivem-lua', 'pri_REPLACE'),
+  ('fivem-script-hub', 'pri_REPLACE'),
+  ('roblox-executor', 'pri_REPLACE'),
+  ('roblox-aim', 'pri_REPLACE'),
+  ('roblox-visuals', 'pri_REPLACE'),
+  ('roblox-script-hub', 'pri_REPLACE'),
+  ('roblox-mod-menu', 'pri_REPLACE'),
+  ('roblox-external', 'pri_REPLACE'),
+  ('stream-proof', 'pri_REPLACE'),
+  ('cloud-configs', 'pri_REPLACE'),
+  ('complete-toolkit', 'pri_REPLACE')
+) as v(slug, price_id)
+where p.slug = v.slug;
+
+select slug, paddle_price_id
+from public.products
+where status = 'published'
+order by slug;
+```
+
+Every published product used in checkout must have a price. If you add a new
+product later, add its price ID and its bundle membership in the same way.
+
+### 6.3 Set the Edge Function secrets
+
+In **Project Settings → Edge Functions → Secrets** (or with `supabase secrets
+set`), add:
+
+- `PADDLE_API_KEY` — a Paddle API key for the same environment as the prices.
+- `PADDLE_WEBHOOK_SECRET` — the secret from the Paddle notification destination
+  created in step 6.5.
+- `PADDLE_ENVIRONMENT` — `sandbox` while testing, or omit / use `production` for
+  live payments.
+
+Do not paste these values into chat, GitHub Actions variables, `.env.example` or
+any `VITE_*` variable. `PADDLE_API_KEY` is an Authorization bearer credential;
+`PADDLE_WEBHOOK_SECRET` verifies event authenticity.
+
+### 6.4 Deploy the functions
+
+```sh
+supabase functions deploy paddle-checkout
+supabase functions deploy paddle-webhook --no-verify-jwt
+```
+
+`paddle-checkout` keeps JWT verification on: only a signed-in customer can ask
+for a checkout. `paddle-webhook` must not require a Supabase JWT because Paddle
+cannot send one; the function verifies the `Paddle-Signature` HMAC itself. If you
+deploy from the dashboard instead, turn **Verify JWT** off for `paddle-webhook`
+only.
+
+### 6.5 Configure the Paddle notification destination
+
+In Paddle, open **Developer Tools → Notifications** and create a destination:
+
+- URL: `https://revaqphykwrawrdhbhpt.supabase.co/functions/v1/paddle-webhook`
+- Events: `transaction.completed`
+- Copy the destination’s secret key into `PADDLE_WEBHOOK_SECRET`.
+
+The function checks the `Paddle-Signature` header over the raw request body,
+rejects timestamps older than five minutes, and matches the hex digest in
+constant time. It only fulfills `transaction.completed`; other subscribed events
+are acknowledged and ignored. Paddle retries are safe because `orders`,
+`order_items` and `user_entitlements` are written by one idempotent function keyed
+by the Paddle transaction ID.
+
+### 6.6 Configure hosted checkout
+
+In Paddle **Checkout settings**, set a default payment link for the store. The
+server creates a transaction with `enable_checkout: true`; Paddle returns
+`checkout.url` only when a payment link is available. If it is missing, checkout
+returns `503` and no browser redirect happens.
+
+### 6.7 Test in sandbox
+
+1. Set `PADDLE_ENVIRONMENT=sandbox` and use sandbox price IDs, a sandbox API key
+   and a sandbox notification secret.
+2. Sign in on the site, open a product and choose **Continue to Paddle**.
+3. Complete a sandbox card payment. Paddle should deliver
+   `transaction.completed` to the webhook.
+4. Confirm a new row in `orders`, its `order_items`, and active
+   `user_entitlements`; the buyer’s `/orders` and `/downloads` pages should show
+   the purchase. For `complete-toolkit`, every included product should have an
+   entitlement.
+5. Replay the same webhook in Paddle or send a duplicate event. The order should
+   not duplicate and no extra entitlements should appear.
+6. An unsigned POST to the webhook should return `401` once the secret is set. A
+   POST to `paddle-checkout` without a user session should return `401`.
+
+A browser redirect after payment is not proof of payment. If a test payment does
+not produce an order, inspect the Edge Function logs before changing the
+database.
+
+## 7. Smoke test
 
 1. Build and deploy with the new values. `/status` should show
    **Account configuration: Configured**.
@@ -170,8 +317,8 @@ select tablename, rowsecurity
 from pg_tables
 where schemaname = 'public'
   and tablename in (
-    'forum_threads', 'products', 'product_releases', 'release_assets',
-    'orders', 'order_items', 'user_entitlements', 'support_tickets'
+    'forum_threads', 'products', 'product_bundle_items', 'product_releases',
+    'release_assets', 'orders', 'order_items', 'user_entitlements', 'support_tickets'
   )
 order by tablename;
 ```
@@ -181,15 +328,16 @@ Every row should have `rowsecurity = true`.
 ## What this setup does not connect
 
 Authentication, the forum and support tickets work with the steps above. The
-private bucket, entitlement check and signed-download function are implemented;
-the remaining work is uploading real release files and registering their
-`product_releases` and `release_assets` rows.
+private bucket, entitlement check, signed-download function, Paddle checkout and
+Paddle webhook are implemented. Live commerce still needs the operator steps in
+section 6: secrets, price IDs, a notification destination and a default payment
+link. The remaining delivery work is uploading real release files and
+registering their `product_releases` and `release_assets` rows.
 
-Payments, verified order creation and entitlement issuance are still
-server-side work. Do not add a browser insert policy for orders or entitlements
-to make a checkout demo appear to work. The site labels checkout as not
-connected until a verified payment flow exists; it does not invent orders or
-licences.
+Do not add a browser insert policy for orders or entitlements to make a checkout
+demo appear to work. Only the signed Paddle webhook calls `fulfill_paddle_order`;
+the function is idempotent per transaction and runs with service-role-only
+execute permission. The site never invents orders or licences.
 
 ## Troubleshooting
 
@@ -205,11 +353,21 @@ licences.
 | Download says no published release file | Upload a file to `product-releases` and register matching `product_releases` and `release_assets` rows. |
 | Download returns 401 or 403 | Sign in again, then confirm the account has an active, unexpired `user_entitlements` row for that product. |
 | Download works locally but not on a custom domain | Add that exact origin to `ALLOWED_ORIGINS` in the function and redeploy. |
+| Checkout says “Checkout is not connected yet.” | Set `PADDLE_API_KEY` as a Supabase Edge Function secret and redeploy only if the function code changed. |
+| Checkout says “Checkout is not configured for this product yet.” | Set `products.paddle_price_id` for that published product. |
+| Checkout says “Paddle checkout is not ready for this store yet.” | Configure a default payment link in Paddle Checkout settings; otherwise Paddle returns no `checkout.url`. |
+| Paddle webhook gets `401` before the function runs | Turn off Supabase **Verify JWT** for `paddle-webhook` only, or deploy it with `--no-verify-jwt`. |
+| Webhook logs “A purchased price is not mapped to a product.” | The Paddle price ID is not in `products.paddle_price_id`; fix the mapping and replay the event. |
+| Payment succeeds but no order appears | Check the Paddle notification destination is subscribed to `transaction.completed`, its secret matches `PADDLE_WEBHOOK_SECRET`, and inspect the Edge Function logs. |
+| Paddle returns “authentication required” or a 403 | The API key and price IDs belong to different Paddle environments; use sandbox values together or production values together. |
 
 ## Secret rules
 
 - Commit only `.env.example`, never `.env`.
-- Keep `service_role` keys and database passwords out of the frontend, the
-  repository and GitHub Actions configuration used for this static build.
+- Keep `service_role` keys, `PADDLE_API_KEY`, `PADDLE_WEBHOOK_SECRET` and
+  database passwords out of the frontend, the repository and GitHub Actions
+  configuration used for this static build.
+- Paddle secrets belong in Supabase Edge Function secrets. Never prefix them
+  with `VITE_` and never paste them into chat or a support ticket.
 - The public anon/publishable key is safe in a browser; RLS is what protects the
   data. It is stored as an Actions variable, not a secret.

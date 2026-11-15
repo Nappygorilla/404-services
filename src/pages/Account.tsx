@@ -74,8 +74,8 @@ export function Account() {
       </section>
 
       <Card className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
-        <div><p className="caps text-violet">Commerce connection</p><h2 className="mt-2 text-lg font-semibold">Purchases and licenses are not connected yet.</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">Your sign-in is working, but this build does not yet connect checkout, order creation, or entitlement issuance. Those areas will display verified account data once the payment and server-side workflows are configured.</p></div>
-        <Badge tone="outline">Pending integration</Badge>
+        <div><p className="caps text-violet">Purchases</p><h2 className="mt-2 text-lg font-semibold">Orders and licences live in your account.</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">Checkout runs on Paddle’s hosted page. After Paddle confirms payment, the order and download entitlement are recorded server-side and appear under Orders and Downloads.</p></div>
+        <Badge tone="success">Paddle</Badge>
       </Card>
     </div>
   )

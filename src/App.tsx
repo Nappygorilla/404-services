@@ -10,6 +10,7 @@ import { StickyBar } from './components/Storefront'
 import { Account } from './pages/Account'
 import { Login, Register } from './pages/Auth'
 import { Changelog } from './pages/Changelog'
+import { Checkout } from './pages/Checkout'
 import { ForumBoard, Forums } from './pages/Forums'
 import { Docs } from './pages/Docs'
 import { Downloads } from './pages/Downloads'
@@ -69,6 +70,7 @@ function Pages() {
           <Route index element={<Home />} />
           <Route path="store" element={<Store />} />
           <Route path="products/:slug" element={<Product />} />
+          <Route path="checkout" element={<Checkout />} />
           <Route path="downloads" element={<Downloads />} />
           <Route path="orders" element={<Orders />} />
           <Route path="account/tickets" element={<Tickets />} />

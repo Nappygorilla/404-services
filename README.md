@@ -11,7 +11,9 @@ The repository contains the storefront: an item-level catalogue, per-product pri
 - React Router
 - Motion for transitions and small interactions
 - Cloudflare Workers / Workers Assets
-- Supabase Auth and Postgres for accounts and community data
+- Supabase Auth and Postgres for accounts, orders, entitlements and community data
+- Supabase Edge Functions for Paddle checkout and signed downloads
+- Paddle Billing for hosted checkout, tax and merchant-of-record invoicing
 
 ## Website routes
 
@@ -22,8 +24,9 @@ The repository contains the storefront: an item-level catalogue, per-product pri
 - `/games` — game overview; categories are play styles, not products
 - `/pricing` — every individual price plus the optional bundle
 - legacy `/products/fivem`, `/products/roblox`, `/platforms/fivem` and `/platforms/roblox` — redirect into the filtered store
+- `/checkout?product=slug` — signed-in Paddle hosted checkout for one product
 - `/downloads` — account-protected download library with entitlement-checked signed links
-- `/orders` — account-protected order history placeholder
+- `/orders` — account-protected order history
 - `/account` — customer dashboard
 - `/account/profile` — display-name settings
 - `/account/security` — password and current-device sign-out
@@ -35,7 +38,7 @@ The repository contains the storefront: an item-level catalogue, per-product pri
 - `/forums`, `/forums/announcements`, `/forums/issues`
 - `/terms`, `/refunds`, `/privacy`
 
-Every cheat has its own price, product page and buy action. 404 Complete is an optional bundle built from the same catalogue; it is not required and is priced below the sum of the individual profiles. Categories on `/games` are play styles, not SKUs. Checkout is handled by email until card payments are connected, and the site says so rather than presenting a fake basket.
+Every cheat has its own price, product page and buy action. 404 Complete is an optional bundle built from the same catalogue; it is not required and is priced below the sum of the individual profiles. Categories on `/games` are play styles, not SKUs. Checkout is created server-side and completed on Paddle’s hosted checkout; the browser never chooses the Paddle price or grants access. Orders and entitlements are written only by the signature-verified Paddle webhook.
 
 ## Run locally
 
@@ -52,7 +55,7 @@ The Vite/Cloudflare plugin runs the Worker during local development. The build o
 
 ## Backend setup
 
-Accounts, the issues forum, support tickets and private release delivery use Supabase. The complete project, SQL, auth-URL, release-upload and GitHub Actions setup is in [SUPABASE-SETUP.md](SUPABASE-SETUP.md). Private releases are served by the `signed-download` Edge Function after an active entitlement check.
+Accounts, the issues forum, support tickets, Paddle order fulfillment and private release delivery use Supabase. The complete project, SQL, auth-URL, release-upload, Paddle and GitHub Actions setup is in [SUPABASE-SETUP.md](SUPABASE-SETUP.md). Private releases are served by the `signed-download` Edge Function after an active entitlement check. `paddle-checkout` creates a hosted checkout for the signed-in customer; `paddle-webhook` verifies Paddle’s signature and calls the atomic `fulfill_paddle_order` function.
 
 ## Environment
 
@@ -67,22 +70,24 @@ When Supabase is not configured, account- and community-backed surfaces display 
 
 ## Marketplace database
 
-The original community schema is in `supabase/schema.sql`. The additive marketplace schema is in `supabase/marketplace.sql`; apply it after the original schema.
+The original community schema is in `supabase/schema.sql`. The additive marketplace schema is in `supabase/marketplace.sql`; apply it after the original schema. Paddle price mapping, bundle composition and fulfillment are added by `supabase/migrations/20261115_paddle_fulfillment.sql`.
 
-The marketplace schema provides catalogue metadata, release records, orders, order items, user entitlements, support tickets and a private release-asset pointer table. Customer pages read their own order and entitlement rows and can submit support tickets under row-level security. Row-level security permits customers to read only their own account records. Browser clients cannot create orders or entitlements.
+The marketplace schema provides catalogue metadata, release records, orders, order items, user entitlements, support tickets and a private release-asset pointer table. The Paddle migration adds `products.paddle_price_id`, `product_bundle_items` and an atomic `fulfill_paddle_order` function. Customer pages read their own order and entitlement rows and can submit support tickets under row-level security. Row-level security permits customers to read only their own account records. Browser clients cannot create orders or entitlements.
 
 ### Not connected yet
 
-This branch does not claim that commerce is live:
+The Paddle checkout and webhook handlers are deployed, but live payments still need operator configuration:
 
-- No payment provider credentials or verified webhook handler are configured.
+- `PADDLE_API_KEY`, `PADDLE_WEBHOOK_SECRET` and (for sandbox) `PADDLE_ENVIRONMENT` must be set as Supabase Edge Function secrets.
+- Every published product needs a `paddle_price_id` mapped to a live Paddle price.
+- Paddle needs a notification destination pointing at `paddle-webhook` with `transaction.completed` selected, plus a default payment link configured for hosted checkout.
 - No production loader binaries are uploaded yet. The private `product-releases` bucket and the `signed-download` Edge Function are implemented; add a release row and asset pointer after uploading a real file.
 - No external uptime monitor or incident feed is configured.
 - Support tickets can be submitted and read by their owner, but staff replies and status management still need an operator workflow.
 - Email-change verification and multi-factor authentication are not configured.
-- The Orders page reads order rows populated by trusted server-side payment handling. The Downloads / Licences page requests a 60-second link from the Edge Function; until a release is published, it explains that no file is attached.
+- The Orders page reads order rows populated by the Paddle webhook. The Downloads / Licences page requests a 60-second link from the Edge Function; until a release is published, it explains that no file is attached.
 
-Before accepting payments, implement a server-only checkout session endpoint and verify provider webhook signatures before creating `orders`, `order_items` and `user_entitlements` rows. Never trust a browser redirect as proof of payment. The download endpoint already verifies the current user's active entitlement before signing a private release URL; keep the bucket private and never expose the service-role key in the browser.
+Never trust a browser redirect as proof of payment. Only the signed `transaction.completed` webhook creates `orders`, `order_items` and `user_entitlements` rows, and the database function is idempotent per Paddle transaction. The download endpoint verifies the current user’s active entitlement before signing a private release URL; keep the bucket private and never expose the service-role key, Paddle API key or webhook secret in the browser.
 
 ## Project layout
 
@@ -92,6 +97,8 @@ Before accepting payments, implement a server-only checkout session endpoint and
 - `src/lib/` — Supabase client, API helpers, local utilities
 - `src/worker/index.ts` — Cloudflare Worker entry point
 - `supabase/functions/signed-download/` — entitlement-checked private release signing
+- `supabase/functions/paddle-checkout/` — server-created Paddle hosted checkout
+- `supabase/functions/paddle-webhook/` — signature-verified, idempotent Paddle fulfillment
 - `supabase/` — database schemas, migrations and row-level security policies
 
 ## Scope and risk

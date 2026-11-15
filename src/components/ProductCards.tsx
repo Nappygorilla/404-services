@@ -226,7 +226,7 @@ export function ProductBuyBox({ product }: { product: Product }) {
       <div className="mt-4 grid gap-2 border-t border-white/10 pt-4 text-[11.5px] text-white/55">
         <span className="inline-flex items-center gap-2"><ShieldCheck className="size-3.5 text-violet-light" /> One person · two devices</span>
         <span className="inline-flex items-center gap-2"><Check className="size-3.5 text-acid" /> Twelve months of updates</span>
-        <span className="inline-flex items-center gap-2"><Check className="size-3.5 text-acid" /> Windows 10/11 · key by email</span>
+        <span className="inline-flex items-center gap-2"><Check className="size-3.5 text-acid" /> Windows 10/11 · access in your account</span>
       </div>
     </div>
   )

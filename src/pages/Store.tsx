@@ -194,8 +194,8 @@ export function Store() {
           <ol className="mt-6 grid gap-4">
             {[
               { title: 'Pick a cheat or 404 Complete', body: 'Every price is on its card, and each profile has a full page with its features, requirements and limits.' },
-              { title: 'Email us the cheat name', body: 'We reply with a payment link and a VAT invoice. Card details go to the payment provider, not this site.' },
-              { title: 'Get the key and loader', body: 'After payment, the licence key and download link arrive by email. Paste the key into 404 Loader once.' },
+              { title: 'Pay on Paddle', body: 'Sign in, open checkout and pay on Paddle’s hosted page. Card details go to Paddle, not this site, and Paddle issues the invoice.' },
+              { title: 'Get access in your account', body: 'After Paddle confirms payment, the order appears in Orders and the licence in Downloads. Access is attached to the account you signed in with.' },
             ].map((step, index) => (
               <li key={step.title} className="flex gap-3">
                 <span className="font-mono text-xs text-violet-light">{String(index + 1).padStart(2, '0')}</span>

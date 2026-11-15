@@ -87,7 +87,7 @@ export const HOME = {
   primaryCta: 'Shop all cheats',
   secondaryCta: 'See the loader',
   captionTop: 'One loader for two games',
-  captionBottom: 'Key delivery by email. Set up in minutes.',
+  captionBottom: 'Secure Paddle checkout. Access in your account.',
   platformTitle: ['One loader,', 'every profile'],
   platformNote:
     'The loader is shared. Each cheat unlocks one set of features, so you can start with the profile you need and add more later.',
@@ -211,7 +211,7 @@ export const PIPELINE: Step[] = [
   {
     step: '02',
     title: 'Activate',
-    body: 'Receive your key and loader download by email, then paste the key into 404 Loader once.',
+    body: 'Pay on Paddle’s hosted checkout, then open Downloads with the same account to get your loader access.',
     command: 'paste key',
   },
   {
@@ -844,7 +844,7 @@ export const LAUNCH = {
 export const LICENCE_INCLUDES = [
   'One-time payment · twelve months of updates',
   'One person, two devices',
-  'Key delivery by email',
+  'Licence access in your account',
   'Local profiles · no subscription',
 ]
 
@@ -878,7 +878,7 @@ export const PRICING_FAQ = [
   },
   {
     q: 'How is my key delivered?',
-    a: 'Checkout is handled by email and a secure payment link. After payment, your loader download and licence key are sent to the email address on the order.',
+    a: 'Checkout is handled by Paddle, our merchant of record. Sign in, pay on Paddle’s hosted page, and the order and download access appear in your 404 account after the signed webhook is processed.',
   },
   {
     q: 'What happens when my update year ends?',
@@ -890,7 +890,7 @@ export const PRICING_FAQ = [
   },
   {
     q: 'Do you offer invoices and VAT numbers?',
-    a: 'Yes. Checkout collects a VAT number for business buyers and the invoice is issued by the merchant of record. If you buy several products, email us and we will put them on one invoice.',
+    a: 'Paddle collects a VAT number for business buyers where supported and issues the invoice as merchant of record. Each checkout produces its own invoice; contact support if you need help with a business purchase.',
   },
 ]
 
@@ -953,8 +953,8 @@ export const DOC_SECTIONS = [
   {
     id: 'install',
     title: 'Download the loader',
-    body: 'After payment, the download link and licence key arrive by email. Install 404 Loader like any Windows application; it does not need a separate runtime or browser extension.',
-    code: ['1. Open the email from 404 Services', '2. Download 404-Loader-Setup.exe', '3. Run the installer and open 404 Loader'],
+    body: 'After Paddle confirms payment, sign in and open Downloads to get the loader release attached to your licence. Install 404 Loader like any Windows application; it does not need a separate runtime or browser extension.',
+    code: ['1. Sign in to 404 Services', '2. Open Account → Downloads', '3. Download 404-Loader-Setup.exe and run it'],
   },
   {
     id: 'activate',
@@ -1002,7 +1002,7 @@ export const SUPPORT = {
 }
 
 export const SUPPORT_FAQ = [
-  { q: 'Where do I get my licence key?', a: 'It is in the receipt email from the store, and in your account after purchase. If it is lost, email us from the address you bought with and we will resend it.' },
+  { q: 'Where do I get my licence?', a: 'After Paddle confirms payment, the purchase and its download access are attached to the account you signed in with. Open Downloads to see the active licence. If it is missing, contact support with your Paddle order reference.' },
   { q: 'How many devices can I activate?', a: 'Every product and bundle licence activates on two devices for one person. Deactivate a device in 404 Loader before moving to a new one.' },
   { q: 'Do I need 404 Complete?', a: 'No. Each product is sold separately. If you only want visuals or an executor, buy that profile; 404 Complete is an optional bundle.' },
   { q: 'Is the bundle cheaper than buying every product?', a: 'Yes. The bundle is priced below the sum of the current individual products. If you already own some products, contact us before buying the bundle.' },
