@@ -41,16 +41,16 @@ Vite's local dev server is on `http://localhost:5305/`.
 
 ### GitHub Pages
 
-In [the repository's Actions secrets](https://github.com/Nappygorilla/404-services/settings/secrets/actions)
-(**Settings → Secrets and variables → Actions**), add:
+In [the repository's Actions variables](https://github.com/Nappygorilla/404-services/settings/variables/actions)
+(**Settings → Secrets and variables → Actions → Variables**), add:
 
 - `SUPABASE_URL` — the Project URL
 - `SUPABASE_ANON_KEY` — the publishable or anon key
 
-The Pages workflow maps those to `VITE_SUPABASE_URL` and
-`VITE_SUPABASE_ANON_KEY` during the build. Re-run the **Deploy to GitHub
-Pages** workflow after adding them; changing a secret does not rebuild an
-existing deployment automatically.
+These are public browser values, so repository variables are appropriate. The
+Pages workflow maps them to `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+during the build. Re-run the **Deploy to GitHub Pages** workflow after changing
+them; editing a variable does not rebuild an existing deployment automatically.
 
 ## 3. Create the database objects
 
@@ -131,7 +131,7 @@ those workflows exist. That is intentional.
 
 | Symptom | Check |
 | --- | --- |
-| “Accounts are not connected on this build yet.” | The two `VITE_*` values were absent when that build was made. Restart `bun run dev` locally, or add the Actions secrets and redeploy. |
+| “Accounts are not connected on this build yet.” | The two `VITE_*` values were absent when that build was made. Restart `bun run dev` locally, or add the Actions variables and redeploy. |
 | “Invalid API key” | Use the Project URL and publishable/anon key. Do not use the secret or `service_role` key in the browser. |
 | Confirmation link goes to the wrong host | Add the exact origin to Supabase **Redirect URLs** and confirm the Site URL. |
 | `relation "public.forum_threads" does not exist` | Run `supabase/schema.sql`. |
@@ -143,6 +143,6 @@ those workflows exist. That is intentional.
 
 - Commit only `.env.example`, never `.env`.
 - Keep `service_role` keys and database passwords out of the frontend, the
-  repository and GitHub Actions secrets used for this static build.
+  repository and GitHub Actions configuration used for this static build.
 - The public anon/publishable key is safe in a browser; RLS is what protects the
-  data.
+  data. It is stored as an Actions variable, not a secret.

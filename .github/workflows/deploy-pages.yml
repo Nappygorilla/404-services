@@ -31,9 +31,9 @@ jobs:
         run: bun run build
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
-          # Public Supabase values, stored as repository Actions secrets.
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          # Public Supabase values, stored as repository Actions variables.
+          VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
 
       # The postbuild step already writes app shells for every known route and
       # product slug. Copy the shell to 404.html as the last-resort fallback for
