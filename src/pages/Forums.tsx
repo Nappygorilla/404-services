@@ -19,7 +19,7 @@ const BOARDS = [
     slug: 'announcements' as const,
     name: 'Announcements',
     icon: Megaphone,
-    blurb: 'Release notes, platform changes and anything that affects a build, written by the team.',
+    blurb: 'Release notes, game updates and anything that affects the loader, written by the team.',
     rule: 'Read-only. Only the team can post here.',
   },
   {
@@ -120,10 +120,10 @@ function Composer({ onPosted }: { onPosted: () => void }) {
       <form className="mt-4 grid gap-4" onSubmit={submit} noValidate>
         {error && <FormMessage tone="error">{error}</FormMessage>}
         <Field label="Title" hint="One line: what is happening?">
-          {(p) => <Input {...p} value={title} maxLength={120} onChange={(e) => setTitle(e.target.value)} placeholder="Bundle fails when a resource is missing" />}
+          {(p) => <Input {...p} value={title} maxLength={120} onChange={(e) => setTitle(e.target.value)} placeholder="Loader does not attach to FiveM" />}
         </Field>
-        <Field label="Details" hint="Version, platform, what you expected, what happened.">
-          {(p) => <Textarea {...p} value={body} maxLength={4000} onChange={(e) => setBody(e.target.value)} placeholder={'v1.4.2 · FiveM\nSteps to reproduce…\nExpected…\nActual…'} />}
+        <Field label="Details" hint="Loader version, game, what you expected, what happened.">
+          {(p) => <Textarea {...p} value={body} maxLength={4000} onChange={(e) => setBody(e.target.value)} placeholder={'Loader 4.0.4 · FiveM\nSteps to reproduce…\nExpected…\nActual…'} />}
         </Field>
         <div className="flex items-center justify-between gap-4">
           <span className="font-mono text-[10.5px] tracking-[0.12em] text-faint uppercase">{body.length}/4000</span>
@@ -160,7 +160,7 @@ export function Forums() {
       <PageHero
         title={['Community']}
         eyebrow="Forums"
-        intro="Two boards: one for what the team ships, one for what is not working. Accounts are free and builds never need them."
+        intro="Two boards: one for what the team ships, one for what is not working. Accounts are free, and the loader never needs one."
         art={<Holo kind="sphere" motion />}
         titleSize="compact"
       />
@@ -201,7 +201,7 @@ export function Forums() {
         </div>
         <ul className="grid gap-3 text-[15px]">
           {[
-            'One issue per topic, with the version and platform in the body.',
+            'One issue per topic, with the loader version and game in the body.',
             'Search the board before opening a new one — duplicate topics get merged.',
             'Never post a licence key, invoice or account credentials.',
             'Answers come from the team and from other members; no promises on timing.',

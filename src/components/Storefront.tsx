@@ -47,7 +47,7 @@ export function StickyBar() {
             from <span className="text-ink">{format(price)}</span>
           </span>
           <ButtonLink to="/store#catalogue" variant="violet" size="sm" iconRight={<ArrowRight className="size-4" />}>
-            Browse tools
+            Browse cheats
           </ButtonLink>
         </div>
       </div>
@@ -59,7 +59,7 @@ export function StickyBar() {
 export function TrustBar({ className }: { className?: string }) {
   const facts = [
     { value: '02', label: 'Platforms supported' },
-    { value: String(TOOLS.length).padStart(2, '0'), label: 'Tools sold separately' },
+    { value: String(TOOLS.length).padStart(2, '0'), label: 'Cheats sold separately' },
     { value: '1×', label: 'One-time licence' },
   ]
   return (

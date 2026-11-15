@@ -1,22 +1,21 @@
 // Every string, figure and piece of seed data for the site lives here.
-// The product is one desktop application: a build, bundle and deploy pipeline
-// for FiveM and Roblox developers. Start at SITE, then APP and the sections
-// below it.
+// 404 Services is a storefront for game-modification software. Start at SITE,
+// then APP and the catalogue below it.
 
 export const SITE = {
-  name: 'luna.win',
-  tagline: 'Software tools for game creators',
+  name: '404 Services',
+  tagline: 'Game modifications for FiveM & Roblox',
   description:
-    'luna.win is a desktop toolkit for FiveM and Roblox creators: inspect projects, validate dependencies, build repeatable bundles and deploy to environments you own.',
-  email: 'hello@luna.win',
-  company: 'LUNA',
-  address: [],
-  hours: 'Monday to Friday, 9:00–17:00 CET',
+    '404 Services is a game-modification storefront for FiveM and Roblox: external menus, visuals, aim profiles, executors and scripts, delivered through one loader.',
+  email: 'support@404services.gg',
+  company: '404 Services',
+  address: ['Remote'],
+  hours: 'Every day, 09:00–23:00 CET',
   socials: [
-    { label: 'GitHub repository', href: 'https://github.com/Nappygorilla/LUNA-WIN' },
+    { label: 'GitHub repository', href: 'https://github.com/Nappygorilla/404-services' },
   ],
   disclaimer:
-    'luna.win is an independent product. It is not affiliated with, endorsed by, or sponsored by Rockstar Games, Take-Two Interactive, Cfx.re or Roblox Corporation. FiveM, RedM, Grand Theft Auto and Roblox are trademarks of their respective owners.',
+    '404 Services is an independent software vendor. It is not affiliated with, endorsed by, or sponsored by Rockstar Games, Take-Two Interactive, Cfx.re, Roblox Corporation or any game publisher mentioned on this site. Game modifications can breach a platform’s terms and may lead to account action. Use only on accounts you own and can afford to lose. FiveM, RedM, Grand Theft Auto and Roblox are trademarks of their respective owners.',
 }
 
 /** Main navigation. The first four sit in the header; the menu shows all of them. */
@@ -31,8 +30,8 @@ export const MENU = [
   { label: 'Home', to: '/' },
   { label: 'Store', to: '/store' },
   { label: 'Games', to: '/games' },
-  { label: 'FiveM tools', to: '/store?platform=fivem' },
-  { label: 'Roblox tools', to: '/store?platform=roblox' },
+  { label: 'FiveM cheats', to: '/store?platform=fivem' },
+  { label: 'Roblox cheats', to: '/store?platform=roblox' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'Downloads', to: '/downloads' },
   { label: 'Orders', to: '/orders' },
@@ -65,74 +64,70 @@ export type HoloKind = 'knot' | 'sphere' | 'cloud' | 'scissors' | 'star' | 'pris
 
 export const APP = {
   name: SITE.name,
-  version: '1.4.2',
+  version: '4.0.4',
   released: '4 November 2026',
   platforms: ['FiveM', 'Roblox'],
   requirements: [
-    'macOS 13 or later, or Windows 10 64-bit or later',
-    '4 GB free disk space',
-    'Git installed (optional, for versioned bundles)',
+    'Windows 10 or 11 (64-bit)',
+    '8 GB of RAM and 250 MB free disk space',
+    'The supported game installed and updated',
+    'An account you own and are authorised to use',
   ],
-  download: 'Download for desktop',
-  size: '38 MB',
+  download: 'Download 404 Loader',
+  size: '42 MB',
 }
 
 /* ------------------------------------------------------------------ home */
 
 export const HOME = {
-  eyebrow: 'Developer tooling for FiveM & Roblox',
-  headline: ['Build.', 'Bundle.', 'Deploy.'],
+  eyebrow: 'Premium game modifications for FiveM & Roblox',
+  headline: ['Play.', 'Your.', 'Way.'],
   intro:
-    'One desktop app that takes a project from loose files to a running server: resolve dependencies, build a clean bundle, validate it, and ship it without leaving your machine.',
-  primaryCta: 'Browse tools',
-  secondaryCta: 'Read the docs',
-  captionTop: 'One pipeline for two platforms',
-  captionBottom: 'Runs offline. No account needed to build.',
-  platformTitle: ['One app,', 'every tool'],
+    'One loader for external visuals, aim profiles, scripts and mod menus across FiveM and Roblox. Pick the cheat that fits how you play.',
+  primaryCta: 'Shop all cheats',
+  secondaryCta: 'See the loader',
+  captionTop: 'One loader for two games',
+  captionBottom: 'Key delivery by email. Set up in minutes.',
+  platformTitle: ['One loader,', 'every profile'],
   platformNote:
-    'The build pipeline is shared. Each tool solves one part of it, so you can buy only the pieces you need and add the rest later.',
-  pipelineTitle: ['Three steps,', 'one command'],
-  pipelineNote: 'Every step is scriptable, and none of them touch a running game client.',
+    'The loader is shared. Each cheat unlocks one set of features, so you can start with the profile you need and add more later.',
+  pipelineTitle: ['Three steps,', 'one session'],
+  pipelineNote: 'Pick a cheat, receive your key, and load your profile before you join.',
   featuresTitle: ['What it', 'actually does'],
-  featuresNote: 'Built for people who ship resources to a live server on a Friday night and would rather not be woken up.',
-  changelogTitle: ['Always', 'moving'],
+  featuresNote: 'Built for players who want a clean overlay, readable visuals and a menu that gets out of the way.',
+  changelogTitle: ['Always', 'updating'],
   pricingTitle: ['Simple', 'pricing'],
-  pricingNote: 'Individual tools, one-time prices. The complete bundle is optional. No subscription to keep running.',
+  pricingNote: 'Individual cheats, one-time prices. The complete bundle is optional. No subscription.',
   faqTitle: ['Before', 'you buy'],
   cta: {
-    title: ['Ship the', 'next build'],
-    body: 'Pick a tool, point it at a project you own, and see the result before you change anything.',
+    title: ['Play the', 'next session'],
+    body: 'Pick a cheat, activate the loader, and choose your profile. Start with one profile or take the complete bundle.',
     action: 'See pricing',
   },
 }
 
-/*
-  The dark product band: a dependency graph and the build log that goes with
-  it. The graph is drawn from these nodes and edge paths (SVG coordinates,
-  viewBox 460×330) so the picture and the log tell the same story: one
-  resource uses a library it never declared.
-*/
+/* The dark loader band: a build log and dependency graph retained for pages that use it. */
 export type GraphNode = { id: string; label: string; x: number; y: number; w: number; h: number; tone?: 'warn' }
 export type GraphEdge = { d: string; tone?: 'warn'; dashed?: boolean; delay: number }
 
 export const BUILD_BAND = {
-  eyebrow: 'Live build',
-  title: ['Watch a build', 'resolve itself'],
-  body: 'This is the report you get before anything is written to disk: what depends on what, what is missing, and what will break in production if you ignore it.',
+  eyebrow: 'Loader activity',
+  title: ['One loader.', 'Every profile.'],
+  body: 'A quick view of the products, game profiles and cloud configs attached to your licence.',
   stats: [
-    { value: '14', label: 'resources' },
-    { value: '3', label: 'shared libs' },
-    { value: '1', label: 'warning' },
-    { value: '2.4s', label: 'build time' },
+    { value: '14', label: 'products' },
+    { value: '2', label: 'games' },
+    { value: '4', label: 'profiles' },
+    { value: '1.2s', label: 'load time' },
   ],
   nodes: [
-    { id: 'server', label: 'server', x: 8, y: 140, w: 100, h: 46 },
-    { id: 'oxlib', label: 'ox_lib', x: 140, y: 26, w: 104, h: 42 },
-    { id: 'inventory', label: 'inventory', x: 140, y: 134, w: 104, h: 42 },
-    { id: 'startup', label: 'startup', x: 140, y: 242, w: 104, h: 42, tone: 'warn' as const },
-    { id: 'hud', label: 'hud', x: 300, y: 26, w: 104, h: 42 },
-    { id: 'garage', label: 'garage', x: 300, y: 134, w: 104, h: 42 },
-    { id: 'duty', label: 'duty', x: 300, y: 242, w: 104, h: 42 },
+    { id: 'loader', label: 'loader', x: 8, y: 140, w: 100, h: 46 },
+    { id: 'fivem', label: 'FiveM', x: 140, y: 26, w: 104, h: 42 },
+    { id: 'roblox', label: 'Roblox', x: 140, y: 134, w: 104, h: 42 },
+    { id: 'cloud', label: 'cloud', x: 140, y: 242, w: 104, h: 42, tone: 'warn' as const },
+    { id: 'visuals', label: 'visuals', x: 300, y: 26, w: 104, h: 42 },
+    { id: 'aim', label: 'aim', x: 300, y: 134, w: 104, h: 42 },
+    { id: 'scripts', label: 'scripts', x: 300, y: 242, w: 104, h: 42 },
   ] satisfies GraphNode[],
   edges: [
     { d: 'M108 163 C 124 163, 124 47, 140 47', delay: 0.1 },
@@ -144,73 +139,63 @@ export const BUILD_BAND = {
     { d: 'M244 263 C 286 263, 286 47, 244 47', tone: 'warn' as const, dashed: true, delay: 0.9 },
   ] satisfies GraphEdge[],
   log: [
-    ['$', 'luna.win build --target fivem'],
-    ['→', 'reading luna.win.toml · target fivem · 14 resources'],
-    ['✓', 'resolved 14 resources, 3 shared libraries'],
-    ['✓', 'fxmanifest generated for 6 resources'],
-    ['✓', 'load order: ox_lib, inventory, hud, garage, duty'],
-    ['!', 'startup depends on ox_lib but does not declare it'],
-    ['$', 'luna.win validate --strict'],
-    ['✗', '1 warning: undeclared dependency in startup'],
-    ['$', 'luna.win deploy --profile production'],
-    ['→', 'uploaded 2 chunks · restarted 1 server · health check passed'],
+    ['$', '404-loader.exe --profile fivem-external'],
+    ['→', 'licence verified · 2 devices · updates until 04.11.2027'],
+    ['✓', 'FiveM profile loaded'],
+    ['✓', 'visuals, radar and aim modules ready'],
+    ['✓', 'cloud configs synced'],
+    ['!', 'stream-proof overlay is off'],
+    ['$', '404-loader.exe --profile roblox-executor'],
+    ['→', 'waiting for Roblox to launch'],
   ] as [string, string][],
   legend: [
-    { label: 'declared dependency', tone: 'normal' as const },
-    { label: 'missing declaration', tone: 'warn' as const },
+    { label: 'active module', tone: 'normal' as const },
+    { label: 'attention needed', tone: 'warn' as const },
   ],
-  /*
-    Screen recording slot. Drop a silent, looping clip into public/media/ and
-    set `src` (plus `poster` for the first frame) to swap the dependency graph
-    for real footage. Leave `src` empty and the graph renders instead, so the
-    band never looks unfinished. Keep clips short and muted — this plays
-    automatically, and it pauses whenever it is off-screen or the visitor taps
-    pause.
-  */
   recording: {
     src: '',
     poster: '',
     captions: '',
-    caption: 'Building ridge-county — dependency graph',
-    duration: '0:24',
+    caption: '404 Loader — profile dashboard',
+    duration: '0:18',
   },
 }
 
-export const PLATFORM_TAGS = ['Windows', 'macOS', 'Offline builds', 'CLI + GUI']
-export const TRUSTED_BY = ['Vector RP', 'Ridge County', 'Aurora RP', 'Pinebox', 'Southgate RP', 'Lumen Studio']
+export const PLATFORM_TAGS = ['Windows', 'FiveM', 'Roblox', 'Email delivery']
+export const TRUSTED_BY: string[] = []
 
 export type Feature = { title: string; body: string; icon: 'graph' | 'package' | 'check' | 'rocket' | 'git' | 'terminal' }
 
 export const FEATURES: Feature[] = [
   {
-    title: 'Dependency graph',
-    body: 'See what each resource loads before you start the server. Missing libraries, duplicate names and version clashes surface as errors, not as a silent failure at 2am.',
+    title: 'Visuals that read fast',
+    body: 'Player boxes, skeletons, distance and role labels are drawn in one clean overlay. Every element can be toggled and tuned without leaving the game.',
     icon: 'graph',
   },
   {
-    title: 'Deterministic bundles',
-    body: 'The same input produces the same output, byte for byte. No stale files left behind from three builds ago, no mysterious differences between your machine and the host.',
-    icon: 'package',
-  },
-  {
-    title: 'Validation that explains itself',
-    body: 'Every check names the file, the line and what to change. Strict mode turns warnings into failures so a release cannot go out with one.',
+    title: 'Aim profiles that feel natural',
+    body: 'Choose a field of view, smoothing amount and target bone, then save a separate profile for each game or server. Aim assist is optional and configurable.',
     icon: 'check',
   },
   {
-    title: 'Deploy without a second tool',
-    body: 'Upload to your host over SFTP or the provider API, restart only the resources that changed, and run a health check before the deploy is marked done.',
-    icon: 'rocket',
+    title: 'One loader, every product',
+    body: 'Your FiveM and Roblox keys live in one compact desktop loader. Switch between profiles, update modules and check your licence without a browser.',
+    icon: 'package',
   },
   {
-    title: 'Version control aware',
-    body: 'Bundles are stamped with a commit, and a build refuses to run on a dirty tree unless you say so. Rolling back is checking out, not rebuilding from memory.',
+    title: 'Script library',
+    body: 'Load supported scripts and community configs from one menu. Profiles are stored locally and can be synced with your 404 account.',
+    icon: 'terminal',
+  },
+  {
+    title: 'Stream-proof controls',
+    body: 'A quick toggle keeps the loader menu out of common capture paths. Cloud configs and keybinds stay separate from the overlay you are using.',
     icon: 'git',
   },
   {
-    title: 'Scriptable everywhere',
-    body: 'A real CLI underneath the interface, with a documented exit code for every failure. The app and your CI pipeline run the same commands.',
-    icon: 'terminal',
+    title: 'Updates when games move',
+    body: 'Game updates are monitored and modules are versioned. Your licence includes twelve months of loader updates and release notes.',
+    icon: 'rocket',
   },
 ]
 
@@ -219,21 +204,21 @@ export type Step = { step: string; title: string; body: string; command: string 
 export const PIPELINE: Step[] = [
   {
     step: '01',
-    title: 'Build',
-    body: 'Point luna.win at a project folder. It reads the manifests, resolves every dependency, and produces a build graph you can inspect before anything is written.',
-    command: 'luna.win build',
+    title: 'Choose',
+    body: 'Pick the FiveM or Roblox product that matches the features you want. Every product has a feature list and its own price.',
+    command: 'open the store',
   },
   {
     step: '02',
-    title: 'Bundle',
-    body: 'Pack the graph into a folder or archive with a stable layout. Shared libraries are deduplicated, and nothing outside the graph is copied.',
-    command: 'luna.win bundle',
+    title: 'Activate',
+    body: 'Receive your key and loader download by email, then paste the key into 404 Loader once.',
+    command: 'paste key',
   },
   {
     step: '03',
-    title: 'Deploy',
-    body: 'Ship the bundle to a saved profile. Only changed resources restart, and the deploy fails loudly if the health check does not come back green.',
-    command: 'luna.win deploy',
+    title: 'Load',
+    body: 'Launch the supported game, choose your profile and toggle the modules you want before you join a session.',
+    command: 'select profile',
   },
 ]
 
@@ -251,17 +236,17 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'fivem',
     name: 'FiveM',
-    tagline: 'Resource pipeline for FiveM servers',
+    tagline: 'External menus and visuals for FiveM',
     intro:
-      'Built around how a FiveM server is actually assembled: resources, shared libraries, load order and a manifest that has to be exactly right.',
+      'External and internal profiles for FiveM: player visuals, aim assist, radar, mod menus and Lua scripts, all loaded through one desktop app.',
     art: 'knot',
   },
   {
     slug: 'roblox',
     name: 'Roblox',
-    tagline: 'Project pipeline for Roblox experiences',
+    tagline: 'Executors and visuals for Roblox',
     intro:
-      'The same build and bundle model, applied to a Roblox project you own: a stable place file, a versioned build, and a deploy that you can undo.',
+      'Roblox profiles for supported experiences: an executor, aim profiles, player visuals, script hub and a compact mod menu.',
     art: 'prism',
   },
 ]
@@ -269,10 +254,10 @@ export const PLATFORMS: Platform[] = [
 export const PLATFORM_LABEL: Record<'fivem' | 'roblox' | 'both', string> = {
   fivem: 'FiveM',
   roblox: 'Roblox',
-  both: 'Both platforms',
+  both: 'Both games',
 }
 
-export const TOOL_KINDS = ['Build', 'Validate', 'Deploy', 'Project', 'Automate'] as const
+export const TOOL_KINDS = ['Aimbot', 'Visuals', 'Executor', 'Mod Menu', 'Utility'] as const
 export type ToolKind = (typeof TOOL_KINDS)[number]
 export type ProductPlatform = 'fivem' | 'roblox' | 'both'
 
@@ -283,7 +268,7 @@ export type ToolProduct = {
   description: string
   kind: ToolKind
   platform: ProductPlatform
-  /** One-time price in euro cents. Every tool is sold on its own. */
+  /** One-time price in euro cents. Every product is sold on its own. */
   price: number
   art: HoloKind
   featured?: boolean
@@ -311,357 +296,418 @@ export type Product = ToolProduct | BundleProduct
 
 /*
   The catalogue. Every name, price, description, requirement and limit shown
-  anywhere on the site comes from this list — individual cards, product pages,
-  pricing rows, the home page and the support enquiry form all read it.
-  Prices are one-time, in euro cents, and cover one person on two machines.
+  anywhere on the site comes from this list. Prices are one-time, in euro cents,
+  and cover one person on two devices.
 */
 export const TOOLS: ToolProduct[] = [
   {
-    slug: 'manifest-forge',
-    name: 'Manifest Forge',
-    tagline: 'Generate a valid fxmanifest for every resource.',
+    slug: 'fivem-external',
+    name: 'FiveM External',
+    tagline: 'External visuals, radar and aim assist for FiveM.',
     description:
-      'Write dependencies once in your project file. Manifest Forge generates the manifest for each resource, checks every referenced file exists, and fails the build instead of shipping something the server cannot load.',
-    kind: 'Build',
+      'A separate desktop overlay for FiveM with player visuals, distance labels, radar and a configurable aim assist. Profiles save per server, so you can switch between a clean setup and a full read without restarting the game.',
+    kind: 'Mod Menu',
     platform: 'fivem',
-    price: 1500,
+    price: 1999,
     art: 'knot',
     featured: true,
     deliverables: [
-      'A generated fxmanifest for each resource',
-      'Missing-file and path validation',
-      'A diff preview before anything is written',
+      'External 404 Loader profile',
+      'Player ESP, radar and distance labels',
+      'Aim assist with smoothing and field-of-view controls',
+      'Saved profiles for different servers',
     ],
     requirements: [
-      'A FiveM resource folder or repository you administer',
-      'A luna.win project file',
+      'Windows 10 or 11 (64-bit)',
+      'FiveM installed and updated',
+      'A FiveM account you own',
     ],
     limits: [
-      'Does not edit escrowed or encrypted files.',
-      'Generates manifests only; it does not create server content.',
+      'No software can guarantee against server-side enforcement.',
+      'Does not include a FiveM account or a copy of GTA V.',
+      'Use only on accounts and servers you are authorised to access.',
     ],
   },
   {
-    slug: 'load-order',
-    name: 'Load Order',
-    tagline: 'Resolve shared libraries before the server does.',
+    slug: 'fivem-internal',
+    name: 'FiveM Internal',
+    tagline: 'The full FiveM menu, loaded inside the game.',
     description:
-      'Build the dependency graph in the order the server will load it. Shared libraries are pulled forward, and cycles are reported with the path that created them instead of failing silently at startup.',
-    kind: 'Build',
+      'An internal profile with the full 404 menu: ESP, aim settings, vehicle controls, world options and Lua execution. Built for players who want every toggle in one overlay rather than several separate tools.',
+    kind: 'Mod Menu',
     platform: 'fivem',
-    price: 1900,
+    price: 2999,
     art: 'star',
     featured: true,
     deliverables: [
-      'A dependency graph in server load order',
-      'Missing-dependency and cycle reports',
-      'A graph export your CI can read',
+      'Internal menu with a configurable hotkey',
+      'Player and vehicle visuals',
+      'Aim, movement and world options',
+      'Lua execution and saved configs',
     ],
     requirements: [
-      'A FiveM project with two or more resources',
-      'Resource manifests present in the project',
+      'Windows 10 or 11 (64-bit)',
+      'FiveM installed and updated',
+      'A FiveM account you own',
     ],
     limits: [
-      'Does not install dependencies or download libraries.',
-      'Does not restart or modify a running server.',
+      'No guarantee against server-side enforcement.',
+      'Internal profiles may need a loader update after some game patches.',
+      'Use only on accounts and servers you are authorised to access.',
     ],
   },
   {
-    slug: 'escrow-guard',
-    name: 'Escrow Guard',
-    tagline: 'Catch escrow conflicts before runtime.',
+    slug: 'fivem-aim',
+    name: 'FiveM Aim',
+    tagline: 'A focused aim profile with natural smoothing.',
     description:
-      'Flags resources that expect to patch encrypted assets, so an escrow limitation appears during the build instead of on a live server. Each warning names the resource and the file it expected to edit.',
-    kind: 'Validate',
+      'A standalone aim profile for FiveM with target selection, smoothing, field of view and per-weapon presets. Built for players who want a lighter loader than the full mod menu.',
+    kind: 'Aimbot',
     platform: 'fivem',
-    price: 1200,
+    price: 1499,
     art: 'scissors',
     deliverables: [
-      'An escrow-aware validation pass',
-      'Resource and file references in every warning',
-      'A strict-mode option that fails the build',
-    ],
-    requirements: ['A FiveM project that uses escrowed assets'],
-    limits: [
-      'Does not decrypt or modify escrowed files.',
-      'Cannot make an encrypted asset editable.',
-    ],
-  },
-  {
-    slug: 'server-audit',
-    name: 'Server Audit',
-    tagline: 'Find client-side trust in server code.',
-    description:
-      'Flags client code that reads or writes state which belongs on the server, then points to the exact file and event. It is a static review tool, not a runtime exploit scanner.',
-    kind: 'Validate',
-    platform: 'fivem',
-    price: 1700,
-    art: 'sphere',
-    deliverables: [
-      'Server/client boundary checks',
-      'Event and state access warnings',
-      'A report you can attach to a code review',
-    ],
-    requirements: ['A FiveM resource you own or administer'],
-    limits: [
-      'A static check, not a runtime security test.',
-      'Does not patch your code automatically.',
-    ],
-  },
-  {
-    slug: 'deploy-profiles',
-    name: 'Deploy Profiles',
-    tagline: 'Ship a bundle to staging or production by name.',
-    description:
-      'Save a host, path and restart strategy per environment. Deploy Profiles uploads only the resources that changed, restarts just those, and waits for a health check before marking the deploy complete.',
-    kind: 'Deploy',
-    platform: 'fivem',
-    price: 2500,
-    art: 'prism',
-    featured: true,
-    deliverables: [
-      'Named staging and production profiles',
-      'Changed-resource restarts',
-      'A health-check gate and last-known-good bundle',
+      'Per-weapon aim presets',
+      'Field-of-view and smoothing controls',
+      'Visible-target and line-of-sight checks',
+      'One-key toggle and saved bind',
     ],
     requirements: [
-      'SFTP or provider API access to a server you administer',
-      'A project that already builds successfully',
+      'Windows 10 or 11 (64-bit)',
+      'FiveM installed and updated',
+      'A FiveM account you own',
     ],
     limits: [
-      'Does not host your server or manage its infrastructure.',
-      'Never deploys to a server you do not control.',
+      'No guarantee against server-side enforcement.',
+      'Works only with the 404 Loader and a valid key.',
+      'Aim assist cannot make an impossible shot succeed.',
     ],
   },
   {
-    slug: 'project-import',
-    name: 'Project Import',
-    tagline: 'Bring a place or model file under version control.',
+    slug: 'fivem-visuals',
+    name: 'FiveM Visuals',
+    tagline: 'Clean player and vehicle ESP for FiveM.',
     description:
-      'Imports a Roblox place or model file you own, tracks what changed between builds, and keeps the source in your repository. No extraction from published games.',
-    kind: 'Project',
-    platform: 'roblox',
-    price: 1500,
+      'A visual-only profile for FiveM: player boxes, skeletons, names, roles, distance, vehicle details and a compact radar. No aim changes, no world controls, just a clearer read of the session.',
+    kind: 'Visuals',
+    platform: 'fivem',
+    price: 1799,
     art: 'cloud',
     deliverables: [
-      'Place and model file import',
-      'Revision-aware source tracking',
-      'A build-to-build change list',
+      'Player boxes, skeletons and name labels',
+      'Role and distance indicators',
+      'Vehicle and plate details',
+      'Radar with configurable range',
     ],
     requirements: [
-      'A Roblox experience you own',
-      'Place or model files you are licensed to use',
+      'Windows 10 or 11 (64-bit)',
+      'FiveM installed and updated',
+      'A FiveM account you own',
     ],
     limits: [
-      'Does not extract, rip or convert assets from published games.',
-      'Does not modify or automate the Roblox client.',
+      'No guarantee against server-side enforcement.',
+      'Does not include aim assist or a mod menu.',
+      'Use only on accounts and servers you are authorised to access.',
     ],
   },
   {
-    slug: 'build-stamps',
-    name: 'Build Stamps',
-    tagline: 'Make every Roblox build traceable.',
+    slug: 'fivem-lua',
+    name: 'FiveM Lua',
+    tagline: 'Run supported Lua scripts through the loader.',
     description:
-      'Records the source revision, toolchain version and build time, so two builds from the same revision are identical and a release can be traced back to a commit.',
-    kind: 'Build',
-    platform: 'roblox',
-    price: 1200,
+      'A Lua execution profile for FiveM with a searchable script library, per-resource toggles and saved load orders. Bring your own supported scripts or start from the included examples.',
+    kind: 'Executor',
+    platform: 'fivem',
+    price: 1499,
+    art: 'prism',
+    deliverables: [
+      'Searchable Lua script library',
+      'Per-script toggle and keybind',
+      'Load-order presets',
+      'A local script editor',
+    ],
+    requirements: [
+      'Windows 10 or 11 (64-bit)',
+      'FiveM installed and updated',
+      'A FiveM account you own',
+    ],
+    limits: [
+      'Only supported scripts load; unsupported APIs are rejected.',
+      'Does not include third-party scripts or assets.',
+      'No guarantee against server-side enforcement.',
+    ],
+  },
+  {
+    slug: 'fivem-script-hub',
+    name: 'FiveM Script Hub',
+    tagline: 'A curated stack of FiveM scripts and configs.',
+    description:
+      'A ready-made script pack for the 404 Lua profile: movement helpers, vehicle utilities, overlay presets and server-friendly configs. Everything is installed through the loader and can be toggled independently.',
+    kind: 'Executor',
+    platform: 'fivem',
+    price: 2499,
     art: 'sphere',
     deliverables: [
-      'Commit and toolchain stamps',
-      'Reproducible build metadata',
-      'Build history inside the app',
+      'Curated FiveM script collection',
+      'Ready-made config presets',
+      'One-click install through 404 Loader',
+      'Twelve months of script updates',
     ],
-    requirements: ['A Roblox project imported into luna.win'],
+    requirements: [
+      'FiveM Lua profile or 404 Complete',
+      'Windows 10 or 11 (64-bit)',
+      'FiveM installed and updated',
+    ],
     limits: [
-      'Stamps are metadata, not a cryptographic signature.',
-      'Does not publish anything by itself.',
+      'Requires an active 404 Loader licence.',
+      'Scripts may stop working after a game or server update.',
+      'No guarantee against server-side enforcement.',
     ],
   },
   {
-    slug: 'asset-audit',
-    name: 'Asset Audit',
-    tagline: 'See every asset ID before you publish.',
+    slug: 'roblox-executor',
+    name: 'Roblox Executor',
+    tagline: 'A fast executor for supported Roblox experiences.',
     description:
-      'Lists every asset a project references, shows what is shared or missing, and reports what changed since the previous release. It checks references; it does not download or re-host assets.',
-    kind: 'Validate',
+      'A desktop executor for supported Roblox experiences with a searchable script hub, saved workspaces, auto-attach and a compact editor. Updates are delivered through 404 Loader.',
+    kind: 'Executor',
     platform: 'roblox',
-    price: 1700,
+    price: 1999,
     art: 'prism',
     featured: true,
     deliverables: [
-      'A complete asset ID inventory',
-      'Missing, shared and changed flags',
-      'The owning experience for each reference',
+      'Roblox executor profile',
+      'Searchable script hub and editor',
+      'Auto-attach and saved workspaces',
+      'Twelve months of loader updates',
     ],
-    requirements: ['A Roblox project you own'],
+    requirements: [
+      'Windows 10 or 11 (64-bit)',
+      'Roblox installed and updated',
+      'A Roblox account you own',
+    ],
     limits: [
-      'Does not download or re-host assets.',
-      'Cannot verify rights you do not hold.',
+      'Works only with supported Roblox versions.',
+      'Does not include Robux, assets or accounts.',
+      'No guarantee against platform enforcement.',
     ],
   },
   {
-    slug: 'owned-publish',
-    name: 'Owned Publish',
-    tagline: 'Publish to an experience you own, with a confirm step.',
+    slug: 'roblox-aim',
+    name: 'Roblox Aim',
+    tagline: 'Aim profiles tuned for Roblox combat.',
     description:
-      'Uses your own Roblox authorisation to publish a build to a chosen owned experience. Nothing is published without an explicit confirmation, and test-to-production is the same build.',
-    kind: 'Deploy',
+      'A lightweight aim profile for supported Roblox experiences with target selection, smoothing, field-of-view and separate presets for close and long-range fights.',
+    kind: 'Aimbot',
     platform: 'roblox',
-    price: 2500,
+    price: 1499,
     art: 'star',
+    featured: true,
     deliverables: [
-      'Authorisation through your own account',
-      'Test-to-production promotion',
-      'An explicit confirm before every publish',
+      'Close and long-range aim presets',
+      'Smoothing and field-of-view controls',
+      'Visible-target checks',
+      'Saved keybinds',
     ],
     requirements: [
-      'A Roblox experience you own',
-      'An account with publish permission',
+      'Windows 10 or 11 (64-bit)',
+      'Roblox installed and updated',
+      'A Roblox account you own',
     ],
     limits: [
-      'Never publishes to another creator’s experience.',
-      'Does not automate the Roblox client.',
+      'Works only with supported Roblox experiences.',
+      'No guarantee against platform enforcement.',
+      'Aim assist cannot make an impossible shot succeed.',
     ],
   },
   {
-    slug: 'build-rollback',
-    name: 'Build Rollback',
-    tagline: 'Republish a known-good build by name.',
+    slug: 'roblox-visuals',
+    name: 'Roblox Visuals',
+    tagline: 'Player, object and distance overlays.',
     description:
-      'Keeps recent builds and lets you republish one without rebuilding while players are online. Rollback works on the builds luna.win retained, not on history that was never stored.',
-    kind: 'Deploy',
+      'A visual-only profile for Roblox: player highlights, name and distance labels, object markers and a minimap-friendly radar. No aim changes and no script execution.',
+    kind: 'Visuals',
     platform: 'roblox',
-    price: 1400,
+    price: 1799,
     art: 'cloud',
     deliverables: [
-      'Configurable build retention',
-      'One-step republish of a retained build',
-      'Build notes and revision history',
-    ],
-    requirements: ['A project with at least one retained build'],
-    limits: [
-      'Rollback is limited to builds luna.win retained.',
-      'Does not restore deleted Roblox assets.',
-    ],
-  },
-  {
-    slug: 'strict-validation',
-    name: 'Strict Validation',
-    tagline: 'Turn warnings into a failed build.',
-    description:
-      'Runs the same checks as the app with strict mode enabled, names the file, line and suggested fix, and exits non-zero so CI cannot ship a warning as a release.',
-    kind: 'Validate',
-    platform: 'both',
-    price: 1900,
-    art: 'scissors',
-    deliverables: [
-      'Strict mode for every check',
-      'File and line references in each failure',
-      'Documented exit codes for CI',
+      'Player highlight and name labels',
+      'Distance and direction indicators',
+      'Object and pickup markers',
+      'Configurable overlay colours',
     ],
     requirements: [
-      'A project that already builds',
-      'The LUNA CLI for CI use',
+      'Windows 10 or 11 (64-bit)',
+      'Roblox installed and updated',
+      'A Roblox account you own',
     ],
     limits: [
-      'Checks code; it does not run your server.',
-      'Does not fix warnings automatically.',
+      'Works only with supported Roblox experiences.',
+      'Does not include aim assist or an executor.',
+      'No guarantee against platform enforcement.',
     ],
   },
   {
-    slug: 'deterministic-bundles',
-    name: 'Deterministic Bundles',
-    tagline: 'The same input, byte for byte the same output.',
+    slug: 'roblox-script-hub',
+    name: 'Roblox Script Hub',
+    tagline: 'A curated library for the Roblox executor.',
     description:
-      'Packages only what is in the dependency graph, deduplicates shared libraries and stamps the archive with a commit. No stale files from three builds ago.',
-    kind: 'Build',
-    platform: 'both',
-    price: 1900,
+      'A ready-to-use script library for the 404 Roblox executor: UI packs, movement helpers, visual presets and utility scripts. Browse by experience, install with one click and update from the loader.',
+    kind: 'Executor',
+    platform: 'roblox',
+    price: 2499,
     art: 'knot',
     deliverables: [
-      'A stable archive layout',
-      'Shared-library deduplication',
-      'A commit-stamped output',
-    ],
-    requirements: ['A project with resolved dependencies'],
-    limits: [
-      'Does not include undeclared files.',
-      'Does not upload the bundle anywhere.',
-    ],
-  },
-  {
-    slug: 'git-stamps',
-    name: 'Git Stamps',
-    tagline: 'Refuse a release from a dirty tree.',
-    description:
-      'Reads the working tree and stamps each build with its commit, while refusing to run on uncommitted changes unless you explicitly allow it. Rolling back starts with checking out.',
-    kind: 'Project',
-    platform: 'both',
-    price: 1200,
-    art: 'star',
-    deliverables: [
-      'Commit and branch metadata',
-      'A dirty-tree guard',
-      'Build-to-commit traceability',
+      'Curated Roblox script collection',
+      'One-click installation',
+      'Experience-specific presets',
+      'Twelve months of script updates',
     ],
     requirements: [
-      'A Git repository',
-      'Git installed on the build machine',
+      '404 Roblox Executor or 404 Complete',
+      'Windows 10 or 11 (64-bit)',
+      'Roblox installed and updated',
     ],
     limits: [
-      'Does not host or push your repository.',
-      'Does not resolve merge conflicts.',
+      'Requires an active executor licence.',
+      'Scripts may stop working after a Roblox update.',
+      'No guarantee against platform enforcement.',
     ],
   },
   {
-    slug: 'ci-token',
-    name: 'CI Token',
-    tagline: 'Run the same checks from your pipeline.',
+    slug: 'roblox-mod-menu',
+    name: 'Roblox Mod Menu',
+    tagline: 'One compact menu for supported experiences.',
     description:
-      'A scoped token lets CI build, bundle and validate with the same engine as the desktop app. Deploy permission is deliberately separate, and every failure has a documented exit code.',
-    kind: 'Automate',
-    platform: 'both',
-    price: 1900,
+      'An external menu for supported Roblox experiences with player visuals, local options and a clean hotkey-driven interface. Profiles stay separate from your executor scripts.',
+    kind: 'Mod Menu',
+    platform: 'roblox',
+    price: 2999,
     art: 'sphere',
     deliverables: [
-      'A scoped CI token',
-      'Build, bundle and validate access',
-      'Deploy permission kept separate',
+      'External Roblox menu',
+      'Player and world visual toggles',
+      'Saved profiles and hotkeys',
+      'Stream-proof overlay toggle',
     ],
     requirements: [
-      'A CI runner with the LUNA CLI',
-      'A project that builds locally',
+      'Windows 10 or 11 (64-bit)',
+      'Roblox installed and updated',
+      'A Roblox account you own',
     ],
     limits: [
-      'CI tokens cannot deploy.',
-      'Tokens are revocable and expire.',
+      'Works only with supported experiences.',
+      'No guarantee against platform enforcement.',
+      'Does not include an executor or script library.',
+    ],
+  },
+  {
+    slug: 'roblox-external',
+    name: 'Roblox External',
+    tagline: 'A lightweight external overlay for Roblox.',
+    description:
+      'The entry-level Roblox profile: player highlights, a clean radar and simple toggles in a small external overlay. A good first product if you want to try 404 Loader without the full suite.',
+    kind: 'Mod Menu',
+    platform: 'roblox',
+    price: 2499,
+    art: 'scissors',
+    deliverables: [
+      'External Roblox overlay',
+      'Player highlights and radar',
+      'Minimal hotkey menu',
+      'Saved profile per experience',
+    ],
+    requirements: [
+      'Windows 10 or 11 (64-bit)',
+      'Roblox installed and updated',
+      'A Roblox account you own',
+    ],
+    limits: [
+      'Works only with supported experiences.',
+      'Does not include aim assist or scripts.',
+      'No guarantee against platform enforcement.',
+    ],
+  },
+  {
+    slug: 'stream-proof',
+    name: 'Stream Proof',
+    tagline: 'Keep the overlay out of common captures.',
+    description:
+      'A loader utility that hides supported 404 overlays from common screen-capture paths. Toggle it per profile and keep your scene clean without disabling the modules you use.',
+    kind: 'Utility',
+    platform: 'both',
+    price: 999,
+    art: 'star',
+    deliverables: [
+      'Stream-proof overlay toggle',
+      'Per-profile capture settings',
+      'Works with supported 404 profiles',
+      'Saved hotkey',
+    ],
+    requirements: [
+      'An active 404 Loader licence',
+      'Windows 10 or 11 (64-bit)',
+      'FiveM or Roblox installed',
+    ],
+    limits: [
+      'Capture behaviour varies by GPU, driver and capture tool.',
+      'Does not guarantee invisibility on every platform.',
+      'Requires a supported overlay profile.',
+    ],
+  },
+  {
+    slug: 'cloud-configs',
+    name: 'Cloud Configs',
+    tagline: 'Sync your profiles across two devices.',
+    description:
+      'Back up and sync loader profiles, keybinds, aim presets and visual themes across your two licensed devices. Cloud Configs is optional; every profile still works locally.',
+    kind: 'Utility',
+    platform: 'both',
+    price: 799,
+    art: 'cloud',
+    deliverables: [
+      'Cloud profile storage',
+      'Two-device sync',
+      'Versioned config history',
+      'One-click restore',
+    ],
+    requirements: [
+      'An active 404 Loader licence',
+      'A 404 account',
+      'Windows 10 or 11 (64-bit)',
+    ],
+    limits: [
+      'Stores configuration only, never game accounts or payment details.',
+      'Two active devices per licence.',
+      'Requires an internet connection to sync.',
     ],
   },
 ]
 
 export const BUNDLE: BundleProduct = {
   slug: 'complete-toolkit',
-  name: 'The Complete Toolkit',
-  tagline: 'Every tool in the catalogue, one optional bundle.',
+  name: '404 Complete',
+  tagline: 'Every current cheat in one optional bundle.',
   description:
-    'All current FiveM and Roblox tools in one licence. The bundle is optional: buy a single tool if that is all you need, or take the complete toolkit and save against buying every product separately.',
-  price: 14900,
+    'All current FiveM and Roblox products in one licence: menus, visuals, aim profiles, executors, scripts and loader utilities. Buy one product if that is all you need, or take 404 Complete and save against buying them separately.',
+  price: 6999,
   art: 'sphere',
   deliverables: [
-    'Every tool currently in the catalogue',
-    'One bundle licence key',
-    'Both FiveM and Roblox workflows',
+    'Every product currently in the catalogue',
+    'One 404 Loader licence key',
+    'Both FiveM and Roblox profiles',
     'Twelve months of updates',
   ],
   requirements: [
-    'A FiveM or Roblox project you own',
-    'Windows 10 (64-bit) or macOS 13 or later',
+    'Windows 10 or 11 (64-bit)',
+    'FiveM or Roblox installed and updated',
+    'An account you own and are authorised to use',
   ],
   limits: [
-    'Includes the tools listed at purchase; later tools are sold separately.',
-    'A bundle licence covers one person on two machines, not a team.',
-    'Does not include server hosting or third-party subscriptions.',
+    'Includes the products listed at purchase; later products are sold separately.',
+    'A licence covers one person on two devices, not a team.',
+    'Does not include game accounts, game copies or third-party subscriptions.',
+    'No software can guarantee against platform enforcement.',
   ],
   includes: TOOLS.map((tool) => tool.slug),
 }
@@ -680,12 +726,6 @@ export function platformBySlug(slug: string) {
 
 /* ------------------------------------------------------------------- games */
 
-/*
-  Categories of thing you can build, not games we sell cheats for. Every
-  category below is a project type that runs on a platform we support today
-  (FiveM or Roblox). Platforms we do not support are listed separately and
-  honestly labelled.
-*/
 export type Genre = {
   slug: string
   name: string
@@ -697,85 +737,85 @@ export type Genre = {
 }
 
 export const GENRE_INTRO = {
-  eyebrow: 'Categories',
-  title: ['Games', 'we build for'],
+  eyebrow: 'Games & modes',
+  title: ['Games we', 'cover.'],
   intro:
-    'Browse by the kind of project you are making. Every category here runs on a platform luna.win supports today — the pipeline is the same whether you are shipping a round-based shooter or a roleplay economy.',
+    'Browse by the kind of session you play. Every category below is supported by a current 404 profile on FiveM or Roblox — the loader and key system are shared.',
   rule:
-    'We only build for platforms whose operators permit modification. We do not sell tools for games where the publisher prohibits it, and nothing here touches a live game client.',
+    'Use only on accounts you own. Game modifications can breach platform terms and may lead to account action; no product can promise otherwise.',
 }
 
 export const GENRES: Genre[] = [
   {
     slug: 'fps',
     name: 'FPS',
-    line: 'Round-based shooters and gunplay systems',
-    body: 'Spawn logic, weapon balancing, round state and server-authoritative hit registration. The build has to be fast to iterate on because a balance change ships the same night.',
+    line: 'Round-based shooters and gunplay',
+    body: 'Aim profiles, player visuals and radar for fast rounds. Tune smoothing and field of view for the server you play, then save the preset.',
     platforms: ['fivem', 'roblox'],
-    builds: ['Round and match state machines', 'Weapon and damage tables', 'Loadout and spawn configuration'],
+    builds: ['Aim assist presets', 'Player and hitbox visuals', 'Radar and distance labels'],
     art: 'star',
   },
   {
     slug: 'roleplay',
     name: 'Roleplay',
     line: 'Jobs, economy and civilian life',
-    body: 'Dozens of small resources that all have to load in the right order: jobs, inventories, housing, banking. This is where a dependency graph earns its keep.',
+    body: 'A cleaner read of busy roleplay servers: player roles, vehicle details, distance and radar. No world edits and no server-side changes.',
     platforms: ['fivem', 'roblox'],
-    builds: ['Job and duty systems', 'Economy and banking resources', 'Character and property data'],
+    builds: ['Player role visuals', 'Vehicle and plate labels', 'Radar with local range'],
     art: 'knot',
   },
   {
     slug: 'racing',
     name: 'Racing',
     line: 'Time trials, drift servers and handling',
-    body: 'Vehicle handling files, checkpoint routes and leaderboards. Bundles stay small, so a rebuild and redeploy between events takes seconds.',
+    body: 'Vehicle visuals, distance markers and a compact radar for racing sessions. Keep the overlay light so it does not cover the road.',
     platforms: ['fivem', 'roblox'],
-    builds: ['Handling and tuning files', 'Checkpoint and route data', 'Lap timing and leaderboards'],
+    builds: ['Vehicle ESP', 'Checkpoint markers', 'Minimal racing overlay'],
     art: 'prism',
   },
   {
     slug: 'survival',
     name: 'Survival',
     line: 'Looting, base building and scarcity',
-    body: 'Loot tables, persistence and base claims. Validation catches the resource that reads another one’s data, which is how survival servers lose their economies.',
+    body: 'Object and pickup markers, player distance and configurable highlights for survival sessions. Every element is toggleable.',
     platforms: ['fivem', 'roblox'],
-    builds: ['Loot and spawn tables', 'Base and claim persistence', 'Needs, crafting and progression'],
+    builds: ['Pickup and crate markers', 'Player distance labels', 'Base and object highlights'],
     art: 'cloud',
   },
   {
     slug: 'horror',
     name: 'Horror',
     line: 'Co-op scares and scripted events',
-    body: 'Event scripting, proximity voice and sequenced scares. Deterministic builds mean the version you tested is the version players get.',
+    body: 'A quieter visual profile for horror sessions: player highlights and distance only, with the menu kept out of the way.',
     platforms: ['fivem', 'roblox'],
-    builds: ['Scripted event sequences', 'Proximity and voice setup', 'Lighting and ambience assets'],
+    builds: ['Player highlights', 'Proximity labels', 'Minimal overlay preset'],
     art: 'scissors',
   },
   {
     slug: 'tycoon',
     name: 'Tycoon & simulation',
     line: 'Progression economies and management loops',
-    body: 'Long-running saves and progression maths. The asset audit shows what a build references before a save-breaking change goes live.',
+    body: 'Object labels, distance markers and inventory-adjacent visuals for supported Roblox experiences. No save editing.',
     platforms: ['roblox'],
-    builds: ['Progression and upgrade trees', 'Save data and migrations', 'UI and shop systems'],
+    builds: ['Object markers', 'Distance labels', 'Clean UI preset'],
     art: 'sphere',
   },
   {
     slug: 'open-world',
     name: 'Open world',
     line: 'Large maps, factions and streaming',
-    body: 'Map resources, interiors and streaming budgets. Escrow-aware checks flag the resource that expects to patch an encrypted asset before it fails at runtime.',
+    body: 'Long-range player and vehicle visuals for open-world FiveM servers, with radar range and label density controls.',
     platforms: ['fivem'],
-    builds: ['Map and MLO resources', 'Faction and territory systems', 'Streaming and LOD budgets'],
+    builds: ['Long-range player visuals', 'Vehicle and plate ESP', 'Adjustable radar range'],
     art: 'knot',
   },
   {
     slug: 'party',
     name: 'Party & minigames',
     line: 'Short rounds, lobbies and matchmaking',
-    body: 'Quick loops that live or die on uptime. Deploy only the resources that changed, then check the server is healthy before calling it done.',
+    body: 'Lightweight visual and aim presets for short Roblox rounds, with quick toggles and per-experience profiles.',
     platforms: ['roblox'],
-    builds: ['Lobby and queue systems', 'Round rotation', 'Reward and cosmetic drops'],
+    builds: ['Quick-toggle visuals', 'Aim presets', 'Per-experience profiles'],
     art: 'star',
   },
 ]
@@ -783,13 +823,13 @@ export const GENRES: Genre[] = [
 export const UPCOMING = {
   title: ['Not yet,', 'but next'],
   intro:
-    'We add a platform when its publisher allows it and when the pipeline genuinely fits. These are on the list; none of them are supported today.',
+    'These games are on the 404 Services roadmap. None of them are supported today; join the waitlist and we will email you when a loader profile is ready.',
   items: [
-    { name: 'RedM', note: 'Same Cfx toolchain as FiveM, different resource rules.' },
-    { name: 'Minecraft (Java)', note: 'Plugin and datapack builds, not client mods.' },
-    { name: 'Garry’s Mod', note: 'Server-side addons and workshop packaging.' },
+    { name: 'Counter-Strike 2', note: 'External visuals and aim profiles.' },
+    { name: 'Rust', note: 'Player and raid visuals for supported servers.' },
+    { name: 'Fortnite', note: 'Researching a supported profile; not available.' },
   ],
-  action: 'Ask for a platform',
+  action: 'Request a game',
 }
 
 /* ---------------------------------------------------------------- pricing */
@@ -800,57 +840,57 @@ export const LAUNCH = {
   multiplier: 0.8,
 }
 
-/** What every tool or bundle licence includes. */
+/** What every product or bundle licence includes. */
 export const LICENCE_INCLUDES = [
   'One-time payment · twelve months of updates',
-  'One person, two machines',
-  'Offline validation and builds',
-  'No telemetry, no subscription',
+  'One person, two devices',
+  'Key delivery by email',
+  'Local profiles · no subscription',
 ]
 
 export const PRICING_POINTS = [
   {
-    title: 'Buy one tool at a time',
-    body: 'Every tool in the store is its own product with its own price, product page and buy action. Start with the one problem you need to solve today.',
+    title: 'Buy one profile at a time',
+    body: 'Every product in the store is its own product with its own price, feature list and buy action. Start with the profile that fits your session.',
   },
   {
     title: 'The bundle is optional',
-    body: 'The Complete Toolkit collects every current tool for less than buying them separately. It is a bundle, not a subscription and not a requirement.',
+    body: '404 Complete collects every current product for less than buying them separately. It is a bundle, not a subscription and not a requirement.',
   },
   {
     title: 'One-time, not a subscription',
-    body: 'You buy the licence once. The tool keeps working after the update year ends — you simply stop receiving new versions.',
+    body: 'You buy the licence once. The loader keeps working after the update year ends — you simply stop receiving new versions.',
   },
   {
     title: 'Updates for twelve months',
-    body: 'Every release for a year, including platform changes. After that, renew at 50% of what you paid if you want another year.',
+    body: 'Every release for a year, including loader updates. After that, renew at 50% of what you paid if you want another year.',
   },
 ]
 
 export const PRICING_FAQ = [
   {
-    q: 'Do I have to buy the whole toolkit?',
-    a: 'No. Every tool is sold separately. Buy only the products you need; the Complete Toolkit is an optional bundle for people who want all of them.',
+    q: 'Do I need the game to use a product?',
+    a: 'Yes. You need your own copy of FiveM or Roblox, an account you own, and a Windows PC that meets the requirements. No game account is included with any purchase.',
   },
   {
-    q: 'Does the bundle cost less than buying separately?',
-    a: 'Yes. The bundle price is lower than the sum of the current individual tool prices, and the store shows both so you can decide. The saving is calculated from the catalogue, not a countdown trick.',
+    q: 'Can you guarantee I will not be banned?',
+    a: 'No. No modification can guarantee safety from server-side or platform enforcement. Use 404 products only on accounts you own and can afford to lose, and read the limits on each product page.',
   },
   {
-    q: 'Can I add a tool later?',
-    a: 'Yes. Tools are separate products, so you can buy one now and another when you need it. If you already own a tool, the bundle price is not automatically reduced — contact us before buying the bundle.',
+    q: 'How is my key delivered?',
+    a: 'Checkout is handled by email and a secure payment link. After payment, your loader download and licence key are sent to the email address on the order.',
   },
   {
     q: 'What happens when my update year ends?',
-    a: 'Each tool keeps working at the last version you received. Renewing is optional and costs 50% of the price you originally paid; there is no automatic charge.',
+    a: 'Each product keeps working at the last version you received. Renewing is optional and costs 50% of the price you originally paid; there is no automatic charge.',
   },
   {
-    q: 'Can I move a licence to a new computer?',
-    a: 'Yes. Deactivate the old machine in the app under Account → Licence, then activate the new one. Every product licence allows two active machines for one person.',
+    q: 'Can I move a licence to a new PC?',
+    a: 'Yes. Deactivate the old device in 404 Loader under Account → Licence, then activate the new one. Every product licence allows two active devices for one person.',
   },
   {
     q: 'Do you offer invoices and VAT numbers?',
-    a: 'Yes. Checkout collects a VAT number for business buyers and the invoice is issued by the merchant of record. If you buy several tools, email us and we will put them on one invoice.',
+    a: 'Yes. Checkout collects a VAT number for business buyers and the invoice is issued by the merchant of record. If you buy several products, email us and we will put them on one invoice.',
   },
 ]
 
@@ -867,42 +907,42 @@ export type Release = {
 
 export const CHANGELOG: Release[] = [
   {
-    version: '1.4.2',
+    version: '4.0.4',
     date: '4 November 2026',
-    title: 'Faster graphs on large projects',
-    body: 'A dependency graph with more than 200 resources now resolves in under a second, and the report opens without blocking the interface.',
-    tags: ['Changed', 'Fixed'],
-    items: [
-      'Graph resolution moved off the UI thread; projects with 200+ resources build roughly 4× faster.',
-      'Fixed a false positive when a shared library was listed by two resources at different versions.',
-      'Deploy health checks now retry twice before failing, which stops flapping hosts from marking a good deploy as failed.',
-      'The Roblox asset audit now shows the owning experience for each asset ID.',
-    ],
-  },
-  {
-    version: '1.4.0',
-    date: '14 October 2026',
-    title: 'Roblox project import',
-    body: 'Roblox projects can now be imported, built and published from the same pipeline as FiveM resources.',
-    tags: ['Added', 'Security'],
-    items: [
-      'Import place and model files you own, with revision tracking between builds.',
-      'Publish to a chosen experience through your own account authorisation, with an explicit confirm step.',
-      'Asset reference audit lists every ID a project uses.',
-      'Licence tokens are now stored in the OS credential store rather than a config file.',
-    ],
-  },
-  {
-    version: '1.3.4',
-    date: '2 September 2026',
-    title: 'Strict validation and CI token',
-    body: 'Strict mode turns every warning into a build failure, and a scoped token lets CI run the same checks as the app.',
+    title: 'Loader profiles and Roblox executor update',
+    body: 'The shared loader now switches faster between FiveM and Roblox profiles, and the Roblox executor has a new workspace picker.',
     tags: ['Added', 'Changed'],
     items: [
-      '`--strict` fails a build on any warning, including missing dependency declarations.',
-      'Scoped CI tokens can build, bundle and validate but cannot deploy.',
-      'Escrow-aware warnings now name the resource that expects to patch an encrypted file.',
-      'Windows: fixed a crash when a project path contained a non-ASCII character.',
+      'Added per-experience profiles to the Roblox executor.',
+      'Improved FiveM external overlay performance in busy servers.',
+      'Cloud Configs now keeps the last ten profile revisions.',
+      'Fixed an issue where a missing game install could stall the loader.',
+    ],
+  },
+  {
+    version: '4.0.0',
+    date: '14 October 2026',
+    title: '404 Loader 4',
+    body: 'One loader now manages every FiveM and Roblox product, with shared licence checks and a new profile dashboard.',
+    tags: ['Added', 'Security'],
+    items: [
+      'One licence screen for every product on the account.',
+      'New profile dashboard with per-game presets.',
+      'Stream Proof added as an optional utility.',
+      'Licence keys are stored in the operating system credential store.',
+    ],
+  },
+  {
+    version: '3.8.2',
+    date: '2 September 2026',
+    title: 'Visuals refresh',
+    body: 'Player visuals have been rebuilt for readability, with tighter label placement and a lighter radar.',
+    tags: ['Changed', 'Fixed'],
+    items: [
+      'New distance bands and role colours for FiveM visuals.',
+      'Radar range can now be changed without reloading a profile.',
+      'Fixed flickering name labels at long range.',
+      'Reduced loader memory use by roughly a third.',
     ],
   },
 ]
@@ -912,35 +952,35 @@ export const CHANGELOG: Release[] = [
 export const DOC_SECTIONS = [
   {
     id: 'install',
-    title: 'Install',
-    body: 'Download the app, open it, and paste the licence key for the tool or bundle you bought when prompted. Every product has its own key and covers one person on two machines.',
-    code: ['# macOS', 'brew install --cask luna.win', '', '# Windows', 'winget install luna.win.luna.win'],
+    title: 'Download the loader',
+    body: 'After payment, the download link and licence key arrive by email. Install 404 Loader like any Windows application; it does not need a separate runtime or browser extension.',
+    code: ['1. Open the email from 404 Services', '2. Download 404-Loader-Setup.exe', '3. Run the installer and open 404 Loader'],
   },
   {
-    id: 'first-project',
-    title: 'Your first project',
-    body: 'Point the app at a folder containing a `luna.win.toml`, or run `luna.win init` in an existing project to create one.',
-    code: ['cd my-server', 'luna.win init --target fivem', 'luna.win build --open-report'],
+    id: 'activate',
+    title: 'Activate your key',
+    body: 'Paste the key from your receipt into the loader once. Activation registers the device, not a game account, and a licence can be active on two devices.',
+    code: ['Account  →  Licence', 'Paste key  →  Activate device', 'Devices: 1 of 2 active'],
   },
   {
-    id: 'commands',
-    title: 'Commands',
-    body: 'Every command exits non-zero on failure, which is what makes it safe to run in CI.',
-    code: ['luna.win build     # resolve the graph and report problems', 'luna.win bundle    # write dist/ with a commit stamp', 'luna.win validate  # run checks; --strict fails on warnings', 'luna.win deploy    # push to a saved profile', 'luna.win licence   # show seats and deactivate this machine'],
+    id: 'profiles',
+    title: 'Choose a profile',
+    body: 'Launch the supported game, choose the matching 404 profile, then toggle the modules you want. Profiles and keybinds are saved locally and can be synced with Cloud Configs.',
+    code: ['FiveM  →  External profile', 'Roblox  →  Executor profile', 'Profile  →  Save as  →  Name'],
   },
   {
-    id: 'config',
-    title: 'Project file',
-    body: 'One file describes the project: its target platform, its resources, and where a deploy should land.',
-    code: ['[project]', 'name = "ridge-county"', 'target = "fivem"', '', '[deploy.production]', 'profile = "host-eu"', 'restart = "changed"'],
+    id: 'updates',
+    title: 'Updates and support',
+    body: 'The loader checks for signed updates at launch. Release notes list every change. If a profile stops loading after a game update, check the status page before reinstalling.',
+    code: ['404 Loader  →  Settings  →  Check for updates', 'Status page  →  Current loader version', 'Support  →  Include loader version and profile'],
   },
 ]
 
 export const DOC_TROUBLESHOOTING = [
-  { q: 'The build says a dependency is missing but the folder exists', a: 'Check the resource name in the manifest against the folder name. FiveM resolves by name, not path, and a trailing space in the manifest is the usual cause.' },
-  { q: 'Deploy fails its health check but the server is up', a: 'The check calls the endpoint in your deploy profile. If the server sits behind a proxy that rewrites paths, point the profile at the internal address instead.' },
-  { q: 'Roblox publish is refused', a: 'luna.win can only publish to an experience owned by the account that authorised it. Re-authorise and confirm the experience ID in the project file.' },
-  { q: 'Can I run this on a machine without a licence server connection?', a: 'Yes. Activation is cached for 14 days, so builds keep working offline; the app only needs to reach the licence service occasionally.' },
+  { q: 'My key is not accepted', a: 'Check for leading or trailing spaces, confirm the key belongs to the product you opened, and make sure the device limit has not been reached. If it still fails, email support with the key prefix only, never the full key.' },
+  { q: 'The game is not detected', a: 'Launch the game first, then open the matching profile in 404 Loader. If the game is running as administrator, run the loader with the same permission level.' },
+  { q: 'The loader closes after a game update', a: 'Check the status page and release notes. Some profiles require a signed loader update after a game patch; the loader will offer it at launch when one is available.' },
+  { q: 'Can I use the same key on two PCs?', a: 'Yes, for one person on two active devices. Deactivate the old device in Account → Licence before moving to a third machine.' },
 ]
 
 /* ----------------------------------------------------------------- support */
@@ -948,47 +988,47 @@ export const DOC_TROUBLESHOOTING = [
 export const SUPPORT = {
   title: ['Get', 'unstuck'],
   intro:
-    'Email reaches a person, not a ticket queue. Include your version, the tool or bundle you are asking about, and the last few lines of the build log — that is usually enough to answer in one reply.',
+    'Support reaches a person, not a ticket queue. Include your loader version, the product or profile you are using, and the exact message you see — that is usually enough to answer in one reply.',
   responseTimes: [
     { audience: 'Before you buy', time: 'Email, within 2 working days' },
     { audience: 'Licence holders', time: 'Email, within 1 working day' },
   ],
   checklist: [
-    'The app version from Help → About, and your OS version.',
-    'The command you ran and the full output, not a screenshot of part of it.',
-    'Whether the product is a single tool or the bundle, which platform you build on, and roughly how many resources the project has.',
-    'Anything you changed since the last build that worked.',
+    'Your 404 Loader version from Settings → About, and your Windows version.',
+    'The product or profile you opened, and whether the game was already running.',
+    'The exact error message or a short clip of the loader window.',
+    'What changed since the last session that worked.',
   ],
 }
 
 export const SUPPORT_FAQ = [
-  { q: 'Where do I get my licence key?', a: 'It is in the receipt email from the store, and on the download page after checkout. If it is lost, email us from the address you bought with and we will resend it.' },
-  { q: 'How many machines can I activate?', a: 'Every tool and bundle licence activates on two machines for one person. Deactivate a machine in the app before moving to a new one.' },
-  { q: 'Do I need the complete kit?', a: 'No. Each tool is sold separately. If you only need one workflow, buy that tool; the Complete Toolkit is an optional bundle.' },
-  { q: 'Is the bundle cheaper than buying every tool?', a: 'Yes. The bundle is priced below the sum of the current individual products. If you already own some tools, contact us before buying the bundle.' },
-  { q: 'Do you offer migration help from another toolchain?', a: 'Yes — we will look at your project layout and tell you what a migration would involve. It is a conversation, not a paid service.' },
-  { q: 'Is there a Discord?', a: 'Yes, for community help and release notes. It is not required to buy, download or run anything.' },
+  { q: 'Where do I get my licence key?', a: 'It is in the receipt email from the store, and in your account after purchase. If it is lost, email us from the address you bought with and we will resend it.' },
+  { q: 'How many devices can I activate?', a: 'Every product and bundle licence activates on two devices for one person. Deactivate a device in 404 Loader before moving to a new one.' },
+  { q: 'Do I need 404 Complete?', a: 'No. Each product is sold separately. If you only want visuals or an executor, buy that profile; 404 Complete is an optional bundle.' },
+  { q: 'Is the bundle cheaper than buying every product?', a: 'Yes. The bundle is priced below the sum of the current individual products. If you already own some products, contact us before buying the bundle.' },
+  { q: 'Does 404 Services use game accounts?', a: 'No. We never ask for your game password or account credentials. The loader uses a licence key and a hashed device identifier for activation.' },
+  { q: 'Is there a community?', a: 'Yes. The forums carry release notes, setup questions and profile discussions. Community access is optional and not required to use a product.' },
 ]
 
 /* ------------------------------------------------------------------ legal */
 
 export type LegalSection = { heading: string; body: string[] }
 
-export const LEGAL_UPDATED = '14 November 2026'
+export const LEGAL_UPDATED = '15 November 2026'
 
 export const TERMS: LegalSection[] = [
   {
     heading: 'Who these terms are with',
     body: [
-      `luna.win is sold by ${SITE.company} ("we", "us"). By buying a licence or using the software you agree to these terms. If you are buying on behalf of a company, you confirm you may bind that company.`,
+      `404 Services is sold by ${SITE.company} ("we", "us"). By buying a licence or using the software you agree to these terms. If you are buying on behalf of a company, you confirm you may bind that company.`,
       'The checkout, payment processing, tax and invoicing are handled by our merchant of record. Their terms apply to the transaction itself; these terms apply to the software and to your licence.',
     ],
   },
   {
     heading: 'What you are licensed to do',
     body: [
-      'We grant you a non-exclusive, non-transferable licence to install and use the luna.win tool or bundle the licence names, on up to two active machines. A seat is one person. Projects and servers you administer are unlimited. Individual tools and the Complete Toolkit are separate products, and the bundle only includes the tools listed on its product page at purchase.',
-      'You may use the software to build and deploy projects for clients. You may not resell, sublicense, rent or redistribute the software itself, or include it in a product you distribute.',
+      'We grant you a non-exclusive, non-transferable licence to install and use the 404 product or bundle named on your order on up to two active devices. A seat is one person. Individual products and 404 Complete are separate products, and the bundle only includes the products listed on its product page at purchase.',
+      'You may not resell, sublicense, rent or redistribute the software itself, share a key, or include it in a product you distribute.',
     ],
   },
   {
@@ -999,30 +1039,31 @@ export const TERMS: LegalSection[] = [
     ],
   },
   {
-    heading: 'Acceptable use',
+    heading: 'Acceptable use and risk',
     body: [
-      'luna.win is a development tool. You agree not to use it to cheat, to gain an unfair advantage in another operator’s game, to bypass anti-cheat systems, or to interfere with a game client you do not own. This is a condition of the licence, not a preference.',
-      'You also agree not to use the software to infringe intellectual property: no extracting or redistributing assets you do not have the rights to, no publishing to an experience or server you do not administer.',
-      'You are responsible for complying with the terms of the platforms you build for, including Rockstar’s terms and the Cfx.re Platform License Agreement, and Roblox’s Terms of Use.',
+      '404 Services provides game-modification software. You agree to use it only on game accounts you own and are authorised to use, and in compliance with the laws that apply to you.',
+      'Game modifications can breach a game platform’s terms and may lead to suspension or a permanent ban. No product can guarantee against enforcement. You accept that risk when you use the software.',
+      'Do not use the software to harass another person, steal an account, distribute malware, or interfere with a service you do not control.',
+      'You are responsible for complying with the terms of the platforms you use, including Rockstar’s terms, the Cfx.re Platform License Agreement and Roblox’s Terms of Use.',
     ],
   },
   {
     heading: 'Ownership',
     body: [
-      'You own your projects, your code and everything you build with luna.win. We own the software and its documentation. Nothing in these terms transfers ownership of either.',
+      'We own the software, the loader, the 404 Services name and its documentation. Nothing in these terms transfers ownership of those materials to you.',
     ],
   },
   {
     heading: 'Availability and changes',
     body: [
-      'We may change or remove features between major versions. We will not remove a feature you rely on without saying so in the changelog first, and a licence bought for a version keeps working at that version.',
-      'We may suspend a licence if these terms are broken — in particular the acceptable use section. Where the breach is not serious, we will contact you first and give you a chance to fix it.',
+      'We may change or remove features between loader versions. We will not remove a feature you rely on without saying so in the changelog first, and a licence bought for a version keeps working at that version.',
+      'We may suspend a licence if these terms are broken — in particular the acceptable-use section. Where the breach is not serious, we will contact you first and give you a chance to fix it.',
     ],
   },
   {
     heading: 'Liability',
     body: [
-      'The software is provided as is. To the extent the law allows, our total liability is limited to what you paid for the licence in the twelve months before the claim. We are not liable for lost data, lost revenue or a server going down — keep backups and test on staging.',
+      'The software is provided as is. To the extent the law allows, our total liability is limited to what you paid for the licence in the twelve months before the claim. We are not liable for lost game accounts, lost data, lost revenue or account enforcement action.',
       'Nothing here limits liability that cannot be limited by law, including for death, personal injury or fraud.',
     ],
   },
@@ -1038,7 +1079,7 @@ export const REFUNDS: LegalSection[] = [
   {
     heading: 'Fourteen days, generally',
     body: [
-      'If luna.win is not what you expected, ask for a refund within fourteen days of purchase and we will refund the full amount to the original payment method. You do not need a reason, though we would like to know what went wrong.',
+      'If 404 Services is not what you expected, ask for a refund within fourteen days of purchase and we will refund the full amount to the original payment method. You do not need a reason, though we would like to know what went wrong.',
       'Refunds are processed by our merchant of record and usually appear within five to ten business days, depending on your bank.',
     ],
   },
@@ -1052,7 +1093,13 @@ export const REFUNDS: LegalSection[] = [
   {
     heading: 'Faulty software',
     body: [
-      'If something does not work as documented, contact support first — most problems are a dependency or a path, and we can usually fix them the same day. If we cannot, you get a refund regardless of how long you have had the licence.',
+      'If something does not work as documented, contact support first — most loader problems are a version mismatch or a missing game update, and we can usually fix them the same day. If we cannot, you get a refund regardless of how long you have had the licence.',
+    ],
+  },
+  {
+    heading: 'Enforcement action is not a fault',
+    body: [
+      'A game account suspension or ban is a risk of using modification software, not a defect in the product. Refunds are not available solely because a game or server took action against an account.',
     ],
   },
   {
@@ -1079,14 +1126,14 @@ export const PRIVACY: LegalSection[] = [
     body: [
       'When you buy: your name, email, country and VAT number if you give one, plus the transaction record. This is needed to deliver the licence, issue a receipt and meet tax obligations. Payment details go directly to the merchant of record — we never see a card number.',
       'When you email support: your address and whatever you include in the message, kept so we can answer and refer back to it.',
-      'When the app runs: a licence check sends your licence key and a hashed machine identifier. The hash is derived from hardware and OS details, cannot be reversed into those details, and is used only to count active machines and let you deactivate one.',
+      'When the loader runs: a licence check sends your licence key and a hashed device identifier. The hash is derived from hardware and OS details, cannot be reversed into those details, and is used only to count active devices and let you deactivate one.',
       'Our host keeps standard server logs, including IP addresses, for security and abuse prevention. These rotate automatically.',
     ],
   },
   {
     heading: 'What we do not do',
     body: [
-      'We do not sell data, share it with advertisers, or use it to build a profile of you. We do not read your projects: builds and bundles run locally, and no project content is uploaded by the app.',
+      'We do not sell data, share it with advertisers, or use it to build a profile of you. We never ask for a game account password or collect game credentials.',
     ],
   },
   {
@@ -1098,7 +1145,7 @@ export const PRIVACY: LegalSection[] = [
   {
     heading: 'How long we keep it',
     body: [
-      'Support email is kept for two years. Transaction records are kept for as long as tax law requires, which is usually seven to ten years depending on the country; the merchant of record holds the payment record. Licence and machine records are deleted within 30 days of a licence ending.',
+      'Support email is kept for two years. Transaction records are kept for as long as tax law requires, which is usually seven to ten years depending on the country; the merchant of record holds the payment record. Licence and device records are deleted within 30 days of a licence ending.',
     ],
   },
   {
@@ -1116,12 +1163,12 @@ export const PRIVACY: LegalSection[] = [
   },
   {
     heading: 'Contact',
-    body: [`${SITE.email} — ${SITE.company}, ${SITE.address.join(', ')}.`],
+    body: [`${SITE.email} — ${SITE.company}.`],
   },
 ]
 
 export const FOOTER = {
-  newsletter: { title: 'Release notes', body: 'One email a month: what shipped, what broke, what is next. Nothing else.' },
+  newsletter: { title: 'Release notes', body: 'Loader updates, new profiles and fixes. No spam.' },
   legal: `© ${new Date().getFullYear()} ${SITE.company}`,
   legalLinks: [
     { label: 'Terms', to: '/terms' },

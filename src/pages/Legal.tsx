@@ -86,7 +86,7 @@ export function Terms() {
     <LegalPage
       title={['Terms']}
       eyebrow="Terms of service"
-      intro="The agreement between you and us when you buy or use luna.win. Plain language, no surprises buried at the bottom."
+      intro="The agreement between you and us when you buy or use 404 Services. Plain language, no surprises buried at the bottom."
       sections={TERMS}
     />
   )

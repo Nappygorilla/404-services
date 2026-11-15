@@ -1,6 +1,6 @@
 /**
  * Prefix a path from `public/` with the deployment base path, so one build works
- * both at the domain root and under a subpath such as `/LUNA-WIN/` on GitHub Pages.
+ * both at the domain root and under a subpath such as `/404-services/` on GitHub Pages.
  * Absolute URLs (a hosted recording, a data URI) are returned untouched.
  */
 export function asset(path: string): string {

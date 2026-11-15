@@ -41,12 +41,12 @@ export function Status() {
 
   return (
     <div className="grid gap-2 p-2">
-      <PageHero title={['System', 'status']} eyebrow="Service health" intro="A transparent view of the services connected to this build. Only the API health endpoint is actively checked; the other integrations are labeled according to their configuration." art={<Activity className="size-24 text-violet/80" />} titleSize="compact" />
+      <PageHero title={['System', 'status']} eyebrow="Service health" intro="A transparent view of the services connected to 404 Services. Only the API health endpoint is actively checked; the other integrations are labelled according to their configuration." art={<Activity className="size-24 text-violet/80" />} titleSize="compact" />
 
       <Card className="grid gap-4 p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:p-8">
         <div className="flex items-start gap-3">
           <span className="grid size-11 place-items-center rounded-xl bg-violet/10 text-violet"><Activity className="size-5" /></span>
-          <div><h2 className="text-xl font-semibold">Monitoring overview</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">LUNA does not currently have external uptime monitoring or a live incident system. This page reports the checks and configuration that can be verified by the website itself.</p></div>
+          <div><h2 className="text-xl font-semibold">Monitoring overview</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">404 Services does not currently have external uptime monitoring or a live incident system. This page reports the checks and configuration that can be verified by the website itself.</p></div>
         </div>
         <Badge tone="outline">Partial monitoring</Badge>
       </Card>
@@ -63,14 +63,14 @@ export function Status() {
       </section>
 
       <Card className="grid gap-5 p-6 sm:grid-cols-3 sm:p-8">
-        <div><p className="caps text-muted">Desktop release</p><p className="mt-2 text-xl font-semibold">v{APP.version}</p></div>
+        <div><p className="caps text-muted">Loader release</p><p className="mt-2 text-xl font-semibold">v{APP.version}</p></div>
         <div><p className="caps text-muted">Last release date</p><p className="mt-2 text-xl font-semibold">{APP.released}</p></div>
         <div><p className="caps text-muted">Latest notes</p><p className="mt-2 text-xl font-semibold">{latest ? latest.version : '—'}</p></div>
       </Card>
 
       <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
         <div className="flex items-start gap-3"><CircleHelp className="mt-0.5 size-5 shrink-0 text-violet" /><div><h2 className="font-semibold">Found a problem?</h2><p className="mt-1 text-sm text-muted">Report an issue with the product or website so it can be investigated.</p></div></div>
-        <div className="flex flex-wrap gap-4"><ArrowLink to="/support" size="sm">Contact support</ArrowLink><a href="https://github.com/Nappygorilla/LUNA-WIN/issues" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-1.5 text-sm font-semibold text-violet hov:text-violet-light">GitHub issues <ArrowUpRight className="size-4" /></a></div>
+        <div className="flex flex-wrap gap-4"><ArrowLink to="/support" size="sm">Contact support</ArrowLink><a href="https://github.com/Nappygorilla/404-services/issues" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-1.5 text-sm font-semibold text-violet hov:text-violet-light">GitHub issues <ArrowUpRight className="size-4" /></a></div>
       </Card>
       <p className="px-2 text-center text-xs text-muted">{SITE.name} · Status information is limited to verified checks and configured integrations.</p>
     </div>

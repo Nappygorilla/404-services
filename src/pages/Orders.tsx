@@ -67,7 +67,7 @@ export function Orders() {
 
   return (
     <div className="grid gap-2 p-2">
-      <PageHero title={['Order', 'history']} eyebrow="Customer account" intro="A private record of the purchases and payment references associated with your LUNA account." art={<ReceiptText className="size-24 text-violet/80" />} titleSize="compact" />
+      <PageHero title={['Order', 'history']} eyebrow="Customer account" intro="A private record of the purchases and payment references associated with your 404 Services account." art={<ReceiptText className="size-24 text-violet/80" />} titleSize="compact" />
       <Card className="p-6 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="caps text-violet">Purchases</p><h2 className="mt-2 text-2xl font-semibold">Your orders</h2><p className="mt-1 text-sm text-muted">{user.email}</p></div><Badge tone="outline">{loading ? 'Loading' : `${orders.length} orders`}</Badge></div>
         {loading ? <p className="mt-6 text-sm text-muted">Loading order history…</p> : loadError ? <p role="alert" className="mt-6 rounded-lg bg-soft p-4 text-sm text-muted">{loadError}</p> : orders.length === 0 ? <div className="mt-6 rounded-xl border border-dashed border-line-strong p-6"><p className="font-medium">No orders are attached to this account.</p><p className="mt-2 text-sm text-muted">Orders appear after a payment provider webhook has been verified and the server records the purchase.</p></div> : (

@@ -15,6 +15,18 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
     U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+/* Outfit, self-hosted for the rounded geometric display headings. */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/outfit-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @font-face {
   font-family: 'Inter Tight';
   font-style: normal;
@@ -26,47 +38,48 @@
 }
 
 /*
-  luna.win design tokens. A near-black canvas holds slightly lighter panels
+  404 Services design tokens. A near-black canvas holds slightly lighter panels
   with visible edges, a neon violet accent, an acid status green and mono
   captions. The iridescent artwork (src/components/Holo.tsx) carries the rest.
   Everything rounded is a squircle; true circles opt out with .round.
 */
 @theme {
   --font-sans: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Outfit', 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
 
-  --color-canvas: #08080c;
-  --color-card: #0d0d14;
-  --color-soft: #12121b;
-  --color-line: #1e1e2b;
-  --color-line-strong: #33334a;
-  --color-ink: #f2f2f7;
-  --color-ink-2: #cfcfdd;
-  --color-muted: #8f8fa6;
-  --color-faint: #62627a;
-  --color-night: #040407;
-  --color-night-2: #101018;
-  --color-night-muted: #9a9ab0;
-  --color-violet: #7c3aed;
-  --color-violet-deep: #5b21b6;
-  --color-violet-soft: #1d1235;
-  --color-violet-light: #c4b5fd;
-  --color-pink: #ff7ad9;
-  --color-cyan: #5fd8ff;
-  --color-acid: #c9ff4d;
-  --color-success: #2ee6a0;
-  --color-danger: #ff5c6c;
+  --color-canvas: #07070b;
+  --color-card: #0d0b14;
+  --color-soft: #14101f;
+  --color-line: #211d2c;
+  --color-line-strong: #3b3451;
+  --color-ink: #f7f4fb;
+  --color-ink-2: #d7d0e3;
+  --color-muted: #9b93ad;
+  --color-faint: #6c647e;
+  --color-night: #050408;
+  --color-night-2: #100c18;
+  --color-night-muted: #a39aaf;
+  --color-violet: #8b5cf6;
+  --color-violet-deep: #6d28d9;
+  --color-violet-soft: #211238;
+  --color-violet-light: #d8ccff;
+  --color-pink: #ff5ccf;
+  --color-cyan: #62d9ff;
+  --color-acid: #b9ff4b;
+  --color-success: #39e6a0;
+  --color-danger: #ff5c7a;
   --color-scrim: #04040a;
 
   --radius-xs: 6px;
   --radius-control: 10px;
-  --radius-card-sm: 12px;
-  --radius-card: 16px;
+  --radius-card-sm: 14px;
+  --radius-card: 20px;
 
-  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -40px rgb(0 0 0 / 0.9);
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 24px 60px -40px rgb(0 0 0 / 0.9);
   --shadow-float: 0 40px 100px -30px rgb(0 0 0 / 0.9);
-  --shadow-violet: 0 0 0 1px rgb(124 58 237 / 0.45), 0 18px 50px -18px rgb(124 58 237 / 0.6);
-  --shadow-focus: 0 0 0 3px rgb(124 58 237 / 0.38);
+  --shadow-violet: 0 0 0 1px rgb(139 92 246 / 0.45), 0 18px 55px -18px rgb(168 85 247 / 0.65);
+  --shadow-focus: 0 0 0 3px rgb(139 92 246 / 0.38);
 
   --duration-fast: 160ms;
   --duration-base: 320ms;
@@ -170,8 +183,8 @@
   }
   body {
     background:
-      radial-gradient(900px 620px at 88% -8%, rgb(124 58 237 / 0.18), transparent 62%),
-      radial-gradient(720px 520px at -6% 12%, rgb(95 216 255 / 0.07), transparent 58%),
+      radial-gradient(920px 650px at 84% -10%, rgb(124 58 237 / 0.2), transparent 65%),
+      radial-gradient(760px 560px at 2% 8%, rgb(255 92 207 / 0.09), transparent 60%),
       var(--color-canvas);
     background-attachment: fixed;
     color: var(--color-ink);
@@ -207,8 +220,8 @@
     outline-color: #fff;
   }
   ::selection {
-    background: var(--color-violet);
-    color: #fff;
+    background: var(--color-pink);
+    color: #14051d;
   }
   img,
   svg {
@@ -228,13 +241,13 @@
   }
 }
 
-/* Big tight display type: the reference's uppercase grotesk. */
+/* Big rounded display type: sentence case, tight leading, geometric shapes. */
 @utility display {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-weight: 500;
-  text-transform: uppercase;
-  line-height: 0.86;
-  letter-spacing: -0.055em;
+  text-transform: none;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
 }
 
 /* Small technical caption caps, set in mono: labels, statuses, eyebrows. */
@@ -245,6 +258,28 @@
   line-height: 1.18;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+/* Humanist uppercase eyebrow, closer to the storefront reference than mono. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+/* A faint starfield for the cosmic marketing bands. */
+@utility star-field {
+  background-image:
+    radial-gradient(1px 1px at 18% 24%, rgb(255 255 255 / 0.72), transparent),
+    radial-gradient(1px 1px at 72% 18%, rgb(216 204 255 / 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 43% 74%, rgb(255 255 255 / 0.38), transparent),
+    radial-gradient(1px 1px at 86% 62%, rgb(255 92 207 / 0.5), transparent),
+    radial-gradient(1px 1px at 7% 82%, rgb(139 92 246 / 0.65), transparent),
+    radial-gradient(1.5px 1.5px at 62% 42%, rgb(255 255 255 / 0.3), transparent);
+  background-size: 310px 310px, 460px 460px, 380px 380px, 520px 520px, 290px 290px, 610px 610px;
 }
 
 @utility text-balance {
@@ -281,9 +316,17 @@
 /* The neon halo reserved for the primary action and featured panels. */
 @utility glow {
   box-shadow:
-    0 0 0 1px rgb(124 58 237 / 0.5),
-    0 0 40px -6px rgb(124 58 237 / 0.55),
-    0 20px 60px -20px rgb(124 58 237 / 0.5);
+    0 0 0 1px rgb(139 92 246 / 0.5),
+    0 0 48px -8px rgb(168 85 247 / 0.65),
+    0 24px 70px -22px rgb(236 72 153 / 0.45);
+}
+
+/* The primary brand wash used by storefront cards and CTA panels. */
+@utility brand-wash {
+  background-image:
+    radial-gradient(120% 120% at 12% 0%, rgb(139 92 246 / 0.34), transparent 55%),
+    radial-gradient(100% 100% at 96% 92%, rgb(255 92 207 / 0.22), transparent 58%),
+    linear-gradient(135deg, #171024, #0b0911 62%, #160b19);
 }
 
 .marquee-mask {

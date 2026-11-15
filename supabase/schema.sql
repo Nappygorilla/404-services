@@ -1,4 +1,4 @@
--- luna.win community schema.
+-- 404 Services community schema.
 -- Run this once in the Supabase SQL editor for the project that backs the site.
 -- The browser only ever holds the public anon key; these policies do the work.
 
@@ -41,4 +41,4 @@ create policy "authors delete own topics"
 -- (dashboard SQL editor or an admin script), for example:
 --   insert into public.forum_threads (board, title, body, author_id, author_name)
 --   values ('announcements', 'Release 1.4.2', 'What changed…',
---           '<a uuid from auth.users>', 'luna.win team');
+--           '<a uuid from auth.users>', '404 Services team');

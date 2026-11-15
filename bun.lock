@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "luna-win",
+      "name": "404-services",
       "dependencies": {
         "@supabase/supabase-js": "^2.119.0",
         "hono": "^4.13.0",

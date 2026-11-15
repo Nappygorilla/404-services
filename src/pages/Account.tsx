@@ -11,14 +11,14 @@ import { APP } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
 const ACCOUNT_LINKS = [
-  { to: '/downloads', title: 'Downloads', body: 'Authorized installers and release files', icon: Download },
+  { to: '/downloads', title: 'Downloads', body: 'Loader installers and release files', icon: Download },
   { to: '/orders', title: 'Order history', body: 'Purchases and invoice references', icon: CreditCard },
   { to: '/account/licenses', title: 'Licenses', body: 'Your active product entitlements', icon: ShieldCheck },
   { to: '/account/tickets', title: 'Support tickets', body: 'Submit and track private requests', icon: MessageSquareText },
   { to: '/account/profile', title: 'Profile settings', body: 'Update your display name', icon: UserCog },
   { to: '/account/security', title: 'Security', body: 'Change your password and sign out', icon: KeyRound },
   { to: '/forums', title: 'Community', body: 'Announcements and member discussions', icon: FileText },
-  { to: '/support', title: 'Support', body: 'Get help with LUNA', icon: LifeBuoy },
+  { to: '/support', title: 'Support', body: 'Get help with 404 Services', icon: LifeBuoy },
 ]
 
 export function Account() {
@@ -39,7 +39,7 @@ export function Account() {
 
   return (
     <div className="grid gap-2 p-2">
-      <PageHero title={['Your', 'account']} eyebrow="Customer dashboard" intro="Your LUNA profile and the places to manage your purchases, software access, and support." art={<UserRound className="size-24 text-violet/80" />} titleSize="compact" />
+      <PageHero title={['Your', 'account']} eyebrow="Customer dashboard" intro="Your 404 Services profile and the places to manage your purchases, software access, and support." art={<UserRound className="size-24 text-violet/80" />} titleSize="compact" />
 
       <section className="grid gap-2 lg:grid-cols-[.82fr_1.18fr]">
         <Card className="p-6 sm:p-8">

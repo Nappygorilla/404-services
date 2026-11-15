@@ -10,15 +10,15 @@ import { BUNDLE, PRICING_FAQ, SITE, TOOLS } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
 const STEPS = [
-  { title: 'Paste the key once', body: 'On first launch the app asks for the licence key of the tool or bundle you bought. It is in your receipt email; the app checks it against the licence service and stores it in the operating system’s credential store, not in a config file.' },
-  { title: 'Activate the machine', body: 'Activation registers a hashed machine identifier, so the app can count seats without collecting hardware details. A hash matches or it does not; it cannot be turned back into a description of your computer.' },
-  { title: 'Deactivate before you move', body: 'Under Account → Licence, deactivate a machine to free the seat. Do this before wiping a disk, or you will need support to clear the old activation.' },
+  { title: 'Paste the key once', body: 'On first launch the loader asks for the licence key of the cheat or bundle you bought. It is in your receipt email; the loader checks it against the licence service and stores it in the operating system’s credential store, not in a config file.' },
+  { title: 'Activate the device', body: 'Activation registers a hashed device identifier, so the loader can count seats without collecting hardware details. A hash matches or it does not; it cannot be turned back into a description of your computer.' },
+  { title: 'Deactivate before you move', body: 'Under Account → Licence, deactivate a device to free the seat. Do this before wiping a disk, or you will need support to clear the old activation.' },
 ]
 
 const FACTS = [
-  { icon: <KeyRound className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Seats are people', body: 'Every tool and bundle licence is one person on two machines. A machine counts while it is activated; deactivating frees it immediately.' },
-  { icon: <WifiOff className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Works offline', body: 'The licence check is cached for fourteen days, so a build on a plane or in a locked-down network keeps working. After that the app asks once for a connection.' },
-  { icon: <MonitorSmartphone className="size-5" strokeWidth={1.6} aria-hidden />, title: 'No seat monitoring', body: 'We count activations to enforce the licence. We do not read your projects, your file names or your build output, and nothing is uploaded when you build.' },
+  { icon: <KeyRound className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Seats are people', body: 'Every cheat and bundle licence is one person on two devices. A device counts while it is activated; deactivating frees it immediately.' },
+  { icon: <WifiOff className="size-5" strokeWidth={1.6} aria-hidden />, title: 'Works offline', body: 'The licence check is cached for fourteen days, so the loader keeps working without a connection. After that it asks once to reconnect.' },
+  { icon: <MonitorSmartphone className="size-5" strokeWidth={1.6} aria-hidden />, title: 'No seat monitoring', body: 'We count activations to enforce the licence. We do not read your game files, profiles or messages, and nothing is uploaded while you play.' },
 ]
 
 export function Licence() {
@@ -27,13 +27,13 @@ export function Licence() {
     <div className="grid gap-2 p-2">
       <PageHero
         title={['Your', 'licences']}
-        eyebrow="Activation, seats and moving machines"
-        intro={`Every tool has its own licence and key. ${BUNDLE.name} is an optional bundle with one key for all current tools. Nothing is tied to a server, and nothing stops working when the update year ends.`}
+        eyebrow="Activation, seats and moving devices"
+        intro={`Every cheat has its own licence and key. ${BUNDLE.name} is an optional bundle with one key for all current profiles. Nothing is tied to a game account, and nothing stops working when the update year ends.`}
         art={<Holo kind="cloud" motion />}
         aside={
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <ButtonLink to="/store" variant="violet" iconRight={<ArrowRight className="size-4" aria-hidden />}>
-              Buy a tool
+              Buy a cheat
             </ButtonLink>
             <ArrowLink to="/pricing" tone="ink" size="sm">
               Compare prices
@@ -54,19 +54,19 @@ export function Licence() {
 
       <section aria-labelledby="seats" className="grid gap-2">
         <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-          <p className="order-2 max-w-md text-muted md:order-1">A licence covers one person. Projects and servers are unlimited on the platform a tool supports.</p>
+          <p className="order-2 max-w-md text-muted md:order-1">A licence covers one person. Game profiles are unlimited on the platform a cheat supports.</p>
           <Title id="seats" lines={['How seats', 'are counted']} className="order-1 md:order-2" />
         </Card>
         <ul className="grid gap-2 md:grid-cols-3">
           <li className="h-full">
             <Card className="flex h-full flex-col p-6">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="text-xl font-medium tracking-[-0.03em]">Any tool</h3>
+                <h3 className="text-xl font-medium tracking-[-0.03em]">Any cheat</h3>
                 <Badge tone="outline">Single product</Badge>
               </div>
               <p className="mt-4 text-3xl tracking-[-0.05em]">1 person</p>
-              <p className="text-sm text-muted">2 machines</p>
-              <p className="mt-6 text-[15px] text-muted">One key for one tool. Buy only the products you need; each has its own key and download.</p>
+              <p className="text-sm text-muted">2 devices</p>
+              <p className="mt-6 text-[15px] text-muted">One key for one cheat. Buy only the profiles you need; each has its own key and download.</p>
             </Card>
           </li>
           <li className="h-full">
@@ -75,9 +75,9 @@ export function Licence() {
                 <h3 className="text-xl font-medium tracking-[-0.03em] text-white">{BUNDLE.name}</h3>
                 <Badge tone="light">Optional</Badge>
               </div>
-              <p className="mt-4 text-3xl tracking-[-0.05em] text-white">{BUNDLE.includes.length} tools</p>
+              <p className="mt-4 text-3xl tracking-[-0.05em] text-white">{BUNDLE.includes.length} cheats</p>
               <p className="text-sm text-white/75">1 licence key</p>
-              <p className="mt-6 text-[15px] text-white/85">All {TOOLS.length} current tools and both platforms, with the same one-person, two-machine terms.</p>
+              <p className="mt-6 text-[15px] text-white/85">All {TOOLS.length} current cheats and both games, with the same one-person, two-device terms.</p>
             </Card>
           </li>
           <li className="h-full">

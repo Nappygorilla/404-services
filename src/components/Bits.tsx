@@ -3,7 +3,7 @@ import { animate, motion, useInView, useReducedMotion, type HTMLMotionProps } fr
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type ImgHTMLAttributes, type ReactNode } from 'react'
 import { Link, type LinkProps } from 'react-router'
 
-import { IMAGES, SITE, type ImageKey } from '../data'
+import { IMAGES, type ImageKey } from '../data'
 import { asset } from '../lib/asset'
 import { cx } from '../lib/cx'
 
@@ -39,15 +39,20 @@ export function ArrowLink({
   )
 }
 
-/** The circle-in-a-ring mark and wordmark. */
+/** The 404 mark and 404 Services wordmark. */
 export function Logo({ wordmark = false, className, light = false }: { wordmark?: boolean; className?: string; light?: boolean }) {
   return (
     <span className={cx('inline-flex items-center gap-2.5', className)}>
-      <svg viewBox="0 0 32 32" className="size-8 shrink-0" aria-hidden>
-        <circle cx="16" cy="16" r="13" fill="none" stroke={light ? '#fff' : 'var(--color-violet)'} strokeWidth="2.4" />
-        <circle cx="16" cy="16" r="6.5" fill={light ? '#fff' : 'var(--color-violet)'} />
-      </svg>
-      {wordmark && <span className="text-lg font-semibold tracking-[-0.04em]">{SITE.name}</span>}
+      <span
+        aria-hidden
+        className={cx(
+          'display grid size-8 shrink-0 place-items-center rounded-[9px] text-[11px] font-semibold tracking-[-0.08em] shadow-[0_4px_18px_rgb(139_92_246/.35)]',
+          light ? 'bg-white text-[#08080c]' : 'bg-[linear-gradient(135deg,#8b5cf6,#db2777)] text-white',
+        )}
+      >
+        404
+      </span>
+      {wordmark && <span className="text-lg font-semibold tracking-[-0.04em]">services</span>}
     </span>
   )
 }
@@ -189,13 +194,36 @@ export function Badge({ tone = 'neutral', children, className }: { tone?: BadgeT
         tone === 'neutral' && 'bg-soft text-ink',
         tone === 'violet' && 'border border-violet/40 bg-violet/15 text-violet-light',
         tone === 'outline' && 'border border-line-strong text-ink',
-        tone === 'success' && 'bg-success/10 text-success',
+        tone === 'success' && 'bg-acid text-[#111803]',
         tone === 'light' && 'bg-white/14 text-white',
         className,
       )}
     >
       {children}
     </span>
+  )
+}
+
+/** Centered marketing section heading with an eyebrow and optional copy. */
+export function SectionHead({
+  eyebrow,
+  title,
+  copy,
+  align = 'center',
+  className,
+}: {
+  eyebrow: string
+  title: React.ReactNode
+  copy?: string
+  align?: 'center' | 'left'
+  className?: string
+}) {
+  return (
+    <div className={cx(align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-2xl text-left', className)}>
+      <p className={cx('eyebrow', align === 'center' ? 'text-pink' : 'text-violet-light')}>{eyebrow}</p>
+      <h2 className="display mt-4 text-[clamp(2.4rem,1.8rem+3vw,4.7rem)] text-balance">{title}</h2>
+      {copy && <p className={cx('mt-4 text-[15px] leading-relaxed text-muted sm:text-base', align === 'center' && 'mx-auto max-w-xl')}>{copy}</p>}
+    </div>
   )
 }
 

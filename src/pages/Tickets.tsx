@@ -60,7 +60,7 @@ export function Tickets() {
   }, [configured, user?.id])
 
   if (!configured) {
-    return <div className="grid gap-2 p-2"><PageHero title={['Support', 'tickets']} eyebrow="Customer support" intro="Create a private support request and follow its status from your LUNA account." /><BackendNotice /></div>
+    return <div className="grid gap-2 p-2"><PageHero title={['Support', 'tickets']} eyebrow="Customer support" intro="Create a private support request and follow its status from your 404 Services account." /><BackendNotice /></div>
   }
   if (!ready) return <div className="p-4 text-sm text-muted">Checking your account…</div>
   if (!user) return <Navigate to="/login" replace state={{ from: '/account/tickets' }} />
@@ -97,7 +97,7 @@ export function Tickets() {
 
   return (
     <div className="grid gap-2 p-2">
-      <PageHero title={['Support', 'tickets']} eyebrow="Customer support" intro="Create a private support request and follow its status from your LUNA account." titleSize="compact" />
+      <PageHero title={['Support', 'tickets']} eyebrow="Customer support" intro="Create a private support request and follow its status from your 404 Services account." titleSize="compact" />
       <div className="grid gap-2 lg:grid-cols-[.9fr_1.1fr]">
         <Card className="p-6 sm:p-8">
           <p className="caps text-violet">New request</p>

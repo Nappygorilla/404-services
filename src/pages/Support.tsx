@@ -27,7 +27,7 @@ export function Support() {
         aside={
           <div className="mt-6">
             <ButtonLink
-              to={orderMailto(selected?.name ?? 'Tool licence')}
+              to={orderMailto(selected?.name ?? 'Cheat licence')}
               variant="violet"
               icon={<Mail className="size-4" aria-hidden />}
             >
@@ -41,15 +41,15 @@ export function Support() {
 
       <section id="buy" aria-labelledby="buy-title" className="grid scroll-mt-2 gap-2 lg:grid-cols-[1.2fr_0.8fr]">
         <Card tone="night" className="p-6 sm:p-8">
-          <Title id="buy-title" lines={['Buying', selected ? 'this product' : 'a licence']} align="left" size="sm" />
+          <Title id="buy-title" lines={['Buying', selected ? 'this cheat' : 'a licence']} align="left" size="sm" />
           <p className="mt-5 max-w-xl text-white/85">
-            Checkout is handled by email while card payments are being connected. Every tool is sold separately and {BUNDLE.name} is optional. Write to us with the product you want and we will send a payment link and a VAT invoice, then issue your key.
+            Checkout is handled by email while card payments are being connected. Every cheat is sold separately and {BUNDLE.name} is optional. Write to us with the profile you want and we will send a payment link and a VAT invoice, then issue your key.
           </p>
 
           {selected && (
             <div className="mt-6 rounded-xl border border-white/15 bg-white/5 p-4">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge tone="light">Selected product</Badge>
+                <Badge tone="light">Selected cheat</Badge>
                 <Badge tone="light">
                   {isBundle(selected) ? 'Optional bundle' : `${PLATFORM_LABEL[selected.platform]} · ${selected.kind}`}
                 </Badge>
@@ -61,7 +61,7 @@ export function Support() {
 
           <div className="mt-7 flex flex-wrap items-center gap-4">
             <ButtonLink
-              to={orderMailto(selected?.name ?? 'Tool licence')}
+              to={orderMailto(selected?.name ?? 'Cheat licence')}
               variant="light"
               iconRight={<ArrowRight className="size-4" aria-hidden />}
             >
@@ -72,7 +72,7 @@ export function Support() {
             </ArrowLink>
           </div>
           <p className="mt-6 text-sm text-night-muted">
-            {selected ? 'The price above is fixed for the launch window; your email gets a payment link for that product.' : 'Browse the store to see every tool and its price before you write.'}
+            {selected ? 'The price above is fixed for the launch window; your email gets a payment link for that cheat.' : 'Browse the store to see every cheat and its price before you write.'}
           </p>
         </Card>
 
@@ -88,7 +88,7 @@ export function Support() {
           </ul>
           <p className="mt-4 text-[13px] text-muted">Targets, not guarantees — but we are a small team and we read everything.</p>
           <div className="mt-5 border-t border-line pt-4">
-            <ArrowLink to="/store" size="sm">Browse all tools</ArrowLink>
+            <ArrowLink to="/store" size="sm">Browse all cheats</ArrowLink>
           </div>
         </Card>
       </section>
@@ -107,7 +107,7 @@ export function Support() {
               </li>
             ))}
           </ul>
-          <p className="mt-5 border-t border-line pt-4 text-xs text-muted">Desktop reference: v{APP.version}. Never send a password, a private key or full payment details.</p>
+          <p className="mt-5 border-t border-line pt-4 text-xs text-muted">404 Loader reference: v{APP.version}. Never send a game password, a private key or full payment details.</p>
         </Card>
       </section>
 

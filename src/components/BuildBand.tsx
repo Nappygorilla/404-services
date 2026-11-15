@@ -153,7 +153,7 @@ function BuildLog({ replay, reduce }: { replay: number; reduce: boolean }) {
           <span className="size-2 rounded-full bg-white/20" />
           <span className="size-2 rounded-full bg-white/20" />
         </span>
-        <span className="ml-1 font-mono text-[11.5px] text-white/45">luna.win · ridge-county · build.log</span>
+        <span className="ml-1 font-mono text-[11.5px] text-white/45">404 Services · ridge-county · build.log</span>
       </div>
 
       <div aria-hidden className="min-h-[15.5rem] px-4 py-3 font-mono text-[12.5px] leading-[1.85] sm:text-[13px]">

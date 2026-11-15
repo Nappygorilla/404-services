@@ -16,7 +16,7 @@ export function Docs() {
       <PageHero
         title={['Docs']}
         eyebrow={`${APP.name} ${APP.version}`}
-        intro="Install it, point it at a project, and run the same four commands locally or in CI. Everything below applies to both platforms unless it says otherwise."
+        intro="Install the loader, activate your key, choose a game profile and save your config. Everything below applies to both FiveM and Roblox unless it says otherwise."
         art={<Holo kind="prism" motion />}
         aside={
           <div className="mt-6">
@@ -39,7 +39,7 @@ export function Docs() {
             ))}
           </ul>
           <p className="mt-6 text-sm text-night-muted">
-            Builds run entirely on your machine. No project content is uploaded, and the app works offline for up to fourteen days between licence checks.
+            The loader runs on your PC. It never asks for a game password, and profiles are stored locally unless you enable Cloud Configs.
           </p>
         </Card>
 
@@ -81,7 +81,7 @@ export function Docs() {
       </Card>
 
       <p className="px-2 pb-2 text-center text-[13px] text-faint">
-        Need a command reference offline? The same text ships in the app under Help → Commands. Questions: {SITE.email}
+        Need the loader reference offline? The same guide is available in 404 Loader under Help. Questions: {SITE.email}
       </p>
     </div>
   )

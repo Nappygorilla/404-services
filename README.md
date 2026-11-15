@@ -1,8 +1,8 @@
-# LUNA
+# 404 Services
 
-LUNA is a desktop toolkit for creators working on FiveM and Roblox projects. It focuses on project inspection, dependency validation, repeatable builds, packaging, and authorized deployment.
+404 Services is a game-modification storefront for FiveM and Roblox. It sells external visuals, aim profiles, executors, script hubs, mod menus and stream-proof tooling through one Windows loader.
 
-The repository also contains the LUNA website: an item-level product storefront, per-product pricing, account entry points, documentation, community forums, release notes, and system status.
+The repository contains the storefront: an item-level catalogue, per-product pricing, account entry points, documentation, community forums, release notes and system status.
 
 ## Stack
 
@@ -16,10 +16,10 @@ The repository also contains the LUNA website: an item-level product storefront,
 ## Website routes
 
 - `/` — product-focused homepage
-- `/store` — item catalogue with platform/type filters and search; every tool is sold separately
-- `/products/:slug` — tool and bundle detail pages with price, buy action, requirements, limits and related products
-- `/products/complete-toolkit` — the optional all-tools bundle
-- `/games` — category overview; categories are project types, not products
+- `/store` — catalogue with game/type filters and search; every cheat is sold separately
+- `/products/:slug` — cheat and bundle detail pages with price, buy action, requirements, limits and related products
+- `/products/complete-toolkit` — 404 Complete, the optional all-cheats bundle
+- `/games` — game overview; categories are play styles, not products
 - `/pricing` — every individual price plus the optional bundle
 - legacy `/products/fivem`, `/products/roblox`, `/platforms/fivem` and `/platforms/roblox` — redirect into the filtered store
 - `/downloads` — account-protected download library placeholder
@@ -35,7 +35,7 @@ The repository also contains the LUNA website: an item-level product storefront,
 - `/forums`, `/forums/announcements`, `/forums/issues`
 - `/terms`, `/refunds`, `/privacy`
 
-The Store sells every tool as its own product, with its own price, product page and buy action. The Complete Toolkit is an optional bundle built from the same catalogue; it is not required and it is priced below the sum of the individual tools. Categories on `/games` are project types, not SKUs. Checkout is handled by email until card payments are connected, and the site says so rather than presenting a fake basket.
+Every cheat has its own price, product page and buy action. 404 Complete is an optional bundle built from the same catalogue; it is not required and is priced below the sum of the individual profiles. Categories on `/games` are play styles, not SKUs. Checkout is handled by email until card payments are connected, and the site says so rather than presenting a fake basket.
 
 ## Run locally
 
@@ -52,9 +52,7 @@ The Vite/Cloudflare plugin runs the Worker during local development. The build o
 
 ## Backend setup
 
-Accounts, the issues forum and support tickets use Supabase. The complete
-project, SQL, auth-URL and GitHub Actions setup is in
-[SUPABASE-SETUP.md](SUPABASE-SETUP.md).
+Accounts, the issues forum and support tickets use Supabase. The complete project, SQL, auth-URL and GitHub Actions setup is in [SUPABASE-SETUP.md](SUPABASE-SETUP.md).
 
 ## Environment
 
@@ -63,7 +61,7 @@ Copy `.env.example` to `.env` and configure:
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
 
-The Supabase browser key is a public anon or publishable key. Never place the service-role key, database password, payment secrets, private signing keys, or provider webhooks in a `VITE_*` variable.
+The Supabase browser key is a public anon or publishable key. Never place the service-role key, database password, payment secrets, private signing keys or provider webhooks in a `VITE_*` variable.
 
 When Supabase is not configured, account- and community-backed surfaces display an explicit configuration notice rather than pretending sign-in or persistence is available.
 
@@ -71,31 +69,33 @@ When Supabase is not configured, account- and community-backed surfaces display 
 
 The original community schema is in `supabase/schema.sql`. The additive marketplace schema is in `supabase/marketplace.sql`; apply it after the original schema.
 
-The marketplace schema provides catalog metadata, release records, orders, order items, user entitlements, support tickets, and a private release-asset pointer table. Customer pages read their own order and entitlement rows and can submit support tickets under row-level security. Row-level security permits customers to read only their own account records. Browser clients cannot create orders or entitlements.
+The marketplace schema provides catalogue metadata, release records, orders, order items, user entitlements, support tickets and a private release-asset pointer table. Customer pages read their own order and entitlement rows and can submit support tickets under row-level security. Row-level security permits customers to read only their own account records. Browser clients cannot create orders or entitlements.
 
 ### Not connected yet
 
 This branch intentionally does not claim that commerce or protected downloads are live:
 
 - No payment provider credentials or verified webhook handler are configured.
-- No production product binaries or private storage bucket are configured.
-- No entitlement-backed signed download endpoint is configured, and no installer binaries are published.
+- No production loader binaries or private storage bucket are configured.
+- No entitlement-backed signed download endpoint is configured.
 - No external uptime monitor or incident feed is configured.
 - Support tickets can be submitted and read by their owner, but staff replies and status management still need an operator workflow.
 - Email-change verification and multi-factor authentication are not configured.
-- The Orders page reads order rows populated by trusted server-side payment handling. The Downloads / Licenses page reads customer entitlements, but does not serve binaries until the private storage and signed-download endpoint are implemented.
+- The Orders page reads order rows populated by trusted server-side payment handling. The Downloads / Licences page reads customer entitlements, but does not serve binaries until the private storage and signed-download endpoint are implemented.
 
-Before accepting payments, implement a server-only checkout session endpoint and verify provider webhook signatures before creating `orders`, `order_items`, and `user_entitlements` rows. Never trust a browser redirect as proof of payment. Before exposing a file, verify the current user's entitlement server-side and issue a short-lived signed URL from a private Storage bucket.
+Before accepting payments, implement a server-only checkout session endpoint and verify provider webhook signatures before creating `orders`, `order_items` and `user_entitlements` rows. Never trust a browser redirect as proof of payment. Before exposing a file, verify the current user's entitlement server-side and issue a short-lived signed URL from a private Storage bucket.
 
 ## Project layout
 
 - `src/pages/` — routed page components
 - `src/components/` — shared navigation, cards, forms, overlays, account context
-- `src/data.ts` — the single catalogue of tools and bundles, plus site copy and configuration
+- `src/data.ts` — the single catalogue of cheats and bundles, plus site copy and configuration
 - `src/lib/` — Supabase client, API helpers, local utilities
 - `src/worker/index.ts` — Cloudflare Worker entry point
 - `supabase/` — database schemas and row-level security policies
 
-## Scope
+## Scope and risk
 
-LUNA is intended for legitimate game development, project validation, packaging, customization of projects the user owns, and authorized deployment. It does not inject into, automate, or interfere with live game clients or anti-cheat systems.
+404 Services sells game-modification software for FiveM and Roblox. Game modifications can breach a platform's terms of service and may lead to account action, including a permanent ban. Use the software only on game accounts you own and can afford to lose. No product on this site guarantees safety from anti-cheat or platform enforcement, and no game account is included with a purchase.
+
+The site never asks for a game password. Licence activation uses a key and a hashed device identifier. Support can help with loader and licence problems; it cannot restore a game account actioned by a platform.

@@ -6,7 +6,7 @@ import { ArrowLink, Badge, Chip, EmptyState, Reveal, Title } from '../components
 import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Holo } from '../components/Holo'
-import { PageHero } from '../components/Nav'
+import { MarketingHero } from '../components/Nav'
 import { GENRE_INTRO, GENRES, SITE, UPCOMING } from '../data'
 import { cx } from '../lib/cx'
 import { useDocumentTitle } from '../lib/storage'
@@ -33,19 +33,19 @@ export function Games() {
   })
 
   return (
-    <div className="grid gap-2 p-2">
-      <PageHero
+    <div>
+      <MarketingHero
         title={GENRE_INTRO.title}
         eyebrow={GENRE_INTRO.eyebrow}
         intro={GENRE_INTRO.intro}
-        art={<Holo kind="cloud" motion />}
-        titleSize="compact"
+        art={<Holo kind="cloud" motion priority />}
         aside={
-          <p className="mt-6 border-l-2 border-violet pl-4 text-[13px] leading-relaxed text-muted">{GENRE_INTRO.rule}</p>
+          <p className="mt-7 max-w-xl border-l-2 border-violet pl-4 text-[13px] leading-relaxed text-white/45">{GENRE_INTRO.rule}</p>
         }
       />
 
-      <section aria-label="Game categories" className="grid gap-2">
+      <div className="mx-auto grid max-w-[1440px] gap-4 px-5 py-10 sm:px-8 sm:py-14">
+      <section aria-label="Game categories" className="grid gap-4">
         <Card className="flex flex-wrap items-center justify-between gap-4 p-4 sm:px-6">
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filter categories by platform">
             {FILTERS.map((f) => (
@@ -110,7 +110,7 @@ export function Games() {
                         to={`/store?platform=${p}`}
                         className={cx('inline-flex min-h-10 items-center gap-1.5 text-sm font-medium text-ink underline-offset-4 hov:text-violet hov:underline')}
                       >
-                        {PLATFORM_LABEL[p]} tools
+                        {PLATFORM_LABEL[p]} cheats
                         <ArrowRight className="size-3.5" aria-hidden />
                       </Link>
                     ))}
@@ -149,7 +149,7 @@ export function Games() {
           <p className="mt-5 max-w-sm text-night-muted">{UPCOMING.intro}</p>
           <div className="mt-7">
             <ButtonLink
-              to={`mailto:${SITE.email}?subject=${encodeURIComponent('Platform request')}&body=${encodeURIComponent('Which platform:\nWhat you build with it:')}`}
+              to={`mailto:${SITE.email}?subject=${encodeURIComponent('Game request')}&body=${encodeURIComponent('Which game:\nWhat you play:')}`}
               variant="light"
               iconRight={<ArrowRight className="size-4" />}
             >
@@ -174,10 +174,11 @@ export function Games() {
 
       <Card className="flex flex-wrap items-center justify-between gap-6 p-6 sm:p-8">
         <p className="max-w-xl text-muted">
-          Building something that does not fit a category? The tools do not care what genre it is — point them at the project and they will tell you what is missing.
+          Looking for a game we do not support yet? Join the waitlist and we will let you know when a loader profile is ready.
         </p>
-        <div className="flex flex-wrap items-center gap-5"><ArrowLink to="/store">Browse the tools</ArrowLink><ArrowLink to="/docs" tone="ink">Read the docs</ArrowLink></div>
+        <div className="flex flex-wrap items-center gap-5"><ArrowLink to="/store">Browse the cheats</ArrowLink><ArrowLink to="/docs" tone="ink">Read the docs</ArrowLink></div>
       </Card>
+      </div>
     </div>
   )
 }

@@ -23,7 +23,7 @@ export function Profile() {
     if (user) setDisplayName(displayNameOf(user))
   }, [user?.id, user?.user_metadata?.display_name])
 
-  if (!configured) return <div className="grid gap-2 p-2"><PageHero title={['Account', 'profile']} eyebrow="Profile settings" intro="Manage the display name associated with your LUNA account." /><BackendNotice /></div>
+  if (!configured) return <div className="grid gap-2 p-2"><PageHero title={['Account', 'profile']} eyebrow="Profile settings" intro="Manage the display name associated with your 404 Services account." /><BackendNotice /></div>
   if (!ready) return <div className="p-4 text-sm text-muted">Checking your account…</div>
   if (!user) return <Navigate to="/login" replace state={{ from: '/account/profile' }} />
 
@@ -46,7 +46,7 @@ export function Profile() {
 
   return (
     <div className="grid gap-2 p-2">
-      <PageHero title={['Account', 'profile']} eyebrow="Profile settings" intro="Manage the display name associated with your LUNA account." art={<UserRound className="size-24 text-violet/80" />} titleSize="compact" />
+      <PageHero title={['Account', 'profile']} eyebrow="Profile settings" intro="Manage the display name associated with your 404 Services account." art={<UserRound className="size-24 text-violet/80" />} titleSize="compact" />
       <Card className="max-w-3xl p-6 sm:p-8">
         <div className="flex items-center justify-between gap-3"><div><p className="caps text-violet">Personal details</p><h2 className="mt-2 text-2xl font-semibold">Your profile</h2></div><Badge tone={user.email_confirmed_at ? 'success' : 'outline'}>{user.email_confirmed_at ? 'Email confirmed' : 'Email pending'}</Badge></div>
         <form onSubmit={submit} className="mt-6 grid gap-4">

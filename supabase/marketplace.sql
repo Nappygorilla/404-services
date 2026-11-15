@@ -1,4 +1,4 @@
--- LUNA marketplace foundation.
+-- 404 Services marketplace foundation.
 -- Apply after supabase/schema.sql. This adds customer-safe marketplace records;
 -- payment confirmation and file delivery must remain server-side.
 --

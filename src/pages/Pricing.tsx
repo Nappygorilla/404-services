@@ -6,7 +6,7 @@ import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Accordion } from '../components/Content'
 import { Holo } from '../components/Holo'
-import { PageHero } from '../components/Nav'
+import { MarketingHero } from '../components/Nav'
 import { CurrencySwitch, launchActive } from '../components/Price'
 import { BundleBanner, PriceTag } from '../components/ProductCards'
 import { Countdown } from '../components/Storefront'
@@ -17,7 +17,7 @@ import { useDocumentTitle } from '../lib/storage'
 const ASSURANCES = [
   { icon: ShieldCheck, title: '14-day refund', body: 'Ask within fourteen days of purchase, no reason needed.' },
   { icon: ReceiptText, title: 'Merchant of record', body: 'Checkout, tax and invoicing handled by them. Card details never reach us.' },
-  { icon: WifiOff, title: '14 days offline', body: 'Activation is cached, so builds keep running without a connection.' },
+  { icon: WifiOff, title: '14 days offline', body: 'Activation is cached, so the loader keeps working without a connection.' },
 ]
 
 export function Pricing() {
@@ -26,21 +26,21 @@ export function Pricing() {
   const compareAt = TOOLS.reduce((sum, tool) => sum + tool.price, 0)
 
   return (
-    <div className="grid gap-2 p-2">
-      <PageHero
-        title={['Priced', 'per tool']}
-        eyebrow="Individual products, no tiers"
-        intro={`Each of the ${TOOLS.length} tools is its own product with its own one-time price. ${BUNDLE.name} is an optional bundle, not a requirement.`}
-        art={<Holo kind="sphere" motion />}
-        artSize="compact"
+    <div>
+      <MarketingHero
+        title={['Priced per cheat.']}
+        eyebrow="Individual profiles · no tiers"
+        intro={`Each of the ${TOOLS.length} cheats is its own profile with its own one-time price. ${BUNDLE.name} is an optional bundle, not a requirement.`}
+        art={<Holo kind="sphere" motion priority />}
         aside={
-          <div className="mt-6 flex flex-col gap-3">
-            <CurrencySwitch />
-            <p className="text-[13px] text-muted">Prices include VAT where it applies. Every product licence is for one person on two machines.</p>
+          <div className="mt-7 flex flex-col gap-3">
+            <CurrencySwitch className="border-white/15 bg-black/25" />
+            <p className="text-[13px] text-white/40">Prices include VAT where it applies. Every cheat licence is for one person on two devices.</p>
           </div>
         }
       />
 
+      <div className="mx-auto grid max-w-[1440px] gap-4 px-5 py-10 sm:px-8 sm:py-14">
       <BundleBanner bundle={BUNDLE} compareAt={compareAt} />
 
       {live && (
@@ -58,11 +58,11 @@ export function Pricing() {
       <section aria-labelledby="price-list" className="grid gap-2">
         <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
           <div>
-            <p className="caps text-violet">Every product</p>
+            <p className="caps text-violet">Every profile</p>
             <Title id="price-list" lines={['The full', 'price list']} align="left" />
           </div>
           <div className="max-w-md">
-            <p className="text-sm leading-relaxed text-muted">The price on each row is the one-time price for that product. The bundle is shown above; there are no other discounts to decode.</p>
+            <p className="text-sm leading-relaxed text-muted">The price on each row is the one-time price for that cheat. 404 Complete is shown above; there are no other discounts to decode.</p>
             <ArrowLink to="/store" size="sm" className="mt-4">Open the store</ArrowLink>
           </div>
         </Card>
@@ -102,7 +102,7 @@ export function Pricing() {
 
       <section aria-labelledby="pricing-points" className="grid gap-2">
         <Card className="grid gap-4 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
-          <p className="order-2 max-w-md text-muted md:order-1">Four things worth knowing before you pick a product.</p>
+          <p className="order-2 max-w-md text-muted md:order-1">Four things worth knowing before you pick a profile.</p>
           <Title id="pricing-points" lines={['How the', 'pricing works']} className="order-1 md:order-2" />
         </Card>
         <ul className="grid gap-2 sm:grid-cols-2">
@@ -120,8 +120,8 @@ export function Pricing() {
 
       <Card as="section" aria-labelledby="pricing-faq" className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_1.6fr]">
         <div className="flex flex-col justify-between gap-8">
-          <Title id="pricing-faq" lines={['Product', 'questions']} align="left" />
-          <ArrowLink to="/support" size="sm">Ask about a tool</ArrowLink>
+          <Title id="pricing-faq" lines={['Cheat', 'questions']} align="left" />
+          <ArrowLink to="/support" size="sm">Ask about a cheat</ArrowLink>
         </div>
         <Accordion items={PRICING_FAQ} />
       </Card>
@@ -144,12 +144,13 @@ export function Pricing() {
           ))}
         </ul>
         <div className="flex flex-wrap items-center justify-between gap-3 px-2 py-1 text-sm text-muted">
-          <p>Buying several tools? Email us for one invoice. Prices include VAT where it applies.</p>
+          <p>Buying several profiles? Email us for one invoice. Prices include VAT where it applies.</p>
           <ArrowLink to="/refunds" tone="ink" size="sm">Refund policy</ArrowLink>
         </div>
       </section>
 
       <p className="px-2 pb-2 text-center text-[13px] text-faint">{SITE.disclaimer}</p>
+      </div>
     </div>
   )
 }

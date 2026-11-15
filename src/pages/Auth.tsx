@@ -86,13 +86,13 @@ export function Login() {
       eyebrow="Account"
       intro="Pick up where you left off: your posts, your licence records and the boards you follow."
       points={['Post to the issues board', 'See your licence and update window', 'Manage the email on the account']}
-      note="Your account is only used for the community boards and licence records. Builds run locally and never need a connection."
+      note="Your account is only used for the community boards and licence records. The loader does not need it to run."
     >
       {!configured && <BackendNotice />}
       <form className="grid gap-4" onSubmit={submit} noValidate>
         {error && <FormMessage tone="error">{error}</FormMessage>}
         <Field label="Email">
-          {(p) => <Input {...p} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@studio.dev" />}
+          {(p) => <Input {...p} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />}
         </Field>
         <Field label="Password">
           {(p) => <Input {...p} type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Your password" />}
@@ -166,9 +166,9 @@ export function Register() {
     <AuthShell
       title="Create account"
       eyebrow="Free to join"
-      intro="An account runs the community boards. It is not needed to build, bundle or deploy anything."
+      intro="An account runs the community boards and licence records. It is not needed to buy or use a cheat."
       points={['Post issues and follow replies', 'Keep licence keys in one place', 'No marketing email unless you ask']}
-      note="Registration takes an email and a password. Nothing about your projects or builds leaves the machine."
+      note="Registration takes an email and a password. We never ask for a game account, and your game files stay on your PC."
     >
       {!configured && <BackendNotice />}
       <form className="grid gap-4" onSubmit={submit} noValidate>
@@ -177,7 +177,7 @@ export function Register() {
           {(p) => <Input {...p} autoComplete="nickname" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name or handle" />}
         </Field>
         <Field label="Email">
-          {(p) => <Input {...p} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@studio.dev" />}
+          {(p) => <Input {...p} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />}
         </Field>
         <Field label="Password" hint="At least 8 characters.">
           {(p) => <Input {...p} type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Choose a password" />}

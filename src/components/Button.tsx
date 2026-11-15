@@ -12,7 +12,7 @@ const base =
 
 const variants: Record<ButtonVariant, string> = {
   solid: 'bg-white text-[#08080c] hov:bg-violet-light prs:bg-white',
-  violet: 'bg-violet text-white shadow-[var(--shadow-violet)] hov:bg-violet-deep hov:shadow-[var(--shadow-violet)] prs:bg-violet-deep',
+  violet: 'bg-[linear-gradient(110deg,#7c3aed_0%,#a21caf_48%,#db2777_100%)] text-white shadow-[var(--shadow-violet)] hov:brightness-110 hov:shadow-[0_0_0_1px_rgb(216_204_255/0.35),0_20px_60px_-14px_rgb(192_38_211/0.7)] prs:brightness-95',
   outline: 'border border-line-strong text-ink hov:border-violet hov:bg-violet/15 hov:text-white prs:bg-violet/25',
   ghost: 'text-ink hov:bg-soft prs:bg-line',
   light: 'on-dark bg-white text-[#08080c] hov:bg-violet hov:text-white prs:bg-violet-deep prs:text-white',

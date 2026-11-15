@@ -1,8 +1,8 @@
-name: Validate LUNA
+name: Validate 404 Services
 
 on:
   push:
-    branches: [feature/luna-marketplace-redesign]
+    branches: [main]
   pull_request:
     branches: [main]
 

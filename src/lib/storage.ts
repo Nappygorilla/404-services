@@ -4,9 +4,9 @@ import { SITE } from '../data'
 
 /** Keys for everything the site keeps in the browser. */
 export const KEYS = {
-  briefDraft: 'luna:draft',
-  briefs: 'luna:sent',
-  applications: 'luna:applications',
+  briefDraft: '404services:draft',
+  briefs: '404services:sent',
+  applications: '404services:applications',
 } as const
 
 function read<T>(key: string, fallback: T): T {

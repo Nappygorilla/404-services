@@ -1,11 +1,11 @@
 import { ArrowLeft, ArrowRight, Check, Download, ShieldCheck, X } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router'
 
-import { Badge, Title } from '../components/Bits'
+import { Badge, SectionHead } from '../components/Bits'
 import { ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { Holo } from '../components/Holo'
-import { PageHero } from '../components/Nav'
+import { MarketingHero } from '../components/Nav'
 import { ProductBuyBox, ToolCard } from '../components/ProductCards'
 import { APP, BUNDLE, LICENCE_INCLUDES, PLATFORM_LABEL, TOOLS, isBundle, productBySlug } from '../data'
 import { checkoutHref } from '../lib/commerce'
@@ -26,7 +26,7 @@ export function Product() {
     return (
       <NotFound
         title="Product not found"
-        body="This product is not in the LUNA catalogue. Browse the store to see every tool currently sold."
+        body="This product is not in the 404 Services catalogue. Browse the store to see every cheat currently sold."
         to="/store"
         action="Browse the store"
       />
@@ -36,7 +36,7 @@ export function Product() {
   const bundle = isBundle(product)
   const included = bundle ? TOOLS.filter((tool) => product.includes.includes(tool.slug)) : []
   const backTo = !bundle && product.platform !== 'both' ? `/store?platform=${product.platform}` : '/store'
-  const backLabel = !bundle && product.platform !== 'both' ? `${PLATFORM_LABEL[product.platform]} tools` : 'All tools'
+  const backLabel = !bundle && product.platform !== 'both' ? `${PLATFORM_LABEL[product.platform]} cheats` : 'All cheats'
   const requirements = [...new Set([...product.requirements, ...APP.requirements])]
 
   const related = bundle
@@ -54,179 +54,187 @@ export function Product() {
         .slice(0, 3)
 
   return (
-    <div className="grid gap-2 p-2">
-      <div className="flex flex-wrap items-center justify-between gap-3 px-2 pt-1">
-        <Link to={backTo} className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-muted transition-colors hov:text-violet">
-          <ArrowLeft className="size-4" aria-hidden />
-          Back to {backLabel}
-        </Link>
-        <span className="caps text-faint">{bundle ? 'Optional bundle' : `${PLATFORM_LABEL[product.platform]} · ${product.kind}`}</span>
-      </div>
-
-      <PageHero
-        title={bundle ? ['The complete', 'toolkit'] : product.name.split(' ')}
+    <div>
+      <MarketingHero
+        title={bundle ? ['404 Complete.'] : product.name.split(' ')}
         eyebrow={bundle ? 'Optional bundle · one-time purchase' : `${PLATFORM_LABEL[product.platform]} · ${product.kind} · one-time purchase`}
         intro={product.tagline}
-        art={<Holo kind={product.art} motion />}
-        artSize="compact"
-        titleSize="compact"
-        aside={<ProductBuyBox product={product} />}
+        art={<Holo kind={product.art} motion priority />}
+        aside={
+          <div>
+            <Link to={backTo} className="mt-6 inline-flex min-h-10 items-center gap-2 text-[13px] font-medium text-white/50 transition-colors hov:text-white">
+              <ArrowLeft className="size-4" aria-hidden />
+              Back to {backLabel}
+            </Link>
+            <ProductBuyBox product={product} />
+          </div>
+        }
       />
 
-      <Card className="grid gap-5 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-center">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge tone="success">
-              <span className="mr-1.5 inline-block size-1.5 rounded-full bg-acid" aria-hidden />
-              Available
-            </Badge>
-            <Badge tone="outline">LUNA Desktop v{APP.version}</Badge>
-            {bundle && <Badge>{included.length} tools included</Badge>}
+      <div className="mx-auto max-w-[1440px] px-5 sm:px-8">
+        <section className="grid gap-4 border-b border-white/10 py-12 sm:py-16 lg:grid-cols-[1.15fr_.85fr]">
+          <div className="rounded-[24px] border border-white/10 bg-white/[.025] p-6 sm:p-8">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge tone="success">
+                <span className="mr-1.5 inline-block size-1.5 rounded-full bg-[#182004]" aria-hidden />
+                Working
+              </Badge>
+              <Badge tone="outline">404 Loader v{APP.version}</Badge>
+              {bundle && <Badge>{included.length} cheats included</Badge>}
+            </div>
+            <p className="eyebrow mt-6 text-[9px] text-pink">About this {bundle ? 'bundle' : 'cheat'}</p>
+            <h2 className="display mt-3 max-w-2xl text-[clamp(2rem,1.6rem+1.4vw,3rem)] text-white">{product.tagline}</h2>
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/50">
+              {product.description} Use only on game accounts you own. Game modifications can breach platform terms and may lead to account action; no product can guarantee otherwise.
+            </p>
           </div>
-          <p className="caps mt-4 text-violet">About this {bundle ? 'bundle' : 'tool'}</p>
-          <h2 className="mt-2 text-2xl font-medium tracking-[-0.04em]">{product.tagline}</h2>
-          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-muted">
-            {product.description} It works with project files, validation, builds and authorized publishing; it does not modify or automate a live game client, and it cannot publish to a server or experience you do not control.
-          </p>
-        </div>
-        <div className="flex items-center gap-2 rounded-xl border border-line bg-soft p-4 text-sm text-ink-2">
-          <ShieldCheck className="size-5 text-violet" aria-hidden />
-          No game-client injection
-        </div>
-      </Card>
-
-      <section aria-labelledby="product-included" className="grid gap-2">
-        <Card className="flex flex-col gap-5 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-8">
-          <div>
-            <p className="caps text-violet">{bundle ? 'Everything in the bundle' : 'What this tool includes'}</p>
-            <Title id="product-included" lines={bundle ? ['The whole', 'toolkit'] : ['What you', 'get']} align="left" />
+          <div className="brand-wash relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-white/10 p-6 sm:p-8">
+            <div className="star-field pointer-events-none absolute inset-0 opacity-25" aria-hidden />
+            <ShieldCheck className="relative size-7 text-acid" aria-hidden />
+            <div className="relative mt-12">
+              <p className="eyebrow text-[9px] text-pink">Know the risk</p>
+              <h3 className="display mt-3 text-[clamp(1.6rem,1.2rem+1vw,2.2rem)] text-white">For accounts you own.</h3>
+              <p className="mt-3 text-sm leading-relaxed text-white/55">
+                We never ask for a game password, and no product can promise safety from platform enforcement. Read the limits before you buy.
+              </p>
+            </div>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-muted">
-            {bundle
-              ? `Every current tool, with a link to its own page. The bundle includes ${included.length} products and is sold as one optional licence.`
-              : 'The work this tool does, plus the licence terms every LUNA product shares.'}
-          </p>
-        </Card>
+        </section>
 
-        {bundle ? (
-          <Card className="p-2">
-            <ul className="grid gap-2 md:grid-cols-2">
+        <section aria-labelledby="product-included" className="border-b border-white/10 py-12 sm:py-16">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <SectionHead
+              eyebrow={bundle ? 'Everything in the bundle' : 'What this cheat includes'}
+              title={bundle ? <span id="product-included">The whole menu.</span> : <span id="product-included">What you get.</span>}
+              align="left"
+            />
+            <p className="max-w-md text-sm leading-relaxed text-white/40">
+              {bundle
+                ? `Every current cheat, with a link to its own page. The bundle includes ${included.length} profiles and is sold as one optional licence.`
+                : 'The features this profile unlocks, plus the licence terms every 404 Services product shares.'}
+            </p>
+          </div>
+
+          {bundle ? (
+            <ul className="mt-8 grid gap-3 md:grid-cols-2">
               {included.map((tool) => (
                 <li key={tool.slug}>
                   <Link
                     to={`/products/${tool.slug}`}
-                    className="group flex h-full flex-col rounded-[var(--radius-card-sm)] border border-line p-5 transition-colors hov:border-violet hov:bg-violet/5"
+                    className="group flex h-full flex-col rounded-[18px] border border-white/10 bg-white/[.025] p-5 transition-[border-color,background-color] hov:border-violet/45 hov:bg-white/[.045]"
                   >
                     <div className="flex flex-wrap items-center gap-1.5">
                       <Badge tone="outline">{PLATFORM_LABEL[tool.platform]}</Badge>
                       <Badge>{tool.kind}</Badge>
                     </div>
-                    <h3 className="mt-3 text-lg font-medium tracking-[-0.03em] group-hov:text-violet">{tool.name}</h3>
-                    <p className="mt-1 text-sm leading-relaxed text-muted">{tool.tagline}</p>
-                    <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-violet">
-                      View product <ArrowRight className="size-3.5" aria-hidden />
+                    <h3 className="mt-3 text-lg font-medium tracking-[-0.03em] text-white group-hov:text-violet-light">{tool.name}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-white/40">{tool.tagline}</p>
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-violet-light">
+                      View cheat <ArrowRight className="size-3.5" aria-hidden />
                     </span>
                   </Link>
                 </li>
               ))}
             </ul>
-          </Card>
-        ) : (
-          <div className="grid gap-2 md:grid-cols-2">
-            {product.deliverables.map((item, index) => (
-              <Card key={item} className="p-6 sm:p-7">
-                <span className="caps text-violet">0{index + 1}</span>
-                <h3 className="mt-3 text-xl font-medium tracking-[-0.03em]">{item}</h3>
+          ) : (
+            <div className="mt-8 grid gap-3 md:grid-cols-2">
+              {product.deliverables.map((item, index) => (
+                <Card key={item} className="border-white/10 bg-white/[.025] p-6 sm:p-7">
+                  <span className="font-mono text-[11px] text-violet-light">0{index + 1}</span>
+                  <h3 className="mt-4 text-xl font-medium tracking-[-0.03em] text-white">{item}</h3>
+                </Card>
+              ))}
+              <Card className="border-white/10 bg-white/[.025] p-6 sm:p-7">
+                <p className="eyebrow text-[9px] text-pink">Licence terms</p>
+                <h3 className="mt-3 text-xl font-medium tracking-[-0.03em] text-white">Every profile includes</h3>
+                <ul className="mt-4 grid gap-2">
+                  {LICENCE_INCLUDES.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-white/55">
+                      <Check className="mt-0.5 size-4 shrink-0 text-acid" aria-hidden />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </Card>
-            ))}
-            <Card className="p-6 sm:p-7">
-              <p className="caps text-violet">Licence terms</p>
-              <h3 className="mt-3 text-xl font-medium tracking-[-0.03em]">Every product includes</h3>
-              <ul className="mt-4 grid gap-2">
-                {LICENCE_INCLUDES.map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-ink-2">
-                    <Check className="mt-0.5 size-4 shrink-0 text-violet" aria-hidden />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          </div>
-        )}
-      </section>
-
-      <section className="grid gap-2 lg:grid-cols-2">
-        <Card className="p-6 sm:p-8">
-          <p className="caps text-violet">Requirements</p>
-          <h2 className="mt-3 text-2xl font-medium">Before you begin</h2>
-          <ul className="mt-6 grid gap-3">
-            {requirements.map((requirement) => (
-              <li key={requirement} className="flex gap-3 text-sm leading-relaxed text-ink-2">
-                <Check className="mt-0.5 size-4 shrink-0 text-violet" aria-hidden />
-                {requirement}
-              </li>
-            ))}
-          </ul>
-        </Card>
-        <Card tone="night" className="p-6 sm:p-8">
-          <p className="caps text-violet-light">Limits</p>
-          <h2 className="mt-3 text-2xl font-medium text-white">What this product does not do</h2>
-          <ul className="mt-6 grid gap-3">
-            {product.limits.map((limit) => (
-              <li key={limit} className="flex gap-3 rounded-lg bg-white/5 px-4 py-3 text-sm leading-relaxed text-white/80">
-                <X className="mt-0.5 size-4 shrink-0 text-danger" aria-hidden />
-                {limit}
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </section>
-
-      {related.length > 0 && (
-        <section aria-labelledby="related-tools" className="grid gap-2">
-          <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-8">
-            <div>
-              <p className="caps text-violet">Related tools</p>
-              <Title id="related-tools" lines={['Often bought', 'alongside']} align="left" size="sm" />
             </div>
-            <Link to={backTo} className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-violet hov:text-violet-light">
-              Browse {backLabel} <ArrowRight className="size-4" aria-hidden />
-            </Link>
+          )}
+        </section>
+
+        <section className="grid gap-4 border-b border-white/10 py-12 sm:py-16 lg:grid-cols-2">
+          <Card className="border-white/10 bg-white/[.025] p-6 sm:p-8">
+            <p className="eyebrow text-[9px] text-pink">Requirements</p>
+            <h2 className="display mt-3 text-[clamp(1.8rem,1.4rem+1.2vw,2.7rem)] text-white">Before you begin.</h2>
+            <ul className="mt-6 grid gap-3">
+              {requirements.map((requirement) => (
+                <li key={requirement} className="flex gap-3 text-sm leading-relaxed text-white/55">
+                  <Check className="mt-0.5 size-4 shrink-0 text-acid" aria-hidden />
+                  {requirement}
+                </li>
+              ))}
+            </ul>
           </Card>
-          <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-            {related.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} />
-            ))}
+          <Card tone="night" className="border-white/10 p-6 sm:p-8">
+            <p className="eyebrow text-[9px] text-pink">Limits</p>
+            <h2 className="display mt-3 text-[clamp(1.8rem,1.4rem+1.2vw,2.7rem)] text-white">What this does not do.</h2>
+            <ul className="mt-6 grid gap-2">
+              {product.limits.map((limit) => (
+                <li key={limit} className="flex gap-3 rounded-xl border border-white/8 bg-white/[.035] px-4 py-3 text-sm leading-relaxed text-white/60">
+                  <X className="mt-0.5 size-4 shrink-0 text-danger" aria-hidden />
+                  {limit}
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </section>
+
+        {related.length > 0 && (
+          <section aria-labelledby="related-tools" className="border-b border-white/10 py-12 sm:py-16">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <SectionHead eyebrow="Related cheats" title={<span id="related-tools">Often bought alongside.</span>} align="left" />
+              <Link to={backTo} className="inline-flex min-h-10 shrink-0 items-center gap-2 text-sm font-medium text-violet-light hov:text-white">
+                Browse {backLabel} <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {related.map((tool) => (
+                <ToolCard key={tool.slug} tool={tool} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="py-12 sm:py-16">
+          <div className="brand-wash relative overflow-hidden rounded-[26px] border border-white/12 px-6 py-9 sm:px-9">
+            <div className="star-field pointer-events-none absolute inset-0 opacity-25" aria-hidden />
+            <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="eyebrow text-[9px] text-pink">Next step</p>
+                <h2 className="display mt-3 text-[clamp(2rem,1.5rem+1.5vw,3rem)] text-white">Ready for {product.name}?</h2>
+                <p className="mt-2 text-sm text-white/45">Buy it on its own, or go back and compare what the other profiles do. 404 Complete is optional.</p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <ButtonLink to={checkoutHref(product.slug)} variant="violet" aria-label={`Buy ${product.name}`} iconRight={<ArrowRight className="size-4" aria-hidden />}>
+                  Buy {product.name}
+                </ButtonLink>
+                <ButtonLink to="/downloads" variant="outline" icon={<Download className="size-4" aria-hidden />}>
+                  My downloads
+                </ButtonLink>
+              </div>
+            </div>
           </div>
         </section>
-      )}
 
-      <Card className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-        <div>
-          <p className="caps text-violet">Next step</p>
-          <h2 className="mt-2 text-2xl font-medium">Ready for {product.name}?</h2>
-          <p className="mt-2 text-sm text-muted">Buy it on its own, or go back and compare what the other tools do. The bundle is optional.</p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <ButtonLink to={checkoutHref(product.slug)} variant="violet" aria-label={`Buy ${product.name}`} iconRight={<ArrowRight className="size-4" aria-hidden />}>
-            Buy {product.name}
-          </ButtonLink>
-          <ButtonLink to="/downloads" variant="outline" icon={<Download className="size-4" aria-hidden />}>
-            My downloads
-          </ButtonLink>
-        </div>
-      </Card>
-
-      <div className="flex flex-wrap items-center justify-between gap-3 px-2 py-4">
-        <Link to={backTo} className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-violet hov:text-violet-light">
-          <ArrowLeft className="size-4" aria-hidden />
-          Back to {backLabel}
-        </Link>
-        {!bundle && (
-          <Link to={`/products/${BUNDLE.slug}`} className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-muted hov:text-violet">
-            Or view {BUNDLE.name} <ArrowRight className="size-4" aria-hidden />
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 py-6">
+          <Link to={backTo} className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-violet-light hov:text-white">
+            <ArrowLeft className="size-4" aria-hidden />
+            Back to {backLabel}
           </Link>
-        )}
+          {!bundle && (
+            <Link to={`/products/${BUNDLE.slug}`} className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-white/45 hov:text-white">
+              Or view {BUNDLE.name} <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   )

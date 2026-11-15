@@ -83,7 +83,7 @@ In **Authentication → URL Configuration**:
 Registration passes an explicit `emailRedirectTo` for the current origin and
 base path, so the confirmation email returns to the deployment that created the
 account. If you use another preview host, add its exact origin to the allowlist.
-If you attach a custom domain such as `luna.win`, add that origin too and make it
+If you attach a custom domain such as `404services.gg`, add that origin too and make it
 the Site URL.
 
 In **Authentication → Providers → Email**:
