@@ -32,6 +32,7 @@ if (existsSync(shell)) {
 
   const routes = [
     'store',
+    'checkout',
     'pricing',
     'licence',
     'support',
