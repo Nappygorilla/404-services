@@ -238,10 +238,11 @@ product later, add its price ID and its bundle membership in the same way.
 
 ### 6.3 Set the Edge Function secrets
 
-In **Project Settings → Edge Functions → Secrets** (or with `supabase secrets
-set`), add:
+In Paddle **Developer Tools → Authentication**, copy an API key for the same
+environment as the prices. In **Project Settings → Edge Functions → Secrets**
+(or with `supabase secrets set`), add:
 
-- `PADDLE_API_KEY` — a Paddle API key for the same environment as the prices.
+- `PADDLE_API_KEY` — the Paddle API key. This is server-only.
 - `PADDLE_WEBHOOK_SECRET` — the secret from the Paddle notification destination
   created in step 6.5.
 - `PADDLE_ENVIRONMENT` — `sandbox` while testing, or omit / use `production` for
@@ -252,9 +253,10 @@ any `VITE_*` variable. `PADDLE_API_KEY` is an Authorization bearer credential;
 `PADDLE_WEBHOOK_SECRET` verifies event authenticity.
 
 The browser separately needs Paddle’s **client-side token**, which is public by
-design and is not the API key. Set `PADDLE_CLIENT_TOKEN` as an Actions variable
-(and `PADDLE_ENVIRONMENT=sandbox` for sandbox testing); the workflow maps them
-to `VITE_PADDLE_CLIENT_TOKEN` and `VITE_PADDLE_ENVIRONMENT` at build time. The
+design and is not the API key. Copy it from Paddle **Developer Tools →
+Authentication**. Set `PADDLE_CLIENT_TOKEN` as an Actions variable (and
+`PADDLE_ENVIRONMENT=sandbox` for sandbox testing); the workflow maps them to
+`VITE_PADDLE_CLIENT_TOKEN` and `VITE_PADDLE_ENVIRONMENT` at build time. The
 checkout page loads Paddle.js and opens the transaction as an overlay, so the
 browser never chooses the price.
 
@@ -292,10 +294,17 @@ In Paddle **Checkout settings**, set a default payment link for the store. Paddl
 requires one before it will create transactions, and uses it for payment-method
 updates and emails. The checkout page opens the transaction directly with
 Paddle.js from the server-returned transaction ID, so the default link is not
-used as the overlay entry point. Set it to the deployed site (for example the
-`/checkout` page) on an approved domain; it should load Paddle.js if you also
-send transaction links by email. If the default link is missing, checkout
-returns `503` and no transaction is created.
+required as the overlay entry point.
+
+For this deployment, use:
+
+`https://nappygorilla.github.io/404-services/checkout`
+
+(or the equivalent URL on your custom domain). The live domain must be approved
+as a checkout domain in Paddle; submit it in Paddle **Checkout settings** if it
+is not already approved. The page loads Paddle.js and handles a returned
+`?_ptxn=` transaction link. If the default link is missing, checkout returns
+`503` and no transaction is created.
 
 ### 6.7 Test in sandbox
 
