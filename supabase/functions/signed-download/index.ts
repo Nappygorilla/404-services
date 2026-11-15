@@ -85,7 +85,7 @@ Deno.serve(async (request) => {
   const now = new Date().toISOString()
   const { data: entitlement, error: entitlementError } = await service
     .from('user_entitlements')
-    .select('id')
+    .select('id, licenses(status)')
     .eq('user_id', authData.user.id)
     .eq('product_id', productId)
     .eq('status', 'active')
@@ -101,6 +101,12 @@ Deno.serve(async (request) => {
   }
   if (!entitlement) {
     return json({ error: 'An active licence for this product is required.' }, 403, origin)
+  }
+
+  const licenseValue = (entitlement as { licenses?: { status?: string } | { status?: string }[] | null }).licenses
+  const license = Array.isArray(licenseValue) ? licenseValue[0] : licenseValue
+  if (license && license.status !== 'active') {
+    return json({ error: 'This licence is no longer active.' }, 403, origin)
   }
 
   const { data: product, error: productError } = await service

@@ -12,6 +12,8 @@ type AuthValue = {
   session: Session | null
   signIn: (email: string, password: string) => Promise<Result>
   signUp: (email: string, password: string, displayName: string) => Promise<Result>
+  signInWithDiscord: (next?: string) => Promise<Result>
+  linkDiscord: () => Promise<Result>
   signOut: () => Promise<void>
 }
 
@@ -22,13 +24,22 @@ const AuthContext = createContext<AuthValue>({
   session: null,
   signIn: async () => ({ error: NOT_CONNECTED }),
   signUp: async () => ({ error: NOT_CONNECTED }),
+  signInWithDiscord: async () => ({ error: NOT_CONNECTED }),
+  linkDiscord: async () => ({ error: NOT_CONNECTED }),
   signOut: async () => {},
 })
 
+/** Build an app URL that keeps the deployment base path, including GitHub Pages. */
+function appRedirect(path: string): string | undefined {
+  if (typeof window === 'undefined') return undefined
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const safePath = path.startsWith('/') && !path.startsWith('//') ? path : '/account'
+  return new URL(`${base}${safePath}`, window.location.origin).toString()
+}
+
 /** Confirmation links must return to this deployment, including the Pages base path. */
 function confirmationRedirect(): string | undefined {
-  if (typeof window === 'undefined') return undefined
-  return new URL(import.meta.env.BASE_URL, window.location.origin).toString()
+  return appRedirect('/')
 }
 
 function friendly(message: string): string {
@@ -40,6 +51,9 @@ function friendly(message: string): string {
   if (m.includes('unable to validate email')) return 'That email address does not look valid.'
   if (m.includes('rate limit')) return 'Too many attempts. Wait a minute and try again.'
   if (m.includes('failed to fetch')) return 'Could not reach the account service. Check your connection and try again.'
+  if (m.includes('manual linking') || m.includes('identity linking is disabled')) return 'Discord account linking is not enabled for this project yet.'
+  if (m.includes('provider is not enabled') || m.includes('unsupported provider')) return 'Discord sign-in is not enabled for this project yet.'
+  if (m.includes('identity is already linked')) return 'That Discord account is already linked to a 404 Services account.'
   return message
 }
 
@@ -86,14 +100,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { needsConfirmation: !data.session }
   }, [])
 
+  const signInWithDiscord = useCallback<AuthValue['signInWithDiscord']>(async (next = '/account') => {
+    if (!supabase) return { error: NOT_CONNECTED }
+    const redirectTo = appRedirect(next)
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'discord',
+      options: { ...(redirectTo ? { redirectTo } : {}) },
+    })
+    return error ? { error: friendly(error.message) } : {}
+  }, [])
+
+  const linkDiscord = useCallback<AuthValue['linkDiscord']>(async () => {
+    if (!supabase) return { error: NOT_CONNECTED }
+    const redirectTo = appRedirect('/account')
+    const { error } = await supabase.auth.linkIdentity({
+      provider: 'discord',
+      options: { ...(redirectTo ? { redirectTo } : {}) },
+    })
+    return error ? { error: friendly(error.message) } : {}
+  }, [])
+
   const signOut = useCallback(async () => {
     if (!supabase) return
     await supabase.auth.signOut()
   }, [])
 
   const value = useMemo(
-    () => ({ configured: supabaseConfigured, ready, user: session?.user ?? null, session, signIn, signUp, signOut }),
-    [ready, session, signIn, signUp, signOut],
+    () => ({ configured: supabaseConfigured, ready, user: session?.user ?? null, session, signIn, signUp, signInWithDiscord, linkDiscord, signOut }),
+    [ready, session, signIn, signUp, signInWithDiscord, linkDiscord, signOut],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -105,7 +139,9 @@ export function useAuth() {
 
 /** The display name chosen at registration, falling back to the email prefix. */
 export function displayNameOf(user: { email?: string | null; user_metadata?: Record<string, unknown> } | null): string {
-  const name = typeof user?.user_metadata?.display_name === 'string' ? user.user_metadata.display_name.trim() : ''
-  if (name) return name
+  for (const key of ['display_name', 'full_name', 'name', 'user_name', 'preferred_username']) {
+    const value = user?.user_metadata?.[key]
+    if (typeof value === 'string' && value.trim()) return value.trim()
+  }
   return user?.email?.split('@')[0] ?? 'Member'
 }

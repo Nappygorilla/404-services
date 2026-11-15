@@ -959,7 +959,7 @@ export const DOC_SECTIONS = [
   {
     id: 'activate',
     title: 'Activate your key',
-    body: 'Paste the key from your receipt into the loader once. Activation registers the device, not a game account, and a licence can be active on two devices.',
+    body: 'Paste the key from Account → Downloads into the loader once. Activation registers the device, not a game account, and a licence can be active on two devices.',
     code: ['Account  →  Licence', 'Paste key  →  Activate device', 'Devices: 1 of 2 active'],
   },
   {
@@ -1002,7 +1002,7 @@ export const SUPPORT = {
 }
 
 export const SUPPORT_FAQ = [
-  { q: 'Where do I get my licence?', a: 'After Paddle confirms payment, the purchase and its download access are attached to the account you signed in with. Open Downloads to see the active licence. If it is missing, contact support with your Paddle order reference.' },
+  { q: 'Where do I get my licence?', a: 'After Paddle confirms payment, the purchase, its download access and its licence key are attached to the account you signed in with. Open Downloads to copy the key. If it is missing, contact support with your Paddle order reference.' },
   { q: 'How many devices can I activate?', a: 'Every product and bundle licence activates on two devices for one person. Deactivate a device in 404 Loader before moving to a new one.' },
   { q: 'Do I need 404 Complete?', a: 'No. Each product is sold separately. If you only want visuals or an executor, buy that profile; 404 Complete is an optional bundle.' },
   { q: 'Is the bundle cheaper than buying every product?', a: 'Yes. The bundle is priced below the sum of the current individual products. If you already own some products, contact us before buying the bundle.' },
@@ -1020,8 +1020,17 @@ export const TERMS: LegalSection[] = [
   {
     heading: 'Who these terms are with',
     body: [
-      `404 Services is sold by ${SITE.company} ("we", "us"). By buying a licence or using the software you agree to these terms. If you are buying on behalf of a company, you confirm you may bind that company.`,
-      'The checkout, payment processing, tax and invoicing are handled by our merchant of record. Their terms apply to the transaction itself; these terms apply to the software and to your licence.',
+      `404 Services ("we", "us") sells the software and operates this site. By creating an account, buying a licence or using the software you agree to these terms. If you are buying on behalf of a company, you confirm you may bind that company.`,
+      'The checkout, payment processing, tax and invoicing are handled by our merchant of record, Paddle. Paddle’s checkout terms and privacy policy apply to the transaction; these terms apply to the software, your account and your licence.',
+      `Questions about these terms: ${SITE.email}.`,
+    ],
+  },
+  {
+    heading: 'Accounts, Discord and security',
+    body: [
+      'You need an account to buy, access downloads and use the community. Give accurate information, keep your password and devices secure, and do not share your account or licence key. You are responsible for activity under your account.',
+      'You may optionally link a Discord account. If you do, you authorise us to store your Discord user ID and the profile details Discord returns, and to associate them with your 404 account for licence and support checks. You must control the Discord account you link.',
+      'You must be old enough to enter a binding contract in your country. We may suspend or close an account used for fraud, key sharing, abuse, or a serious breach of these terms. Where practical, we will explain why and give you a chance to respond.',
     ],
   },
   {
@@ -1029,6 +1038,13 @@ export const TERMS: LegalSection[] = [
     body: [
       'We grant you a non-exclusive, non-transferable licence to install and use the 404 product or bundle named on your order on up to two active devices. A seat is one person. Individual products and 404 Complete are separate products, and the bundle only includes the products listed on its product page at purchase.',
       'You may not resell, sublicense, rent or redistribute the software itself, share a key, or include it in a product you distribute.',
+    ],
+  },
+  {
+    heading: 'Purchases, delivery and refunds',
+    body: [
+      'Prices, currency and applicable tax are shown at checkout. Paddle is the merchant of record. A paid order is recorded only after Paddle sends a signature-verified payment confirmation; a browser redirect or checkout screen alone is not proof of payment.',
+      'After payment is confirmed, the order, licence key and download access appear in the account used at checkout. Delivery is digital. The refund policy on /refunds forms part of these terms, and mandatory consumer rights are not excluded.',
     ],
   },
   {
@@ -1043,8 +1059,28 @@ export const TERMS: LegalSection[] = [
     body: [
       '404 Services provides game-modification software. You agree to use it only on game accounts you own and are authorised to use, and in compliance with the laws that apply to you.',
       'Game modifications can breach a game platform’s terms and may lead to suspension or a permanent ban. No product can guarantee against enforcement. You accept that risk when you use the software.',
-      'Do not use the software to harass another person, steal an account, distribute malware, or interfere with a service you do not control.',
+      'Do not use the software to harass another person, steal an account, distribute malware, interfere with a service you do not control, or attempt to bypass authentication, licensing or rate limits.',
       'You are responsible for complying with the terms of the platforms you use, including Rockstar’s terms, the Cfx.re Platform License Agreement and Roblox’s Terms of Use.',
+    ],
+  },
+  {
+    heading: 'Community content',
+    body: [
+      'You keep ownership of what you post in the forums or send in a support ticket. You grant us a non-exclusive, worldwide licence to host, display, moderate and retain that content as needed to run the service and respond to you.',
+      'Do not post illegal, harassing, infringing, malicious or confidential content. Do not post licence keys, payment details or account credentials. We may remove content or restrict access when needed to protect users or the service. Support tickets are private to you and staff; forum posts are public.',
+    ],
+  },
+  {
+    heading: 'AI, crawling and automated access',
+    body: [
+      'Search engines may crawl and index public pages and show links and snippets in search results. Apart from that, you may not scrape, crawl, data-mine or use the site or its content to train, fine-tune or develop an AI or machine-learning model without our written permission.',
+      'We publish robots.txt directives, including Google-Extended, to opt out of Gemini training and grounding. These are signals, not technical locks; third parties may not honour them. We reserve all rights to enforce these terms and applicable law.',
+    ],
+  },
+  {
+    heading: 'Third-party services',
+    body: [
+      'Paddle provides checkout and merchant-of-record services. Supabase provides account, database and storage services. Discord provides optional account linking. GitHub Pages hosts the site. Their own terms and privacy policies apply to their services, and we are not responsible for their availability or independent processing.',
     ],
   },
   {
@@ -1068,26 +1104,35 @@ export const TERMS: LegalSection[] = [
     ],
   },
   {
-    heading: 'Law',
+    heading: 'Governing law and contact',
     body: [
-      'These terms are governed by the laws of [JURISDICTION], and disputes go to the courts of [JURISDICTION]. If you are a consumer, you keep the protections of the law in your country of residence.',
+      'These terms are governed by the laws of the jurisdiction in which the 404 Services operator is established. The courts of that jurisdiction have non-exclusive jurisdiction. If you are a consumer, you keep the mandatory protections of your country of residence and may bring a claim there.',
+      'If a provision is unenforceable, the rest remains in effect. We may update these terms; the updated date at the top of the page shows the current version. Material changes apply from the date shown, not retrospectively.',
+      `Contact: ${SITE.email}.`,
     ],
   },
 ]
 
 export const REFUNDS: LegalSection[] = [
   {
-    heading: 'Fourteen days, generally',
+    heading: 'Merchant of record',
     body: [
-      'If 404 Services is not what you expected, ask for a refund within fourteen days of purchase and we will refund the full amount to the original payment method. You do not need a reason, though we would like to know what went wrong.',
-      'Refunds are processed by our merchant of record and usually appear within five to ten business days, depending on your bank.',
+      'Paddle is the merchant of record for purchases on this site. It handles the payment, tax, invoice and refund transaction. Refunds go to the original payment method; the time they take to appear depends on your bank and Paddle.',
+      'Paddle’s own terms and privacy policy apply to the payment itself. These terms and this policy apply to the software, your account and your licence.',
     ],
   },
   {
-    heading: 'When the fourteen days do not apply',
+    heading: 'Fourteen days, generally',
     body: [
-      'Software delivered digitally can lose the change-of-mind right once supply has begun, but only if you agreed to immediate delivery and confirmed you understood you were giving up that right. The checkout asks for that confirmation explicitly; it is never pre-ticked.',
-      'If you gave that confirmation, you can still get a refund when the software is faulty, not as described, or when a licence key does not work and we cannot fix it. Your statutory rights are unaffected.',
+      'If 404 Services is not what you expected, ask for a refund within fourteen days of purchase and we will refund the full amount to the original payment method. You do not need a reason, though we would like to know what went wrong.',
+      'Refunds usually appear within five to ten business days, depending on your bank.',
+    ],
+  },
+  {
+    heading: 'Digital cancellation rights',
+    body: [
+      'Consumer law may give you a fourteen-day right to cancel digital content. That right can end when supply begins only if you expressly agreed to immediate access and acknowledged that you would lose it. If the checkout did not ask for that consent, the statutory right remains.',
+      'Nothing in this policy removes rights you have under mandatory consumer law. If you are unsure which rule applies, contact us before downloading.',
     ],
   },
   {
@@ -1118,52 +1163,81 @@ export const PRIVACY: LegalSection[] = [
   {
     heading: 'The short version',
     body: [
-      'This website makes no requests to third parties. There is no analytics, no advertising pixel and no third-party font or script. The only data we hold is what you send us or what a purchase requires.',
+      'We do not use analytics, advertising pixels or data brokers. The site uses a small number of essential services: Supabase for accounts and stored data, Paddle for checkout, Discord when you choose to link an account, and GitHub Pages for hosting. We do not sell your data.',
+      'The only data we hold is what you provide, what a purchase or linked account requires, and the security logs needed to run the service.',
+    ],
+  },
+  {
+    heading: 'Who is responsible for your data',
+    body: [
+      `${SITE.company} is the controller of the account and store data described here. For privacy requests, email ${SITE.email}.`,
+      'Paddle is the merchant of record for payments and handles payment, tax and invoicing under its own privacy policy. Discord processes your Discord sign-in under its own policy when you choose to link an account.',
     ],
   },
   {
     heading: 'What we collect, and why',
     body: [
-      'When you buy: your name, email, country and VAT number if you give one, plus the transaction record. This is needed to deliver the licence, issue a receipt and meet tax obligations. Payment details go directly to the merchant of record — we never see a card number.',
-      'When you email support: your address and whatever you include in the message, kept so we can answer and refer back to it.',
-      'When the loader runs: a licence check sends your licence key and a hashed device identifier. The hash is derived from hardware and OS details, cannot be reversed into those details, and is used only to count active devices and let you deactivate one.',
-      'Our host keeps standard server logs, including IP addresses, for security and abuse prevention. These rotate automatically.',
+      'Account data: your email address, password hash, display name and account identifiers. Supabase stores the authentication record; we never see your plain password. If you link Discord, Supabase stores your Discord user ID and the profile details Discord returns, such as your username, display name, avatar and email if you authorise that scope.',
+      'Purchase data: your name, email, country and VAT number if you give one, plus the Paddle transaction, order and invoice references. This is needed to deliver the licence, issue a receipt and meet tax obligations. Payment details go directly to Paddle — we never see a card number.',
+      'Licence and device data: your licence key, its status and expiry, the products attached to it, and a hashed device identifier used to count active devices and let you deactivate one. The hash is derived from hardware and OS details and cannot be reversed into those details.',
+      'Community and support data: forum posts, ticket subject and message, your author name and timestamps. Forum posts are public. Support tickets are visible to you and staff.',
+      'Download and security logs: the time of a download request, the account and product involved, and standard server-log data such as IP address, user agent and requested URL. We use this for security, abuse prevention and diagnosing failures.',
     ],
   },
   {
-    heading: 'What we do not do',
+    heading: 'Why we are allowed to use it',
     body: [
-      'We do not sell data, share it with advertisers, or use it to build a profile of you. We never ask for a game account password or collect game credentials.',
+      'We rely on contract performance for the account, purchase, licence, download and support services; legal obligation for tax, accounting and fraud records; legitimate interests for security, abuse prevention and running the service; and consent where the law requires it, such as optional Discord linking. You can withdraw consent by unlinking Discord or contacting us, though some features may stop working.',
+      'We do not use your account, purchase or support data to train AI models.',
     ],
   },
   {
     heading: 'Cookies and local storage',
     body: [
-      'We set no tracking cookies. The site stores a few preferences in your browser — a currency choice and, if you use the forms, a draft — which never leave your device and can be cleared from your browser settings.',
+      'We set no tracking or advertising cookies. Supabase stores your sign-in session in browser local storage so you stay signed in. The site also stores a currency choice and, if you use certain forms, a draft, which stay on your device and can be cleared in your browser settings.',
+      'Paddle may set cookies or local storage on its own checkout domain, and Discord may do the same during OAuth. Those services control their own cookies; check their policies before using checkout or linking Discord.',
+    ],
+  },
+  {
+    heading: 'Who we share it with',
+    body: [
+      'Supabase hosts authentication, the database and private release storage as our processor. Paddle is the merchant of record and handles payment, tax and invoicing; it acts under its own terms and privacy policy. Discord processes OAuth sign-in and account linking when you choose it. GitHub Pages hosts the static site and keeps standard server logs.',
+      'We may disclose data if required by law, to protect the service or its users, or as part of a transfer of the business. We do not sell data or share it with advertisers. Where data is transferred internationally, we rely on appropriate safeguards offered by the relevant providers.',
     ],
   },
   {
     heading: 'How long we keep it',
     body: [
-      'Support email is kept for two years. Transaction records are kept for as long as tax law requires, which is usually seven to ten years depending on the country; the merchant of record holds the payment record. Licence and device records are deleted within 30 days of a licence ending.',
+      'Account and profile data is kept while your account is open and for up to 30 days after deletion, except where we must retain it for tax, fraud or legal reasons. Order and tax records are kept for seven to ten years, depending on the country. Licence and device records are deleted within 30 days of the licence ending, while the related order record is kept for the tax period.',
+      'Support tickets are kept for two years after closure. Forum posts are kept until you delete them, ask us to delete them, or close your account, though moderation records and copies may be retained where needed for legal or safety reasons. Security logs we control are kept for up to 30 days; GitHub Pages keeps its own logs under GitHub’s policy.',
     ],
   },
   {
     heading: 'Your rights',
     body: [
-      'You can ask for a copy of your data, ask us to correct it, or ask us to erase it. Email us and we will confirm within 30 days. If we hold data you asked us to delete but are required to keep it for tax purposes, we will tell you which records and why.',
-      'If you are in the EU or UK you also have the right to complain to your data protection authority.',
+      'You can ask for a copy of your data, ask us to correct it, ask us to erase it, or ask us to restrict or object to certain processing. Where the law provides it, you can also ask for portability and withdraw consent. Email us and we will respond within 30 days; we may need to verify your identity first.',
+      'If we must keep a record for tax or legal reasons, we will tell you which record and why. If you are in the EU or UK, you also have the right to complain to your data protection authority.',
     ],
   },
   {
-    heading: 'Who processes data for us',
+    heading: 'Security',
     body: [
-      'Our hosting provider serves this site and stores server logs. Our merchant of record handles checkout, payment, tax and invoicing. Both act on our instructions and are bound by their own data processing terms. We will name them explicitly in the checkout flow so you know who you are dealing with before you pay.',
+      'We use HTTPS, access controls, row-level security in Supabase, and server-side secrets for privileged operations. No service is completely secure; if you think an account or key has been compromised, contact us immediately and change your password.',
     ],
   },
   {
-    heading: 'Contact',
-    body: [`${SITE.email} — ${SITE.company}.`],
+    heading: 'Search engines and AI',
+    body: [
+      'Public pages may be crawled and indexed by search engines so people can find the store. We do not use account or purchase data to train AI models. We publish robots.txt directives, including Google-Extended, to opt out of Gemini training and grounding, and we ask automated systems not to use the site content for model development.',
+      'These signals are not technical locks. Search engines may still show links and snippets, and AI features inside search products may use indexed content under their own policies. We cannot guarantee how a third party interprets a crawl directive.',
+    ],
+  },
+  {
+    heading: 'Changes and contact',
+    body: [
+      'We may update this policy as the service changes. The date at the top of the page shows the current version; material changes apply from that date, not retrospectively.',
+      `Privacy questions and requests: ${SITE.email} — ${SITE.company}.`,
+    ],
   },
 ]
 

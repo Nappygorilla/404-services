@@ -6,6 +6,7 @@ import { useAuth } from '../components/Auth'
 import { BackendNotice } from '../components/BackendNotice'
 import { Card } from '../components/Card'
 import { Button } from '../components/Button'
+import { DiscordIcon } from '../components/DiscordIcon'
 import { Field, FormMessage, Input } from '../components/Field'
 import { Nav } from '../components/Nav'
 import { useDocumentTitle } from '../lib/storage'
@@ -59,7 +60,7 @@ function AuthShell({
 
 export function Login() {
   useDocumentTitle('Sign in')
-  const { configured, signIn } = useAuth()
+  const { configured, signIn, signInWithDiscord } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const from = (location.state as { from?: string } | null)?.from ?? '/account'
@@ -67,6 +68,15 @@ export function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [discordBusy, setDiscordBusy] = useState(false)
+
+  const discordSignIn = async () => {
+    setError('')
+    setDiscordBusy(true)
+    const result = await signInWithDiscord(from)
+    setDiscordBusy(false)
+    if (result.error) setError(result.error)
+  }
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
@@ -100,6 +110,14 @@ export function Login() {
         <Button type="submit" variant="violet" loading={busy} disabled={!configured} iconRight={<ArrowRight className="size-4" />}>
           Sign in
         </Button>
+        <div className="flex items-center gap-3 text-xs text-muted" aria-hidden>
+          <span className="h-px flex-1 bg-line" />
+          or
+          <span className="h-px flex-1 bg-line" />
+        </div>
+        <Button type="button" variant="outline" icon={<DiscordIcon />} loading={discordBusy} disabled={!configured} onClick={discordSignIn}>
+          Continue with Discord
+        </Button>
         <p className="text-center text-sm text-muted">
           No account yet?{' '}
           <Link to="/register" className="text-ink underline-offset-4 hov:text-violet-light hov:underline">
@@ -113,7 +131,7 @@ export function Login() {
 
 export function Register() {
   useDocumentTitle('Create account')
-  const { configured, signUp } = useAuth()
+  const { configured, signUp, signInWithDiscord } = useAuth()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -121,7 +139,16 @@ export function Register() {
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [discordBusy, setDiscordBusy] = useState(false)
   const [sent, setSent] = useState(false)
+
+  const discordSignUp = async () => {
+    setError('')
+    setDiscordBusy(true)
+    const result = await signInWithDiscord('/account')
+    setDiscordBusy(false)
+    if (result.error) setError(result.error)
+  }
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
@@ -188,6 +215,15 @@ export function Register() {
         <Button type="submit" variant="violet" loading={busy} disabled={!configured} iconRight={<ArrowRight className="size-4" />}>
           Create account
         </Button>
+        <div className="flex items-center gap-3 text-xs text-muted" aria-hidden>
+          <span className="h-px flex-1 bg-line" />
+          or
+          <span className="h-px flex-1 bg-line" />
+        </div>
+        <Button type="button" variant="outline" icon={<DiscordIcon />} loading={discordBusy} disabled={!configured} onClick={discordSignUp}>
+          Sign up with Discord
+        </Button>
+        <p className="text-center text-xs leading-relaxed text-muted">A Discord sign-up creates the account automatically; no password is needed.</p>
         <p className="text-center text-sm text-muted">
           Already registered?{' '}
           <Link to="/login" className="text-ink underline-offset-4 hov:text-violet-light hov:underline">

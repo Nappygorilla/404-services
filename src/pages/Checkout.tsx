@@ -202,7 +202,7 @@ export function Checkout() {
           {completed && (
             <div className="mt-6 rounded-xl border border-acid/30 bg-acid/10 p-4">
               <p className="font-medium text-ink">Payment complete.</p>
-              <p className="mt-1 text-sm leading-relaxed text-ink-2">Paddle confirmed the payment. Your order will appear under Orders and the licence under Downloads as soon as the signed webhook is processed.</p>
+              <p className="mt-1 text-sm leading-relaxed text-ink-2">Paddle confirmed the payment. Your order, licence key and download access will appear under Orders and Downloads as soon as the signed webhook is processed.</p>
               {transactionId && <p className="mt-2 font-mono text-[10px] text-faint">Paddle transaction {transactionId}</p>}
               <div className="mt-3 flex flex-wrap gap-3">
                 <ButtonLink to="/orders" variant="outline" size="sm">View orders</ButtonLink>
@@ -248,7 +248,7 @@ export function Checkout() {
             <span className="grid size-11 place-items-center rounded-xl bg-violet/10 text-violet"><LockKeyhole className="size-5" /></span>
             <h2 className="mt-4 text-xl font-semibold">Access after payment</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Paddle sends a signature-verified webhook. Once it is processed, the order appears under Orders and the licence under Downloads. This can take a moment after the payment screen closes.
+              Paddle sends a signature-verified webhook. Once it is processed, the order, licence key and download access appear under Orders and Downloads. This can take a moment after the payment screen closes.
             </p>
             <div className="mt-4 flex flex-wrap gap-4">
               <ButtonLink to="/orders" variant="outline" size="sm">Orders</ButtonLink>

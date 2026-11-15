@@ -1,4 +1,5 @@
 import { ArrowRight, CreditCard, Download, FileText, LifeBuoy, LogOut, MessageSquareText, ShieldCheck, UserRound, UserCog, KeyRound } from 'lucide-react'
+import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router'
 
 import { displayNameOf, useAuth } from '../components/Auth'
@@ -6,6 +7,7 @@ import { BackendNotice } from '../components/BackendNotice'
 import { Badge } from '../components/Bits'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
+import { DiscordIcon } from '../components/DiscordIcon'
 import { PageHero } from '../components/Nav'
 import { APP } from '../data'
 import { useDocumentTitle } from '../lib/storage'
@@ -13,7 +15,7 @@ import { useDocumentTitle } from '../lib/storage'
 const ACCOUNT_LINKS = [
   { to: '/downloads', title: 'Downloads', body: 'Loader installers and release files', icon: Download },
   { to: '/orders', title: 'Order history', body: 'Purchases and invoice references', icon: CreditCard },
-  { to: '/account/licenses', title: 'Licenses', body: 'Your active product entitlements', icon: ShieldCheck },
+  { to: '/account/licenses', title: 'Licenses', body: 'Your licence keys and active product access', icon: ShieldCheck },
   { to: '/account/tickets', title: 'Support tickets', body: 'Submit and track private requests', icon: MessageSquareText },
   { to: '/account/profile', title: 'Profile settings', body: 'Update your display name', icon: UserCog },
   { to: '/account/security', title: 'Security', body: 'Change your password and sign out', icon: KeyRound },
@@ -23,8 +25,19 @@ const ACCOUNT_LINKS = [
 
 export function Account() {
   useDocumentTitle('Account')
-  const { configured, ready, user, signOut } = useAuth()
+  const { configured, ready, user, linkDiscord, signOut } = useAuth()
   const navigate = useNavigate()
+  const [discordBusy, setDiscordBusy] = useState(false)
+  const [discordError, setDiscordError] = useState('')
+  const discord = user?.identities?.find((identity) => identity.provider === 'discord')
+
+  const connectDiscord = async () => {
+    setDiscordError('')
+    setDiscordBusy(true)
+    const result = await linkDiscord()
+    setDiscordBusy(false)
+    if (result.error) setDiscordError(result.error)
+  }
 
   if (!configured) {
     return <div className="grid gap-2 p-2"><PageHero title={['Your', 'account']} eyebrow="Customer dashboard" intro="Manage your profile, downloads, orders, and support from one place." /><BackendNotice /></div>
@@ -50,9 +63,17 @@ export function Account() {
           <div className="mt-6 grid gap-3 border-t border-line pt-5 text-sm">
             <div className="flex items-center justify-between gap-3"><span className="text-muted">Account status</span><Badge tone="success">Signed in</Badge></div>
             <div className="flex items-center justify-between gap-3"><span className="text-muted">Email verification</span><Badge tone={user.email_confirmed_at ? 'success' : 'outline'}>{user.email_confirmed_at ? 'Confirmed' : 'Pending'}</Badge></div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="text-muted">Discord</span>
+              {discord ? <Badge tone="success">Connected</Badge> : <Button size="sm" variant="outline" icon={<DiscordIcon className="size-3.5" />} loading={discordBusy} onClick={connectDiscord}>Link Discord</Button>}
+            </div>
+            {discordError && <p role="alert" className="text-[13px] text-danger">{discordError}</p>}
             <div className="flex items-center justify-between gap-3"><span className="text-muted">Member since</span><span className="text-right text-ink">{joined}</span></div>
             <div className="flex items-center justify-between gap-3"><span className="text-muted">Desktop version</span><span className="font-mono text-ink">v{APP.version}</span></div>
           </div>
+          <p className="mt-4 text-xs leading-relaxed text-muted">
+            {discord ? 'Discord is linked. The private /license command can find the licences attached to this account.' : 'Link Discord so the private /license command can find the licences attached to this account.'}
+          </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button variant="outline" icon={<LogOut className="size-4" />} onClick={async () => { await signOut(); navigate('/', { replace: true }) }}>Sign out</Button>
             <Link to="/support" className="inline-flex min-h-11 items-center gap-2 px-3 text-sm font-medium text-violet hov:text-violet-light">Get help <ArrowRight className="size-4" /></Link>
@@ -74,7 +95,7 @@ export function Account() {
       </section>
 
       <Card className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
-        <div><p className="caps text-violet">Purchases</p><h2 className="mt-2 text-lg font-semibold">Orders and licences live in your account.</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">Checkout runs on Paddle’s hosted page. After Paddle confirms payment, the order and download entitlement are recorded server-side and appear under Orders and Downloads.</p></div>
+        <div><p className="caps text-violet">Purchases</p><h2 className="mt-2 text-lg font-semibold">Orders and licences live in your account.</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">Checkout runs on Paddle’s hosted page. After Paddle confirms payment, the order, licence key and download entitlement are recorded server-side and appear under Orders and Downloads.</p></div>
         <Badge tone="success">Paddle</Badge>
       </Card>
     </div>

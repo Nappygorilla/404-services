@@ -108,7 +108,7 @@ export function Privacy() {
     <LegalPage
       title={['Privacy']}
       eyebrow="Privacy policy"
-      intro="No analytics, no third-party requests, no advertising. What we hold, why, and how to have it removed."
+      intro="No analytics, advertising pixels or data brokers. What we hold, why, and how to have it removed."
       sections={PRIVACY}
     />
   )

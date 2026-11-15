@@ -10,7 +10,7 @@ import { BUNDLE, PRICING_FAQ, SITE, TOOLS } from '../data'
 import { useDocumentTitle } from '../lib/storage'
 
 const STEPS = [
-  { title: 'Paste the key once', body: 'On first launch the loader asks for the licence key of the cheat or bundle you bought. It is in your receipt email; the loader checks it against the licence service and stores it in the operating system’s credential store, not in a config file.' },
+  { title: 'Paste the key once', body: 'On first launch the loader asks for the licence key of the cheat or bundle you bought. Copy it from Account → Downloads; the loader checks it against the licence service and stores it in the operating system’s credential store, not in a config file.' },
   { title: 'Activate the device', body: 'Activation registers a hashed device identifier, so the loader can count seats without collecting hardware details. A hash matches or it does not; it cannot be turned back into a description of your computer.' },
   { title: 'Deactivate before you move', body: 'Under Account → Licence, deactivate a device to free the seat. Do this before wiping a disk, or you will need support to clear the old activation.' },
 ]
@@ -113,7 +113,7 @@ export function Licence() {
       </Card>
 
       <p className="px-2 pb-2 text-center text-[13px] text-faint">
-        Lost your key? Email {SITE.email} from the address you bought with and we will resend it.
+        Lost your key? Copy it again from Account → Downloads, or email {SITE.email} from the address you bought with.
       </p>
     </div>
   )

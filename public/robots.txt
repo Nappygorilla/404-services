@@ -1,0 +1,17 @@
+# Google Search may crawl and index the public site.
+User-agent: Googlebot
+Allow: /
+
+# Keep public pages out of Gemini model training and Gemini grounding.
+User-agent: Google-Extended
+Disallow: /
+
+# GoogleOther is used for non-Search research and development crawls.
+User-agent: GoogleOther
+Disallow: /
+
+# Everything else follows the default: public pages are crawlable.
+User-agent: *
+Allow: /
+
+Sitemap: https://nappygorilla.github.io/404-services/sitemap.xml

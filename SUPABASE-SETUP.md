@@ -77,6 +77,10 @@ Open **SQL Editor** and run these in order:
    `product-releases` Storage bucket.
 4. `supabase/migrations/20261115_paddle_fulfillment.sql` — Paddle price mapping,
    bundle composition and the atomic `fulfill_paddle_order` function.
+5. `supabase/migrations/20261116_add_order_license_keys.sql` — initial
+   initial licence-key support (superseded by the `licenses` table).
+6. `supabase/migrations/20261117_create_licenses.sql` — the `licenses` table,
+   entitlement links, owner-only reads and the updated fulfilment function.
 
 The files are idempotent for tables, indexes, policies, functions and the bucket,
 so they can be run again to repair a partial setup. On a fresh project, run them
@@ -94,13 +98,16 @@ In **Authentication → URL Configuration**:
   `https://nappygorilla.github.io/404-services/`
 - **Redirect URLs** — add:
   - `https://nappygorilla.github.io/404-services/`
+  - `https://nappygorilla.github.io/404-services/account`
   - `http://localhost:5305/`
-  - `http://localhost:3000/` if you also test the production build locally with
-    the static server
+  - `http://localhost:5305/account`
+  - `http://localhost:3000/` and `http://localhost:3000/account` if you also
+    test the production build locally with the static server
 
 Registration passes an explicit `emailRedirectTo` for the current origin and
 base path, so the confirmation email returns to the deployment that created the
-account. If you use another preview host, add its exact origin to the allowlist.
+account. Discord returns to `/account` after sign-in or linking. If you use
+another preview host, add its exact origin and `/account` URL to the allowlist.
 If you attach a custom domain such as `404services.gg`, add that origin too and make it
 the Site URL.
 
@@ -109,6 +116,15 @@ In **Authentication → Providers → Email**:
 - Enable Email.
 - Keep **Confirm email** enabled.
 - Set a minimum password length of 8 (the forms already enforce this).
+
+In **Authentication → Providers → Discord**:
+
+- Enable Discord and enter the Discord application's client ID and secret.
+- Add the Supabase callback URL shown on that page to the Discord application's
+  OAuth2 redirect list.
+- Enable **Manual linking** in the authentication provider settings. The account
+  dashboard uses `linkIdentity` to attach Discord to the already signed-in user;
+  without manual linking, that button reports that linking is unavailable.
 
 Disable anonymous sign-ins unless you deliberately add an anonymous flow.
 
@@ -178,6 +194,9 @@ they match the storefront. The storefront currently shows a launch price until
 actually pay at checkout. If you do not want launch pricing, change `LAUNCH` in
 `src/data.ts` before creating the prices.
 
+If you are using the Paddle MCP, [`MCP.md`](MCP.md) has the connection steps and
+a ready-to-run sandbox catalog prompt for the 15 products below.
+
 | Product slug | Base EUR | Launch EUR (until 31 Jan 2027) |
 | --- | ---: | ---: |
 | `fivem-external` | 19.99 | 16.00 |
@@ -236,6 +255,12 @@ order by slug;
 Every published product used in checkout must have a price. If you add a new
 product later, add its price ID and its bundle membership in the same way.
 
+Each paid order gets one row in `public.licenses` with a unique `license_key`
+generated inside `fulfill_paddle_order`. The browser never chooses the key. Each
+entitlement is linked to that licence through `license_id`, so every product in
+`404 Complete` shares the one key issued for the bundle order. The key is shown
+in the buyer’s Downloads page after the verified webhook is processed.
+
 ### 6.3 Set the Edge Function secrets
 
 In Paddle **Developer Tools → Authentication**, copy an API key for the same
@@ -285,8 +310,8 @@ The function checks the `Paddle-Signature` header over the raw request body,
 rejects timestamps older than five minutes, and matches the hex digest in
 constant time. It only fulfills `transaction.completed`; other subscribed events
 are acknowledged and ignored. Paddle retries are safe because `orders`,
-`order_items` and `user_entitlements` are written by one idempotent function keyed
-by the Paddle transaction ID.
+`licenses`, `order_items` and `user_entitlements` are written by one idempotent
+function keyed by the Paddle transaction ID.
 
 ### 6.6 Configure hosted checkout
 
@@ -313,10 +338,10 @@ is not already approved. The page loads Paddle.js and handles a returned
 2. Sign in on the site, open a product and choose **Open Paddle checkout**.
 3. Complete a sandbox card payment. Paddle should deliver
    `transaction.completed` to the webhook.
-4. Confirm a new row in `orders`, its `order_items`, and active
-   `user_entitlements`; the buyer’s `/orders` and `/downloads` pages should show
-   the purchase. For `complete-toolkit`, every included product should have an
-   entitlement.
+4. Confirm a new row in `orders`, one linked `licenses` row with a unique
+   `license_key`, its `order_items`, and active `user_entitlements`; the buyer’s
+   `/orders` and `/downloads` pages should show the purchase and the key. For
+   `complete-toolkit`, every included product should share the same `license_id`.
 5. Replay the same webhook in Paddle or send a duplicate event. The order should
    not duplicate and no extra entitlements should appear.
 6. An unsigned POST to the webhook should return `401` once the secret is set. A
@@ -335,8 +360,9 @@ database.
 4. Open `/account/tickets`, submit a ticket and confirm it appears in the
    private history.
 5. After publishing a release, open `/downloads` with an account that has an
-   active entitlement and click **Download**. The link should expire after 60
-   seconds; an account without the entitlement should get a `403`.
+   active entitlement, copy the licence key, and click **Download**. The link
+   should expire after 60 seconds; an account without the entitlement should get
+   a `403`.
 6. Query the SQL editor to confirm RLS is on:
 
 ```sql
@@ -345,7 +371,7 @@ from pg_tables
 where schemaname = 'public'
   and tablename in (
     'forum_threads', 'products', 'product_bundle_items', 'product_releases',
-    'release_assets', 'orders', 'order_items', 'user_entitlements', 'support_tickets'
+    'release_assets', 'orders', 'licenses', 'order_items', 'user_entitlements', 'support_tickets'
   )
 order by tablename;
 ```
@@ -359,7 +385,9 @@ private bucket, entitlement check, signed-download function, Paddle checkout and
 Paddle webhook are implemented. Live commerce still needs the operator steps in
 section 6: secrets, price IDs, a notification destination and a default payment
 link. The remaining delivery work is uploading real release files and
-registering their `product_releases` and `release_assets` rows.
+registering their `product_releases` and `release_assets` rows. Licence-key
+issuance and display are implemented; a loader-side activation endpoint and
+device-seat tracking are not part of this repository yet.
 
 Do not add a browser insert policy for orders or entitlements to make a checkout
 demo appear to work. Only the signed Paddle webhook calls `fulfill_paddle_order`;
