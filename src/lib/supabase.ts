@@ -4,7 +4,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
   Accounts and the community boards live in Supabase. The two values below are
   public by design (the anon key is meant to ship in the browser), but the build
   still reads them from the environment so no key is ever committed: locally
-  from .env, on Pages from the repository's Actions secrets. When they are
+  from .env, on Pages from the repository's Actions variables. When they are
   absent the site stays fully usable and the account surfaces say so instead of
   pretending a login worked.
 */

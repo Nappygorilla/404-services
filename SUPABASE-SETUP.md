@@ -3,6 +3,11 @@
 This is the backend runbook for accounts, the issues forum and support tickets.
 The storefront catalogue itself is static; it does not need a database.
 
+> **Existing project:** The `404-services` project has already been aligned
+> with the storefront and seeded. If you are repairing that project, apply
+> `supabase/migrations/20261115_align_404_services_backend.sql` once instead of
+> the two setup files in step 3. Use the setup files only for a fresh project.
+
 ## 1. Create the project
 
 1. Open [Supabase](https://supabase.com/dashboard) and create a project.
