@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight, Check, CreditCard, LockKeyhole, ShieldCheck } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useSearchParams } from 'react-router'
 
 import { useAuth } from '../components/Auth'
@@ -11,6 +11,7 @@ import { Holo } from '../components/Holo'
 import { PageHero } from '../components/Nav'
 import { PriceTag } from '../components/ProductCards'
 import { BUNDLE, PLATFORM_LABEL, isBundle, productBySlug } from '../data'
+import { openPaddleCheckout, paddleConfigured, type PaddleCheckoutEvent } from '../lib/paddle'
 import { createPaddleCheckout } from '../lib/payments'
 import { useDocumentTitle } from '../lib/storage'
 
@@ -27,10 +28,39 @@ export function Checkout() {
   const location = useLocation()
   const slug = params.get('product') ?? ''
   const product = productBySlug(slug)
+  const ptxn = params.get('_ptxn') ?? ''
+  const returnOpened = useRef(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [transactionId, setTransactionId] = useState('')
+  const [completed, setCompleted] = useState(false)
 
-  if (!product) {
+  const handleCheckoutEvent = (event: PaddleCheckoutEvent) => {
+    if (event.name === 'checkout.completed') {
+      setCompleted(true)
+      setBusy(false)
+    }
+    if (event.name === 'checkout.closed') setBusy(false)
+    if (event.name === 'checkout.error') {
+      setBusy(false)
+      setError('Paddle could not complete this checkout. No order was recorded; try again or contact support.')
+    }
+  }
+
+  useEffect(() => {
+    if (!ptxn || returnOpened.current) return
+    returnOpened.current = true
+    setTransactionId(ptxn)
+    if (!paddleConfigured) {
+      setError('Paddle checkout is not configured on this build yet. Please contact support.')
+      return
+    }
+    openPaddleCheckout(ptxn, handleCheckoutEvent).catch(() => {
+      setError('Paddle Checkout could not be opened. Check your connection and try again.')
+    })
+  }, [ptxn])
+
+  if (!product && !ptxn) {
     return (
       <div className="grid gap-2 p-2">
         <PageHero
@@ -52,11 +82,44 @@ export function Checkout() {
   if (!configured) {
     return (
       <div className="grid gap-2 p-2">
-        <PageHero title={['Secure', 'checkout.']} eyebrow="Paddle Billing" intro={`Buy ${product.name} through Paddle’s hosted checkout.`} titleSize="compact" />
+        <PageHero title={['Secure', 'checkout.']} eyebrow="Paddle Billing" intro={product ? `Buy ${product.name} through Paddle’s secure checkout.` : 'Complete your Paddle payment.'} titleSize="compact" />
         <BackendNotice />
       </div>
     )
   }
+
+  if (ptxn) {
+    return (
+      <div className="grid gap-2 p-2">
+        <PageHero title={['Secure', 'checkout.']} eyebrow="Paddle Billing" intro="Paddle is opening your payment details. Complete the payment in the secure overlay; this page will update when it closes." titleSize="compact" />
+        <Card className="p-6 sm:p-8">
+          {completed ? (
+            <>
+              <p className="text-lg font-semibold">Payment complete.</p>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">Paddle confirmed the payment. Your order and licence will appear in your account once the signed webhook is processed.</p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <ButtonLink to="/orders" variant="violet" size="sm">View orders</ButtonLink>
+                <ButtonLink to="/downloads" variant="outline" size="sm">Open downloads</ButtonLink>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-lg font-semibold">Opening Paddle Checkout…</p>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">If the overlay does not appear, check that Paddle’s client token and environment are configured for this build. No payment is taken until you complete the Paddle screen.</p>
+              {error && <p role="alert" className="mt-4 rounded-lg bg-soft p-4 text-sm text-ink-2">{error}</p>}
+              {transactionId && <p className="mt-4 font-mono text-[10px] text-faint">Paddle transaction {transactionId}</p>}
+              <div className="mt-5 flex flex-wrap gap-3">
+                <ButtonLink to="/orders" variant="outline" size="sm">View orders</ButtonLink>
+                <ButtonLink to="/support" variant="outline" size="sm">Get help</ButtonLink>
+              </div>
+            </>
+          )}
+        </Card>
+      </div>
+    )
+  }
+
+  if (!product) return <Navigate to="/store" replace />
 
   if (!ready) {
     return <div className="p-4 text-sm text-muted">Checking your account…</div>
@@ -67,12 +130,29 @@ export function Checkout() {
   }
 
   const start = async () => {
-    setBusy(true)
     setError('')
+    if (!paddleConfigured) {
+      return setError('Paddle checkout is not configured on this build yet. Please contact support.')
+    }
+
+    setBusy(true)
     const result = await createPaddleCheckout(product.slug)
-    setBusy(false)
-    if (result.error) return setError(result.error)
-    if (result.data) window.location.assign(result.data.checkoutUrl)
+    if (result.error) {
+      setBusy(false)
+      return setError(result.error)
+    }
+    if (!result.data) {
+      setBusy(false)
+      return setError('The checkout service did not return a Paddle transaction.')
+    }
+
+    setTransactionId(result.data.transactionId)
+    try {
+      await openPaddleCheckout(result.data.transactionId, handleCheckoutEvent)
+    } catch {
+      setBusy(false)
+      setError('Paddle Checkout could not be opened. Check your connection and try again.')
+    }
   }
 
   return (
@@ -119,6 +199,18 @@ export function Checkout() {
             </ul>
           </div>
 
+          {completed && (
+            <div className="mt-6 rounded-xl border border-acid/30 bg-acid/10 p-4">
+              <p className="font-medium text-ink">Payment complete.</p>
+              <p className="mt-1 text-sm leading-relaxed text-ink-2">Paddle confirmed the payment. Your order will appear under Orders and the licence under Downloads as soon as the signed webhook is processed.</p>
+              {transactionId && <p className="mt-2 font-mono text-[10px] text-faint">Paddle transaction {transactionId}</p>}
+              <div className="mt-3 flex flex-wrap gap-3">
+                <ButtonLink to="/orders" variant="outline" size="sm">View orders</ButtonLink>
+                <ButtonLink to="/downloads" variant="outline" size="sm">Open downloads</ButtonLink>
+              </div>
+            </div>
+          )}
+
           {error && <p role="alert" className="mt-6 rounded-lg bg-soft p-4 text-sm text-ink-2">{error}</p>}
 
           <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -126,12 +218,13 @@ export function Checkout() {
               variant="violet"
               size="lg"
               loading={busy}
+              disabled={completed}
               onClick={start}
               icon={<CreditCard className="size-4" aria-hidden />}
               iconRight={<ArrowRight className="size-4" aria-hidden />}
               className="w-full sm:w-auto"
             >
-              Continue to Paddle
+              {completed ? 'Payment complete' : 'Open Paddle checkout'}
             </Button>
             <Link to={`/products/${product.slug}`} className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-violet underline-offset-4 hov:text-violet-light hov:underline">
               <ArrowLeft className="size-4" aria-hidden />
@@ -139,7 +232,7 @@ export function Checkout() {
             </Link>
           </div>
           <p className="mt-4 text-[12px] leading-relaxed text-faint">
-            Paddle shows the final amount, currency and applicable tax before payment. The catalogue price is shown here for comparison.
+            Paddle Checkout opens here as a secure overlay and shows the final amount, currency and applicable tax before payment. The catalogue price is shown for comparison.
           </p>
         </Card>
 

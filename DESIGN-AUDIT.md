@@ -33,9 +33,10 @@ its own price, product page and buy action; 404 Complete is an optional bundle.
   profiles; type filters cover Aimbot, Visuals, Executor, Mod Menu and Utility.
   Search and filters are reflected in the URL.
 - **Checkout is honest.** Every buy action goes to
-  `/support?product=<slug>#buy`. The support page shows the selected cheat and
-  opens a product-specific email requesting a payment link. There is no fake
-  basket, card form or invented payment-success state.
+  `/checkout?product=<slug>`. The page requires sign-in, shows the selected
+  product and sends the customer to Paddle’s hosted checkout. The browser never
+  chooses the price and no payment-success state is invented; only the signed
+  Paddle webhook creates an order and entitlement.
 - **Games are categories, not SKUs.** `/games` groups supported sessions and
   links to filtered store views. Upcoming games are labelled as unavailable.
 - **Legacy URLs redirect.** `/products/fivem`, `/products/roblox`,

@@ -13,7 +13,7 @@ The repository contains the storefront: an item-level catalogue, per-product pri
 - Cloudflare Workers / Workers Assets
 - Supabase Auth and Postgres for accounts, orders, entitlements and community data
 - Supabase Edge Functions for Paddle checkout and signed downloads
-- Paddle Billing for hosted checkout, tax and merchant-of-record invoicing
+- Paddle Billing with Paddle.js Checkout, tax and merchant-of-record invoicing
 
 ## Website routes
 
@@ -63,8 +63,10 @@ Copy `.env.example` to `.env` and configure:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
+- `VITE_PADDLE_CLIENT_TOKEN` — Paddle’s public client-side token, used by Paddle.js
+- `VITE_PADDLE_ENVIRONMENT` — `sandbox` or `production`
 
-The Supabase browser key is a public anon or publishable key. Never place the service-role key, database password, payment secrets, private signing keys or provider webhooks in a `VITE_*` variable.
+The Supabase browser key and Paddle client token are public values. Never place the service-role key, Paddle API key, webhook secret, database password, private signing keys or provider webhooks in a `VITE_*` variable.
 
 When Supabase is not configured, account- and community-backed surfaces display an explicit configuration notice rather than pretending sign-in or persistence is available.
 
@@ -79,6 +81,7 @@ The marketplace schema provides catalogue metadata, release records, orders, ord
 The Paddle checkout and webhook handlers are deployed, but live payments still need operator configuration:
 
 - `PADDLE_API_KEY`, `PADDLE_WEBHOOK_SECRET` and (for sandbox) `PADDLE_ENVIRONMENT` must be set as Supabase Edge Function secrets.
+- The frontend build needs the public `VITE_PADDLE_CLIENT_TOKEN` and `VITE_PADDLE_ENVIRONMENT` values for Paddle.js Checkout.
 - Every published product needs a `paddle_price_id` mapped to a live Paddle price.
 - Paddle needs a notification destination pointing at `paddle-webhook` with `transaction.completed` selected, plus a default payment link configured for hosted checkout.
 - No production loader binaries are uploaded yet. The private `product-releases` bucket and the `signed-download` Edge Function are implemented; add a release row and asset pointer after uploading a real file.

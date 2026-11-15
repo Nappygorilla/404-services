@@ -37,13 +37,18 @@ never be built into this site.
 cp .env.example .env
 ```
 
-Fill both values in `.env`, then restart the dev server:
+Add the public Paddle checkout values as well:
+
+- `VITE_PADDLE_CLIENT_TOKEN` — Paddle’s public client-side token
+- `VITE_PADDLE_ENVIRONMENT` — `sandbox` or `production`
+
+Fill all values in `.env`, then restart the dev server:
 
 ```sh
 bun run dev
 ```
 
-The site reads `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` at build time.
+The site reads `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_PADDLE_CLIENT_TOKEN` and `VITE_PADDLE_ENVIRONMENT` at build time.
 Vite's local dev server is on `http://localhost:5305/`.
 
 ### GitHub Pages
@@ -53,11 +58,13 @@ In [the repository's Actions variables](https://github.com/Nappygorilla/404-serv
 
 - `SUPABASE_URL` — the Project URL
 - `SUPABASE_ANON_KEY` — the publishable or anon key
+- `PADDLE_CLIENT_TOKEN` — Paddle’s public client-side token
+- `PADDLE_ENVIRONMENT` — `sandbox` or `production`
 
 These are public browser values, so repository variables are appropriate. The
-Pages workflow maps them to `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
-during the build. Re-run the **Deploy to GitHub Pages** workflow after changing
-them; editing a variable does not rebuild an existing deployment automatically.
+Pages workflow maps them to the `VITE_*` names during the build. Re-run the
+**Deploy to GitHub Pages** workflow after changing them; editing a variable does
+not rebuild an existing deployment automatically.
 
 ## 3. Create the database objects
 
@@ -244,6 +251,13 @@ Do not paste these values into chat, GitHub Actions variables, `.env.example` or
 any `VITE_*` variable. `PADDLE_API_KEY` is an Authorization bearer credential;
 `PADDLE_WEBHOOK_SECRET` verifies event authenticity.
 
+The browser separately needs Paddle’s **client-side token**, which is public by
+design and is not the API key. Set `PADDLE_CLIENT_TOKEN` as an Actions variable
+(and `PADDLE_ENVIRONMENT=sandbox` for sandbox testing); the workflow maps them
+to `VITE_PADDLE_CLIENT_TOKEN` and `VITE_PADDLE_ENVIRONMENT` at build time. The
+checkout page loads Paddle.js and opens the transaction as an overlay, so the
+browser never chooses the price.
+
 ### 6.4 Deploy the functions
 
 ```sh
@@ -274,16 +288,20 @@ by the Paddle transaction ID.
 
 ### 6.6 Configure hosted checkout
 
-In Paddle **Checkout settings**, set a default payment link for the store. The
-server creates a transaction with `enable_checkout: true`; Paddle returns
-`checkout.url` only when a payment link is available. If it is missing, checkout
-returns `503` and no browser redirect happens.
+In Paddle **Checkout settings**, set a default payment link for the store. Paddle
+requires one before it will create transactions, and uses it for payment-method
+updates and emails. The checkout page opens the transaction directly with
+Paddle.js from the server-returned transaction ID, so the default link is not
+used as the overlay entry point. Set it to the deployed site (for example the
+`/checkout` page) on an approved domain; it should load Paddle.js if you also
+send transaction links by email. If the default link is missing, checkout
+returns `503` and no transaction is created.
 
 ### 6.7 Test in sandbox
 
 1. Set `PADDLE_ENVIRONMENT=sandbox` and use sandbox price IDs, a sandbox API key
    and a sandbox notification secret.
-2. Sign in on the site, open a product and choose **Continue to Paddle**.
+2. Sign in on the site, open a product and choose **Open Paddle checkout**.
 3. Complete a sandbox card payment. Paddle should deliver
    `transaction.completed` to the webhook.
 4. Confirm a new row in `orders`, its `order_items`, and active

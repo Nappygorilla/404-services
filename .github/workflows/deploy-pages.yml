@@ -34,6 +34,9 @@ jobs:
           # Public Supabase values, stored as repository Actions variables.
           VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+          # Paddle client-side token and environment. These are public values.
+          VITE_PADDLE_CLIENT_TOKEN: ${{ vars.PADDLE_CLIENT_TOKEN }}
+          VITE_PADDLE_ENVIRONMENT: ${{ vars.PADDLE_ENVIRONMENT }}
 
       # The postbuild step already writes app shells for every known route and
       # product slug. Copy the shell to 404.html as the last-resort fallback for

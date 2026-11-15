@@ -145,7 +145,6 @@ Deno.serve(async (request) => {
       body: JSON.stringify({
         items: [{ price_id: product.paddle_price_id, quantity: 1 }],
         collection_mode: 'automatic',
-        enable_checkout: true,
         custom_data: {
           user_id: authData.user.id,
           product_id: product.id,
