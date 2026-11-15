@@ -64,13 +64,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase) return
     let alive = true
+    const { data } = supabase.auth.onAuthStateChange((_event, next) => {
+      setSession(next)
+      setReady(true)
+    })
     supabase.auth.getSession().then(({ data }) => {
       if (!alive) return
       setSession(data.session)
-      setReady(true)
-    })
-    const { data } = supabase.auth.onAuthStateChange((_event, next) => {
-      setSession(next)
       setReady(true)
     })
     return () => {
@@ -78,6 +78,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       data.subscription.unsubscribe()
     }
   }, [])
+
+  // OAuth callbacks can arrive before the client has refreshed the user object.
+  // Fetch the server copy so identities linked during the callback appear in the UI.
+  useEffect(() => {
+    if (!supabase || !session) return
+    let alive = true
+    const accessToken = session.access_token
+    supabase.auth.getUser().then(({ data }) => {
+      if (!alive || !data.user) return
+      setSession(current => {
+        if (!current || current.access_token !== accessToken) return current
+        return { ...current, user: data.user }
+      })
+    })
+    return () => {
+      alive = false
+    }
+  }, [session?.access_token])
 
   const signIn = useCallback<AuthValue['signIn']>(async (email, password) => {
     if (!supabase) return { error: NOT_CONNECTED }
