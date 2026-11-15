@@ -5,15 +5,16 @@ import { ArrowRight, DownloadCloud, LockKeyhole } from 'lucide-react'
 import { useAuth } from '../components/Auth'
 import { BackendNotice } from '../components/BackendNotice'
 import { Badge } from '../components/Bits'
-import { ButtonLink } from '../components/Button'
+import { Button, ButtonLink } from '../components/Button'
 import { Card } from '../components/Card'
 import { PageHero } from '../components/Nav'
-import { APP } from '../data'
+import { createDownloadLink } from '../lib/downloads'
 import { supabase } from '../lib/supabase'
 import { useDocumentTitle } from '../lib/storage'
 
 type Entitlement = {
   id: string
+  product_id: string
   status: 'active' | 'expired' | 'revoked' | string
   starts_at: string
   expires_at: string | null
@@ -31,6 +32,8 @@ export function Downloads() {
   const [entitlements, setEntitlements] = useState<Entitlement[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
+  const [downloading, setDownloading] = useState<string | null>(null)
+  const [downloadError, setDownloadError] = useState('')
 
   useEffect(() => {
     if (!configured || !user || !supabase) return
@@ -38,7 +41,7 @@ export function Downloads() {
     const client = supabase
     setLoading(true)
     client.from('user_entitlements')
-      .select('id, status, starts_at, expires_at, products(name, slug)')
+      .select('id, product_id, status, starts_at, expires_at, products(name, slug)')
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
         if (!active) return
@@ -55,9 +58,19 @@ export function Downloads() {
   if (!ready) return <div className="p-4 text-sm text-muted">Checking your account…</div>
   if (!user) return <Navigate to="/login" replace state={{ from: '/downloads' }} />
 
+  const download = async (item: Entitlement) => {
+    if (item.status !== 'active' || !item.product_id) return
+    setDownloadError('')
+    setDownloading(item.id)
+    const result = await createDownloadLink(item.product_id)
+    setDownloading(null)
+    if (result.error) return setDownloadError(result.error)
+    if (result.data) window.location.assign(result.data.url)
+  }
+
   return (
     <div className="grid gap-2 p-2">
-      <PageHero title={['Your', 'library']} eyebrow="Downloads and licences" intro="Review the cheat entitlements attached to your account. Download links stay unavailable until private file delivery is configured." art={<DownloadCloud className="size-24 text-violet/80" />} titleSize="compact" />
+      <PageHero title={['Your', 'library']} eyebrow="Downloads and licences" intro="Review the cheat entitlements attached to your account. Active licences can request a short-lived download link for the latest published release." art={<DownloadCloud className="size-24 text-violet/80" />} titleSize="compact" />
 
       <Card className="p-6 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -68,14 +81,15 @@ export function Downloads() {
           <ul className="mt-6 grid gap-3 md:grid-cols-2">
             {entitlements.map((item) => <li key={item.id} className="rounded-xl border border-line bg-soft p-5">
               <div className="flex items-start justify-between gap-3"><div><h3 className="font-semibold">{item.products?.name ?? '404 Services cheat'}</h3><p className="mt-1 font-mono text-[10px] text-faint">{item.id.slice(0, 8)}</p></div><Badge tone={item.status === 'active' ? 'success' : 'outline'}>{item.status}</Badge></div>
-              <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-3 text-xs"><span className="text-muted">Access expires</span><span>{dateLabel(item.expires_at)}</span></div>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3 text-xs"><div><span className="text-muted">Access expires</span><span className="ml-3">{dateLabel(item.expires_at)}</span></div>{item.status === 'active' && item.product_id ? <Button size="sm" variant="outline" loading={downloading === item.id} onClick={() => download(item)} icon={<DownloadCloud className="size-4" aria-hidden />}>Download</Button> : null}</div>
             </li>)}
           </ul>
         )}
+        {downloadError && <p role="alert" className="mt-4 rounded-lg bg-soft p-4 text-sm text-muted">{downloadError}</p>}
       </Card>
 
       <Card className="grid gap-4 p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:p-8">
-        <div className="flex items-start gap-3"><span className="grid size-11 place-items-center rounded-xl bg-violet/10 text-violet"><LockKeyhole className="size-5" /></span><div><h2 className="font-semibold">Secure downloads are not connected yet</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">404 Services has no published loader URL or signed-download endpoint in this build. A download will only appear after the server verifies your entitlement and issues a short-lived link to a private release file. Current loader reference: v{APP.version}.</p></div></div>
+        <div className="flex items-start gap-3"><span className="grid size-11 place-items-center rounded-xl bg-violet/10 text-violet"><LockKeyhole className="size-5" /></span><div><h2 className="font-semibold">Private release delivery</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">Downloads are signed for your account and expire after 60 seconds. The server checks your active entitlement before it reads a private release file. If no file has been uploaded for a product yet, the button will say so instead of returning a public link.</p></div></div>
         <ButtonLink to="/store" variant="outline" iconRight={<ArrowRight className="size-4" />}>Browse catalogue</ButtonLink>
       </Card>
     </div>

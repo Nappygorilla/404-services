@@ -64,10 +64,12 @@ Open **SQL Editor** and run these in order:
 1. `supabase/schema.sql` — forum threads and their public/author policies.
 2. `supabase/marketplace.sql` — products, releases, orders, entitlements and
    support tickets.
+3. `supabase/migrations/20261115_create_release_bucket.sql` — the private
+   `product-releases` Storage bucket.
 
-The files are idempotent for tables, indexes and policies, so they can be run
-again to repair a partial setup. They must still be run in that order on a fresh
-project.
+The files are idempotent for tables, indexes, policies and the bucket, so they
+can be run again to repair a partial setup. They must still be run in that order
+on a fresh project.
 
 The browser can only read its own orders, entitlements and tickets. Orders,
 order items, entitlements and release-asset pointers have no browser write
@@ -99,7 +101,58 @@ In **Authentication → Providers → Email**:
 
 Disable anonymous sign-ins unless you deliberately add an anonymous flow.
 
-## 5. Smoke test
+## 5. Publish a private release
+
+The repository contains no loader binaries. The `product-releases` bucket and
+the `signed-download` Edge Function are deployed, but there is nothing to sign
+until a real release file is uploaded and registered.
+
+1. Open **Storage → product-releases** and upload a build to a path such as
+   `fivem-external/4.0.4/404-loader.zip`. Keep the bucket private.
+2. Compute the file's SHA-256.
+3. Register the release and its asset. Replace the slug, version, path, size,
+   notes and zeroed checksum with the real values:
+
+```sql
+with product as (
+  select id from public.products where slug = 'fivem-external'
+), release as (
+  insert into public.product_releases
+    (product_id, version, release_notes, minimum_os, file_size_bytes, is_published)
+  select id, '4.0.4', 'Initial loader release', 'Windows 10/11', 44040192, true
+  from product
+  on conflict (product_id, version) do update set
+    release_notes = excluded.release_notes,
+    minimum_os = excluded.minimum_os,
+    file_size_bytes = excluded.file_size_bytes,
+    is_published = true
+  returning id
+)
+insert into public.release_assets
+  (release_id, storage_bucket, storage_path, sha256)
+select id, 'product-releases', 'fivem-external/4.0.4/404-loader.zip',
+       '0000000000000000000000000000000000000000000000000000000000000000'
+from release
+on conflict (release_id) do update set
+  storage_bucket = excluded.storage_bucket,
+  storage_path = excluded.storage_path,
+  sha256 = excluded.sha256;
+```
+
+The function uses the service role to read `release_assets` and create a
+60-second signed URL. The bucket has no public or authenticated read policy, so
+a customer cannot bypass the entitlement check. If you use a custom domain,
+add its exact origin to `ALLOWED_ORIGINS` in
+`supabase/functions/signed-download/index.ts` and redeploy the function.
+
+For a fresh project, deploy the function with the Supabase CLI from the repo
+root after logging in:
+
+```sh
+supabase functions deploy signed-download
+```
+
+## 6. Smoke test
 
 1. Build and deploy with the new values. `/status` should show
    **Account configuration: Configured**.
@@ -107,7 +160,10 @@ Disable anonymous sign-ins unless you deliberately add an anonymous flow.
 3. Sign in, open `/forums/issues`, post a topic and delete it as its author.
 4. Open `/account/tickets`, submit a ticket and confirm it appears in the
    private history.
-5. Query the SQL editor to confirm RLS is on:
+5. After publishing a release, open `/downloads` with an account that has an
+   active entitlement and click **Download**. The link should expire after 60
+   seconds; an account without the entitlement should get a `403`.
+6. Query the SQL editor to confirm RLS is on:
 
 ```sql
 select tablename, rowsecurity
@@ -124,13 +180,16 @@ Every row should have `rowsecurity = true`.
 
 ## What this setup does not connect
 
-Authentication, the forum and support tickets work with the steps above.
-Payments, verified order creation, entitlement issuance and private download
-delivery are still server-side work. Do not add a browser insert policy for
-orders or entitlements to make a checkout demo appear to work.
+Authentication, the forum and support tickets work with the steps above. The
+private bucket, entitlement check and signed-download function are implemented;
+the remaining work is uploading real release files and registering their
+`product_releases` and `release_assets` rows.
 
-The site labels checkout, secure downloads and commerce as not connected until
-those workflows exist. That is intentional.
+Payments, verified order creation and entitlement issuance are still
+server-side work. Do not add a browser insert policy for orders or entitlements
+to make a checkout demo appear to work. The site labels checkout as not
+connected until a verified payment flow exists; it does not invent orders or
+licences.
 
 ## Troubleshooting
 
@@ -143,6 +202,9 @@ those workflows exist. That is intentional.
 | Ticket query says storage is not ready | Run `supabase/marketplace.sql` and confirm the tables are in the `public` schema. |
 | Posting returns `42501` | You are not signed in, or the board is announcements. Announcements are read-only for members; post issues as a signed-in account. |
 | Email confirmation never arrives | Check spam and the Supabase auth logs; configure custom SMTP before public launch. |
+| Download says no published release file | Upload a file to `product-releases` and register matching `product_releases` and `release_assets` rows. |
+| Download returns 401 or 403 | Sign in again, then confirm the account has an active, unexpired `user_entitlements` row for that product. |
+| Download works locally but not on a custom domain | Add that exact origin to `ALLOWED_ORIGINS` in the function and redeploy. |
 
 ## Secret rules
 

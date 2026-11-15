@@ -22,7 +22,7 @@ The repository contains the storefront: an item-level catalogue, per-product pri
 - `/games` — game overview; categories are play styles, not products
 - `/pricing` — every individual price plus the optional bundle
 - legacy `/products/fivem`, `/products/roblox`, `/platforms/fivem` and `/platforms/roblox` — redirect into the filtered store
-- `/downloads` — account-protected download library placeholder
+- `/downloads` — account-protected download library with entitlement-checked signed links
 - `/orders` — account-protected order history placeholder
 - `/account` — customer dashboard
 - `/account/profile` — display-name settings
@@ -52,7 +52,7 @@ The Vite/Cloudflare plugin runs the Worker during local development. The build o
 
 ## Backend setup
 
-Accounts, the issues forum and support tickets use Supabase. The complete project, SQL, auth-URL and GitHub Actions setup is in [SUPABASE-SETUP.md](SUPABASE-SETUP.md).
+Accounts, the issues forum, support tickets and private release delivery use Supabase. The complete project, SQL, auth-URL, release-upload and GitHub Actions setup is in [SUPABASE-SETUP.md](SUPABASE-SETUP.md). Private releases are served by the `signed-download` Edge Function after an active entitlement check.
 
 ## Environment
 
@@ -73,17 +73,16 @@ The marketplace schema provides catalogue metadata, release records, orders, ord
 
 ### Not connected yet
 
-This branch intentionally does not claim that commerce or protected downloads are live:
+This branch does not claim that commerce is live:
 
 - No payment provider credentials or verified webhook handler are configured.
-- No production loader binaries or private storage bucket are configured.
-- No entitlement-backed signed download endpoint is configured.
+- No production loader binaries are uploaded yet. The private `product-releases` bucket and the `signed-download` Edge Function are implemented; add a release row and asset pointer after uploading a real file.
 - No external uptime monitor or incident feed is configured.
 - Support tickets can be submitted and read by their owner, but staff replies and status management still need an operator workflow.
 - Email-change verification and multi-factor authentication are not configured.
-- The Orders page reads order rows populated by trusted server-side payment handling. The Downloads / Licences page reads customer entitlements, but does not serve binaries until the private storage and signed-download endpoint are implemented.
+- The Orders page reads order rows populated by trusted server-side payment handling. The Downloads / Licences page requests a 60-second link from the Edge Function; until a release is published, it explains that no file is attached.
 
-Before accepting payments, implement a server-only checkout session endpoint and verify provider webhook signatures before creating `orders`, `order_items` and `user_entitlements` rows. Never trust a browser redirect as proof of payment. Before exposing a file, verify the current user's entitlement server-side and issue a short-lived signed URL from a private Storage bucket.
+Before accepting payments, implement a server-only checkout session endpoint and verify provider webhook signatures before creating `orders`, `order_items` and `user_entitlements` rows. Never trust a browser redirect as proof of payment. The download endpoint already verifies the current user's active entitlement before signing a private release URL; keep the bucket private and never expose the service-role key in the browser.
 
 ## Project layout
 
@@ -92,7 +91,8 @@ Before accepting payments, implement a server-only checkout session endpoint and
 - `src/data.ts` — the single catalogue of cheats and bundles, plus site copy and configuration
 - `src/lib/` — Supabase client, API helpers, local utilities
 - `src/worker/index.ts` — Cloudflare Worker entry point
-- `supabase/` — database schemas and row-level security policies
+- `supabase/functions/signed-download/` — entitlement-checked private release signing
+- `supabase/` — database schemas, migrations and row-level security policies
 
 ## Scope and risk
 
